@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import ButtonAppBar from './Navigation'
-import Analize from './PredicPage'
+import Compare from './ComparePage'
 
 import './App.css'
 
@@ -10,7 +10,7 @@ class App extends Component {
     return (
       <div className="App">
           <ButtonAppBar />  
-          <Analize />
+          <Compare />
       </div>
     );
   }
