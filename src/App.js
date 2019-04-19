@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import ButtonAppBar from './Navigation'
-import Compare from './ComparePage'
+import IntegrationReactSelect from './ComparePage'
 
 import './App.css'
 
@@ -10,7 +10,6 @@ class App extends Component {
     return (
       <div className="App">
           <ButtonAppBar />  
-          <Compare />
       </div>
     );
   }

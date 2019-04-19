@@ -1,16 +1,69 @@
-import React, { Component } from 'react';
-import Axios from 'axios';
+import React from 'react';
+import Axios from 'axios'
+import PropTypes from 'prop-types';
+import Select from 'react-select';
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import TextField from '@material-ui/core/TextField';
+import Paper from '@material-ui/core/Paper';
+import MenuItem from '@material-ui/core/MenuItem';
+import { emphasize } from '@material-ui/core/styles/colorManipulator';
 
-import Select from './components/select';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
-const List = ({ item }) => {
-  if(item.sname !== ''){
-    return <li>{item.sname}</li>
-  }
+const styles = theme => ({
+  root: {
+    flexGrow: 1,
+    height: 250,
+  },
+  input: {
+    display: 'flex',
+    padding: 0,
+  },
+  valueContainer: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    flex: 1,
+    alignItems: 'center',
+    overflow: 'hidden',
+  },
+  chip: {
+    margin: `${theme.spacing.unit / 2}px ${theme.spacing.unit / 4}px`,
+  },
+  chipFocused: {
+    backgroundColor: emphasize(
+      theme.palette.type === 'light' ? theme.palette.grey[300] : theme.palette.grey[700],
+      0.08,
+    ),
+  },
+  noOptionsMessage: {
+    padding: `${theme.spacing.unit}px ${theme.spacing.unit * 2}px`,
+  },
+  singleValue: {
+    fontSize: 16,
+  },
+  placeholder: {
+    position: 'absolute',
+    left: 2,
+    fontSize: 16,
+  },
+  paper: {
+    position: 'absolute',
+    zIndex: 1,
+    marginTop: theme.spacing.unit,
+    left: 0,
+    right: 0,
+  },
+  divider: {
+    height: theme.spacing.unit * 2,
+  },
+});
 
-  return null;
-}
-class Compare extends Component {
+
+class IntegrationReactSelect extends React.Component {
     constructor(props) {
         super(props);
         // change code below this line
@@ -20,6 +73,8 @@ class Compare extends Component {
             herbsmed: [],
             item1: '',
             item2: '',
+            displayItem1: null,
+            displayItem2: null,
             same:[],
             defer: [],
             refCrude1: [],
@@ -27,177 +82,281 @@ class Compare extends Component {
             sama: []
         }
         // change code above this line
-        this.back = this.back.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
       }
 
-      async componentDidMount() {
-        this.getData();
+  async componentDidMount() {
+    this.getData();
+  }
+  
+ async getData(){
+  const url = 'http://ci.apps.cs.ipb.ac.id/jamu/api/herbsmed/getlist';
+  const res = await Axios.get(url);
+  const { data } = await res;
+  let temp = [];
+  data.data.forEach(herbsmed => {
+    temp.push({label:herbsmed.name,value:herbsmed.idherbsmed});
+  });
+  this.setState({
+    item: temp, 
+    herbsmed: data.herbsmed,
+    loading: false
+  })
+}
+
+async handleSubmit(){
+  this.setState({
+    loading: true
+  })
+  let res = await Axios.get('http://ci.apps.cs.ipb.ac.id/jamu/api/herbsmed/get/'+ this.state.item1.value);
+  const { data } = await res;
+  this.setState({
+    displayItem1: data.data
+  })
+
+  let refCrude1 = this.state.displayItem1.refCrude;
+  let uniq = [];
+  await refCrude1.forEach(function(itm) {
+    var unique = true;
+    uniq.forEach(function(itm2) {
+        if (itm.idcrude === itm2.idcrude) unique = false;
+    });
+    if (unique)  uniq.push(itm);
+});
+let item1 = this.state.displayItem1;
+item1.refCrude = uniq
+this.setState({
+    displayItem1: item1
+})
+
+  let res1 = await Axios.get('http://ci.apps.cs.ipb.ac.id/jamu/api/herbsmed/get/'+ this.state.item2.value);
+  const data1 = await res1.data;
+  this.setState({
+    displayItem2: data1.data
+  })
+  let refCrude2 = this.state.displayItem2.refCrude;
+  let uniq1 = [];
+  refCrude2.forEach(function(itm) {
+    var unique = true;
+    uniq1.forEach(function(itm2) {
+        if (itm.idcrude === itm2.idcrude) unique = false;
+    });
+    if (unique)  uniq1.push(itm);
+});
+let item2 = this.state.displayItem2;
+item2.refCrude = uniq1
+this.setState({
+    displayItem2: item2
+})
+
+  let sama = []
+  await uniq.forEach((crud1,i) => {
+    uniq1.forEach((crud2,j) => {
+      if ( crud1.idcrude === crud2.idcrude) {
+        sama.push(crud1);
       }
-      
-     async getData(){
-      const url = 'http://ci.apps.cs.ipb.ac.id/jamu/api/herbsmed/getlist';
-      const res = await Axios.get(url);
-      const { data } = await res;
-      let temp = [];
-      data.data.forEach(herbsmed => {
-        temp.push({label:herbsmed.name,value:herbsmed.idherbsmed});
-      });
-      this.setState({
-        item: temp, 
-        herbsmed: data.herbsmed,
-        loading: false
-      })
-    }
+    })
+  })
+  
+  let beda1 = []
+  await uniq.forEach(function(itm) {
+    var unique = true;
+    sama.forEach(function(itm2) {
+        if (itm.idcrude === itm2.idcrude) unique = false;
+    });
+    if (unique)  beda1.push(itm);
+});
 
-    handleChange = event => {
-      const {name, value} = event.target
-      this.setState({
-        [name]: value
-      })  
-    }
+let beda2 = []
+  await uniq1.forEach(function(itm) {
+    var unique = true;
+    sama.forEach(function(itm2) {
+        if (itm.idcrude === itm2.idcrude) unique = false;
+    });
+    if (unique)  beda2.push(itm);
+});
 
-    async handleSubmit(){
-      this.setState({
-        loading: true
-      })
-      let res = await Axios.get('http://ci.apps.cs.ipb.ac.id/jamu/api/herbsmed/get/'+ this.state.item1);
-      const { data } = await res;
-      this.setState({
-        item1: data.data
-      })
+  this.setState({
+      sama: sama,
+      refCrude1: beda1,
+      refCrude2: beda2,
+      loading: false
+  })  
+}
 
-      let refCrude1 = this.state.item1.refCrude;
-      let uniq = [];
-      refCrude1.forEach(function(itm) {
-        var unique = true;
-        uniq.forEach(function(itm2) {
-            if (itm.idcrude === itm2.idcrude) unique = false;
-        });
-        if (unique)  uniq.push(itm);
+
+  handleChange = name => value => {
+    this.setState({
+      [name]: value,
     });
 
-    console.log(uniq)
-
-      console.log(this.state.item2)
-      let res1 = await Axios.get('http://ci.apps.cs.ipb.ac.id/jamu/api/herbsmed/get/'+ this.state.item2);
-      const data1 = await res1.data;
-      this.setState({
-        item2: data1.data
-      })
-      let refCrude2 = this.state.item2.refCrude;
-      console.log(refCrude2)
-      let uniq1 = [];
-      refCrude2.forEach(function(itm) {
-        var unique = true;
-        uniq1.forEach(function(itm2) {
-            if (itm.idcrude === itm2.idcrude) unique = false;
-        });
-        if (unique)  uniq1.push(itm);
-    });
-      console.log(uniq1)
-
-      let sama = []
-      await uniq.forEach((crud1,i) => {
-        uniq1.forEach((crud2,j) => {
-          if ( crud1.idcrude === crud2.idcrude) {
-            sama.push(crud1);
-          }
-        })
-      })
-      
-      let beda1 = []
-      await uniq.forEach(function(itm) {
-        var unique = true;
-        sama.forEach(function(itm2) {
-            if (itm.idcrude === itm2.idcrude) unique = false;
-        });
-        if (unique)  beda1.push(itm);
-    });
-
-    let beda2 = []
-      await uniq1.forEach(function(itm) {
-        var unique = true;
-        sama.forEach(function(itm2) {
-            if (itm.idcrude === itm2.idcrude) unique = false;
-        });
-        if (unique)  beda2.push(itm);
-    });
-
-      console.log(sama)
-      console.log(beda1)
-      console.log(beda2)
-
-      this.setState({
-          sama: sama,
-          refCrude1: beda1,
-          refCrude2: beda2,
-          loading: false
-      })  
+    if (name === 'item2'){
+        this.handleSubmit();
     }
+  };
 
-    back(){
-      this.setState({
-        sama: [],
-        refCrude1: [],
-        refCrude2: []
-    })  
-    }
+  render() {
+    const { classes, theme } = this.props;
 
-    render(){
-      if (this.state.loading) {
+    if (this.state.loading) {
         return <div><br></br><br></br> <br></br>loading...</div>;
       }
-
-      if(this.state.sama.length){
-        return(
-          <div className="wraper">
-            <h3 className="btn-center">Result Compare Herbal Medicine</h3>
-            <h5>jamu 1 :</h5>
-            <h6>{this.state.item1.name}</h6>
-            <p>{this.state.item1.efficacy}</p>
-            
-            <h5>jamu 2 :</h5>
-            <h6>{this.state.item2.name}</h6>
-            <p>{this.state.item2.efficacy}</p>
-
-
-            <ul className="reff">
-                 {this.state.sama.map( item => (
-                    <List item = { item } />
-                ))} 
-          </ul>
-
-          <ul className="reff">
-                 {this.state.refCrude1.map( item => (
-                    <List item = { item } />
-                ))} 
-          </ul>
-
-          <ul className="reff">
-                 {this.state.refCrude2.map( item => (
-                    <List item = { item } />
-                ))} 
-          </ul>
-
-          <button onClick={this.back}>Back</button>
-          </div>
+    
+    if (this.state.displayItem2 !== null){
+        console.log (this.state.displayItem2)
+        return (
+            <div className={classes.root}>
+      <Paper style={{
+          width: "80%",
+          margin: "auto",
+          marginTop:"20px",
+          marginBottom:"20px",
+          padding: "10px",
+          minHeight: "350px"
+      }}>
+          <Select
+            options={this.state.item}
+            value={this.state.item1}
+            onChange={this.handleChange('item1')}
+          />
+          <div className={classes.divider} />
+           <Select
+            options={this.state.item}
+            value={this.state.item2}
+            onChange={this.handleChange('item2')}
+          />
+            <div style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-around"
+            }}> 
+             <Paper style={{
+                 width:"45%",
+                 padding:"10px",
+                 marginTop: "10px"
+             }}>
+             <Typography variant="h5" component="h3">
+             {this.state.displayItem1.name}
+             </Typography>
+             <Typography component="p">
+             {this.state.displayItem1.efficacy}
+             </Typography>
+             </Paper>
+             <Paper style={{
+                 width:"45%",
+                 padding:"10px",
+                 marginTop: "10px"
+             }}>
+             <Typography variant="h5" component="h3">
+             {this.state.displayItem2.name}
+             </Typography>
+             <Typography component="p">
+             {this.state.displayItem2.efficacy}
+             </Typography>
+             </Paper>
+         </div>
+         
+         <div style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-around",
+                marginTop: "15px"
+            }}> 
+ 
+         <div style={{
+             width: "46%"
+         }}>
+        {this.state.refCrude1.map(item => {
+            return (
+                <ExpansionPanel>
+                    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                    <Typography className={classes.heading}>{item.sname}</Typography>
+                    </ExpansionPanelSummary>
+                    <ExpansionPanelDetails>
+                    <Typography>
+                        {item.idcrude}
+                    </Typography>
+                    </ExpansionPanelDetails>
+                    </ExpansionPanel>
+            )
+        })}
+     </div>
+ 
+     <div style={{
+             width: "46%"
+         }}>
+       {this.state.refCrude2.map(item => {
+            return (
+                <ExpansionPanel>
+                    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                    <Typography className={classes.heading}>{item.sname}</Typography>
+                    </ExpansionPanelSummary>
+                    <ExpansionPanelDetails>
+                    <Typography>
+                        {item.idcrude}
+                    </Typography>
+                    </ExpansionPanelDetails>
+                    </ExpansionPanel>
+            )
+        })}
+     </div>
+         </div>
+ 
+         <div style={{
+             width: "55%",
+             margin:"auto",
+             marginTop : "15px"
+         }}>
+       {this.state.sama.map(item => {
+            return (
+                <ExpansionPanel>
+                    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                    <Typography className={classes.heading}>{item.sname}</Typography>
+                    </ExpansionPanelSummary>
+                    <ExpansionPanelDetails>
+                    <Typography>
+                        {item.idcrude}
+                    </Typography>
+                    </ExpansionPanelDetails>
+                    </ExpansionPanel>
+            )
+        })}
+     </div>
+     </Paper>
+      </div>
         )
-      }
-        return(
-          <div className="wraper">
-            <h3 className="btn-center">Compare Herbal Medicine</h3>
-  
-              <div className="coba1"> 
-                <Select options={this.state.item} nameState={'item1'} handleChange={this.handleChange}/>
-              </div>
-              <div className="coba1">
-                <Select options={this.state.item} nameState={'item2'} handleChange={this.handleChange} />
-              </div>
-              <button className="btn-center" onClick={this.handleSubmit}>Compare</button>
-          </div>
-        );
     }
+    return (
+      <div className={classes.root}>
+      <Paper style={{
+          width: "80%",
+          margin: "auto",
+          marginTop:"20px",
+          padding: "10px",
+          minHeight: "350px"
+      }}>
+          <Select
+            options={this.state.item}
+            value={this.state.item1}
+            onChange={this.handleChange('item1')}
+          />
+          <div className={classes.divider} />
+           <Select
+            options={this.state.item}
+            value={this.state.item2}
+            onChange={this.handleChange('item2')}
+          />
+           
+        </Paper>
+      </div>
+    );
+  }
 }
-export default Compare;
+
+IntegrationReactSelect.propTypes = {
+  classes: PropTypes.object.isRequired,
+  theme: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles, { withTheme: true })(IntegrationReactSelect);
