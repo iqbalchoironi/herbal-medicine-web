@@ -63,7 +63,7 @@ const styles = theme => ({
 });
 
 
-class IntegrationReactSelect extends React.Component {
+class ComparePage extends React.Component {
     constructor(props) {
         super(props);
         // change code below this line
@@ -354,9 +354,9 @@ let beda2 = []
   }
 }
 
-IntegrationReactSelect.propTypes = {
+ComparePage.propTypes = {
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles, { withTheme: true })(IntegrationReactSelect);
+export default withStyles(styles, { withTheme: true })(ComparePage);

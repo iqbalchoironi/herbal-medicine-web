@@ -14,6 +14,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
 import Select from '@material-ui/core/Select';
+import Checkbox from '@material-ui/core/Checkbox';
 
 import {
     FormControl,
@@ -21,8 +22,6 @@ import {
     Input,
     TextField
   } from "@material-ui/core";
-
-import Picklist from './components/pick-list';
 
 const styles = theme => ({
   root: {
@@ -40,7 +39,7 @@ const styles = theme => ({
   },
 });
 
-class Predict extends Component {
+class FormExplicit extends Component {
   static propTypes = {
     classes: PropTypes.object,
   };
@@ -52,17 +51,20 @@ class Predict extends Component {
         loading: true,
         activeStep: 0,
         skipped: new Set(),
-        item:[],
-        itembasis : [],
-        itemtarget : [],
-        type: '',
-        model:'',
-        target: []
+        firstName: '',
+        lastName: '',
+        title: '',
+        datePublish: '',
+        citation: [],
+        language: '',
+        abstrak: '',
+        description: '',
+        file: null
     }
     // change code above this line
-    this.coba = this.coba.bind(this);
-    this.coba1 = this.coba1.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+    this.onChange = this.onChange.bind(this)
+    this.handleChange = this.handleChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   async componentDidMount() {
@@ -100,20 +102,6 @@ class Predict extends Component {
       skipped = new Set(skipped.values());
       skipped.delete(activeStep);
     }
-
-    if( activeStep === 1){
-        let target = [];
-        this.state.itemtarget.forEach(item => {
-            this.state.item.forEach(i => {
-            if(i.sname === item){
-                target.push(i.idplant);
-            }
-            })
-        });
-        this.setState({
-            target: target
-        })
-    }
     this.setState({
       activeStep: activeStep + 1,
       skipped,
@@ -133,21 +121,6 @@ class Predict extends Component {
     });
   };
 
-  coba(e){
-    this.setState({
-      itemtarget: [...this.state.itemtarget,e.target.dataset.value],
-      itembasis: this.state.itembasis.filter( data => data !== e.target.dataset.value)
-    });
-    
-  }
-
-  coba1(e){
-    this.setState({
-      itembasis: [...this.state.itembasis,e.target.dataset.value],
-      itemtarget: this.state.itemtarget.filter( data => data !== e.target.dataset.value)
-    });
-  }
-
   handleChange = event => {
     const {name, value} = event.target
     this.setState({
@@ -156,9 +129,47 @@ class Predict extends Component {
     console.log(this.state)
     event.preventDefault();
   }  
+
+  onChange(e) {
+    this.setState({file:e.target.files[0]})
+  }
+
+  handleSubmit = event => {
+  let user = localStorage.getItem("user")
+  user = JSON.parse(user)
+  let axiosConfig = {
+          headers: {
+              'Content-Type': 'multipart/form-data',
+              'Authorization': user.token
+          }
+      };
+      
+  let url = 'http://ci.apps.cs.ipb.ac.id/jamu/api/explicit/create';
+  const formData = new FormData();
+  formData.append('doc',this.state.file);
+  formData.append('firstName',this.state.firstName);
+  formData.append('lastName',this.state.lastName);
+  formData.append('title',this.state.title);
+  formData.append('datePublish',this.state.datePublish);
+  formData.append('citation',this.state.citation);
+  formData.append('language',this.state.language);
+  formData.append('abstract',this.state.abstrak);
+  formData.append('description',this.state.description);
+  Axios.post( url,formData,axiosConfig)
+    .then(data => {
+        const res = data.data;
+        console.log(res)
+        window.location.href = '/explicit';
+    })
+    .catch(err => {
+        console.log(err)
+    });
+        event.preventDefault();
+}
+
   render() {
     const { classes } = this.props;
-    const steps = ['Select campaign settings', 'Create an ad group', 'Result'];
+    const steps = ['Select campaign settings', 'Create an ad group', 'Result','Result'];
     const { activeStep } = this.state;
 
     return (
@@ -213,27 +224,22 @@ class Predict extends Component {
               justifyContent : "center"
             }}>
                <Step1 
-                  type={this.state.type}  
-                  activeStep={this.state.activeStep} 
-                  handleChange={this.handleChange}
-                  />
+                activeStep={this.state.activeStep} 
+                handleChange={this.handleChange}
+                />
                 <Step2 
-                  activeStep={this.state.activeStep} 
-                  handleChange={this.handleChange}
-                  model={this.state.model}
-                  options={this.optionsArray}
-                  basis={this.state.itembasis} 
-                  target={this.state.itemtarget} 
-                  coba1={this.coba1} 
-                  coba={this.coba}
-                  />
+                activeStep={this.state.activeStep} 
+                handleChange={this.onChange}
+                />
                 <Step3 
-                  activeStep={this.state.activeStep} 
-                  type={this.state.type}
-                  model={this.state.model}
-                  target={this.state.target}
-                  onSubmit={this.onSubmit} 
-                  />
+                activeStep={this.state.activeStep} 
+                handleChange={this.handleChange}
+                />
+
+                <Step4
+                activeStep={this.state.activeStep} 
+                handleChange={this.handleChange}
+                />
                 </div>
               <div style={{
                 marginTop: "10px"
@@ -272,11 +278,35 @@ function Step1(props) {
     <Paper style={{
       display: "flex",
       justifyContent : "center",
-      alignItems : "center",
       width: "50%",
       minHeight: "400px"
     }}>
-    <FormControl component="fieldset">
+    <form style={{ width: "90%" }}>
+        <div style={{
+          display:"flex"
+        }}>
+          <FormControl margin="normal" fullWidth>
+            <InputLabel htmlFor="name">First Name</InputLabel>
+            <Input style={{ marginRight: "15px"}}id="first-name" type="text" />
+          </FormControl>
+
+          <FormControl margin="normal" fullWidth>
+            <InputLabel htmlFor="email">Title</InputLabel>
+            <Input  id="title" type="text" />
+          </FormControl>
+        </div>
+
+          <FormControl margin="normal" fullWidth>
+            <InputLabel htmlFor="email">Title</InputLabel>
+            <Input  id="title" type="text" />
+          </FormControl>
+
+          <FormControl margin="normal" fullWidth>
+            <InputLabel htmlFor="email">Date Publish</InputLabel>
+            <Input id="email" type="date" />
+          </FormControl>
+
+          <FormControl margin="normal" fullWidth>
           <FormLabel component="legend">Select approach :</FormLabel>
           <RadioGroup
             aria-label="Approach"
@@ -287,7 +317,19 @@ function Step1(props) {
             <FormControlLabel value="molecul" control={<Radio />} label="Molecul" />
           </RadioGroup>
         </FormControl>
-  </Paper>
+
+        <FormControl margin="normal" fullWidth>
+            <InputLabel htmlFor="email">Message</InputLabel>
+            <Input id="email" multiline rows={10} />
+          </FormControl>
+
+          <FormControl margin="normal" fullWidth>
+            <InputLabel htmlFor="email">Message</InputLabel>
+            <Input id="email" multiline rows={10} />
+          </FormControl>
+
+      </form>
+      </Paper>
   );
 }
 
@@ -299,30 +341,15 @@ function Step2(props) {
     <Paper style={{
       display: "flex",
       justifyContent : "center",
+      alignItems:"center",
       width: "50%",
       minHeight: "400px"
     }}>
     <form style={{ width: "90%" }}>
         <FormControl margin="normal" fullWidth>
-          <InputLabel htmlFor="model">Model </InputLabel>
-          <Select
-            native
-            name="model"
-            value={props.model}
-            onChange={props.handleChange}
-            inputProps={{
-              id: 'age-native-simple'
-            }}
-          >
-            <option value="" />
-            <option value={'svm'}>svm</option>
-            <option value={'som'}>som</option>
-          </Select>
-        </FormControl>
-
-        <FormControl margin="normal" fullWidth>
-          <InputLabel htmlFor="email">Email</InputLabel>
-          <Picklist basis={props.basis} target={props.target} coba1={props.coba1} coba={props.coba}/>
+          <Button>
+            <input type="file" />
+          </Button>
         </FormControl>
       </form>
       </Paper>
@@ -334,6 +361,44 @@ function Step3(props) {
     return null
   } 
   return (
+    <Paper  style={{
+      display: "flex",
+      flexDirection: "column",
+      justifyContent : "center",
+      width: "50%",
+      minHeight: "400px",
+      padding:"35px"}}>
+      <Typography variant="body1" gutterBottom align="justify">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris tincidunt sem et scelerisque laoreet. 
+      Mauris non mattis sem. Donec auctor sem a iaculis pulvinar. Suspendisse id tortor nec erat congue volutpat eu a nisl.
+      Nunc eleifend, ligula in egestas gravida, justo elit tincidunt risus, interdum porttitor sapien lectus ut orci. Cras 
+      quis massa non metus tincidunt gravida. Integer ac lacus sit amet augue ultrices sodales. Sed sodales sagittis sem sit 
+      amet egestas. Mauris elementum lacinia massa ut ullamcorper. Maecenas rutrum, sapien a imperdiet pharetra, orci lacus 
+      consequat purus, quis lobortis leo odio at felis. Sed nec lacinia mauris. Nam at vehicula nisl, ac blandit lacus. Vestibulum dui
+      tortor, vulputate ac tempus nec, blandit sit amet mauris.Sed in dui elit. Cras laoreet ipsum at ornare maximus. Pellentesque 
+      tempus mi vitae dolor rutrum volutpat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; 
+      Phasellus ultricies leo sit amet ultricies viverra. Vivamus ullamcorper dui sit amet malesuada ultrices.
+      </Typography>
+      <FormControlLabel
+          control={
+            <Checkbox
+              // checked={this.state.checkedB}
+              // onChange={this.handleChange('checkedB')}
+              value="checkedB"
+              color="primary"
+            />
+          }
+          label="Agree"
+        />
+    </Paper>
+    );
+}
+
+function Step4(props) {
+  if (props.activeStep !== 3) {
+    return null
+  } 
+  return (
     <Paper style={{
       display: "flex",
       justifyContent : "center",
@@ -341,12 +406,8 @@ function Step3(props) {
       minHeight: "400px"
     }}>
     <h6> Sumarry</h6>
-    <p>{props.type}</p>
-    <p>{props.model}</p>
-    <p>{props.target}</p>
     
     </Paper>
     );
 }
-
-export default withStyles(styles)(Predict);
+export default withStyles(styles)(FormExplicit);
