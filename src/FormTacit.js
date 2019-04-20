@@ -1,15 +1,31 @@
 import React, { Component } from 'react';
 
+import {
+  FormControl,
+  InputLabel,
+  Input,
+  TextField
+} from "@material-ui/core";
+import Button from '@material-ui/core/Button';
+import Paper from '@material-ui/core/Paper';
+import AddIcon from '@material-ui/icons/Add';
+import Fab from '@material-ui/core/Fab';
+
 import Axios from 'axios'
 class Popup extends React.Component {
   render() {
     return (
       <div className='popup'>
-        <div className='popup_inner'>
-          <input value={this.props.input} name="input" onChange={this.props.onChange} type="text" className="input-ref"></input>
-        <button onClick={this.props.palak}>submit</button>
-        <button onClick={this.props.closePopup}>close me</button>
-        </div>
+       <FormControl margin="normal" fullWidth>
+            <InputLabel htmlFor="input">Add reference here</InputLabel>
+            <Input  value={this.props.input} name="input" onChange={this.props.onChange} type="text" />
+        </FormControl>
+        <Button style={{marginRight:"10px"}} onClick={this.props.add} variant="contained" color="primary" >
+          Add reference
+        </Button>
+        <Button onClick={this.props.closePopup} variant="contained" color="primary" >
+          Close
+        </Button>
       </div>
     );
   }
@@ -50,44 +66,57 @@ class FormTacit extends Component {
   }
   onSubmit = event => {
     console.log(this.state)
-    let user = localStorage.getItem("user")
-    user = JSON.parse(user)
-    let axiosConfig = {
-      headers: {
-          'Content-Type': 'application/json',
-          'Authorization': user.token
-        }
-      };
-  Axios.post('http://ci.apps.cs.ipb.ac.id/jamu/api/tacit/create', {
-    title: this.state.title,
-    content: this.state.content,
-    reference: this.state.reff
-  },axiosConfig)
-  .then(data => {
-  const res = data.data;
-    console.log(res)
-      window.location.href = '/';
+  //   let user = localStorage.getItem("user")
+  //   user = JSON.parse(user)
+  //   let axiosConfig = {
+  //     headers: {
+  //         'Content-Type': 'application/json',
+  //         'Authorization': user.token
+  //       }
+  //     };
+  // Axios.post('http://ci.apps.cs.ipb.ac.id/jamu/api/tacit/create', {
+  //   title: this.state.title,
+  //   content: this.state.content,
+  //   reference: this.state.reff
+  // },axiosConfig)
+  // .then(data => {
+  // const res = data.data;
+  //   console.log(res)
+  //     window.location.href = '/';
   
-  })
-  .catch(err => {
-  });
+  // })
+  // .catch(err => {
+  // });
   event.preventDefault();
   }
 
   render() {
     return (
-    <div className="wraper">
-        <input className="input-title" name="title" onChange={this.onChange} type="text" placeholder="Title..."/>
-        <textarea name="content" onChange={this.onChange} placeholder="Contet..."></textarea>
+      <Paper style={{
+        width: '90%',
+        margin: 'auto',
+        marginTop: '20px',
+        padding: "10px"
+      }} elevation={4}>
+      <FormControl margin="normal" fullWidth>
+        <InputLabel htmlFor="email">Title</InputLabel>
+        <Input onChange={this.onChange}  name="title" id="title" type="text" />
+      </FormControl>
+      <FormControl margin="normal" fullWidth>
+        <InputLabel htmlFor="email">Content</InputLabel>
+        <Input name="content" onChange={this.onChange} id="email" multiline rows={15} />
+      </FormControl>
         <label>refrensi :</label>
-        <button onClick={this.togglePopup}>Add</button>
+        <Fab onClick={this.togglePopup} color="primary" aria-label="Add" >
+          <AddIcon />
+        </Fab>
         {this.state.showPopup ? 
           <Popup
             text='Close Me'
             input={this.state.input}
             closePopup={this.togglePopup}
             onChange={this.onChange}
-            palak={this.addReff}
+            add={this.addReff}
           />
           : null
         }
@@ -98,8 +127,14 @@ class FormTacit extends Component {
           : null
         }
         <hr></hr>
-        <button onClick={this.onSubmit} style={{display: "block", minWidth: "70%", marginTop: "30px", marginBottom: "30px"}}>submit</button>
-      </div>
+        <Button style={{
+          display:"block",
+          width:"80%",
+          margin:"auto",
+        }} onClick={this.onSubmit} variant="contained" color="primary" >
+          Submit
+        </Button>
+      </Paper>
     );
   }
 }

@@ -8,6 +8,7 @@ import ComparePage from './ComparePage'
 import Predict from './PredicPage'
 import Plant from './PlantPage'
 import FormExplicit from './FormExplicit'
+import FormTacit from './FormTacit'
 
 
 import './App.css'
@@ -28,6 +29,7 @@ class App extends Component {
           <Route exact path="/plant" component={Plant} />
 
           <Route exact path="/form/explicit" component={FormExplicit} />
+          <Route exact path="/form/tacit" component={FormTacit} />
         </Switch>
       </div>
     );
