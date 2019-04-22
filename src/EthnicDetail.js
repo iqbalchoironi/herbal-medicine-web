@@ -64,7 +64,7 @@ class EthnicDetai extends Component {
                 flexDirection:"row",
                 margin:"auto",
                 border:"1px solid black",
-                marginTop: "15px",
+                marginTop: "100px",
                 width:"90%",
                 padding: "15px"
             }}>

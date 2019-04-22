@@ -34,7 +34,7 @@ function ListExplicit (props) {
 }
 
 
-class ExplicitPage extends Component {
+class TacitPage extends Component {
       constructor(props) {
         super(props);
         this.state = {
@@ -108,4 +108,4 @@ class ExplicitPage extends Component {
     }
 }
 
-export default ExplicitPage;
+export default TacitPage;

@@ -134,7 +134,7 @@ export class MapHerb extends Component {
     const center = [-2.5489, 120.0149]  
     return (
       <div style={{
-          marginTop: "10px"
+          marginTop: "70px"
       }}>
         <Map style={{
              height:"550px",

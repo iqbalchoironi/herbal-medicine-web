@@ -95,7 +95,7 @@ class FormTacit extends Component {
       <Paper style={{
         width: '90%',
         margin: 'auto',
-        marginTop: '20px',
+        marginTop: '100px',
         padding: "10px"
       }} elevation={4}>
       <FormControl margin="normal" fullWidth>

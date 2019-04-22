@@ -10,7 +10,7 @@ import DateRange from '@material-ui/icons/DateRange'
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
-class DetailExplicit extends Component {
+class DetailTacit extends Component {
   state = {
     show : null,
     loading: true
@@ -44,7 +44,7 @@ class DetailExplicit extends Component {
         <Paper style={{
             width:"90%",
             margin:"auto",
-            marginTop: "70px",
+            marginTop:"20px",
             marginBottom: "10px",
             padding: "30px"
           }}>
@@ -74,4 +74,4 @@ class DetailExplicit extends Component {
   }
 }
 
-export default DetailExplicit;
+export default DetailTacit;

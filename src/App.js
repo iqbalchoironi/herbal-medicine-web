@@ -2,8 +2,11 @@ import React, { Component } from 'react';
 import { Switch,Route } from 'react-router-dom'
 import ButtonAppBar from './Navigation'
 
+import Landing from './Landing'
 import ExplicitPage from './ExplicitPage'
 import DetailExplicit from './DetailExplicit'
+import TacitPage from './TacitPage'
+import DetailTacit from './DetailTacit'
 import ComparePage from './ComparePage'
 import Predict from './PredicPage'
 import Plant from './PlantPage'
@@ -11,19 +14,30 @@ import FormExplicit from './FormExplicit'
 import FormTacit from './FormTacit'
 import MapHerb from './MapEthnic'
 import EthnicDetail from './EthnicDetail'
+import Login from './Login'
+import Register from './Register'
+
+import NotFound from './404'
 
 
 import './App.css'
 
 class App extends Component {
+  
   render() {
-    return (
+    const path = window.location.pathname;
+    return(
       <div>
-        <ButtonAppBar/>
-        
+        {path !== '/login' && path !== '/register' ?
+            <ButtonAppBar/>
+            :
+            null
+          }
         <Switch>
+          <Route exact path="/" component={Landing} />
+
           <Route exact path="/explicit" component={ExplicitPage} />
-          <Route path="/explicit/:id" component={DetailExplicit} />
+          <Route exact  path="/explicit/:id" component={DetailExplicit} />
           <Route exact path="/form/explicit" component={FormExplicit} />
           
           <Route exact path="/compare" component={ComparePage} />
@@ -33,21 +47,18 @@ class App extends Component {
           {/* herbmed */}
           {/* compound */}
           
-          {/* tacitpage */}
-          {/* detailtacil */}
+          <Route exact path="/tacit" component={TacitPage} />
+          <Route exact path="/tacit/:id" component={DetailTacit} />
           <Route exact path="/form/tacit" component={FormTacit} />
           
           
           <Route exact path="/map/ethnic" component={MapHerb} />
           <Route exact path="/ethnic/:id" component={EthnicDetail} />
 
-          {/* home */}
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/register" component={Register} />
 
-          {/* login */}
-          {/* register */}
-
-          {/* 404 */}
-
+          <Route exact path='*'  component={NotFound} />
         </Switch>
       </div>
     );

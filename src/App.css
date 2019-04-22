@@ -1,7 +1,58 @@
 .for-card{
-  padding-top: 15px;
+  
   margin: 25px;
+  margin-top: 5px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
   grid-gap: 2rem;
+}
+
+.menu {
+  list-style-type: none;
+  display: inline-block;
+}
+
+.menu li {
+  display: inline;
+  list-style-type: none;
+  padding: 0 20px 0 20px;
+  color: var(--color-icon)
+}
+
+.menu li a {
+  margin: 20 20px;
+  top: 7px;
+  text-decoration: none;
+  color: var(--color-icon)
+}
+
+.dropdown {
+  float: right;
+  overflow: hidden;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  float: none;
+  color: grey;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
 }

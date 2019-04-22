@@ -28,7 +28,7 @@ const styles = theme => ({
   root: {
     width: '90%',
     margin: 'auto',
-    marginTop: '20px',
+    marginTop: '100px',
     padding: "10px"
   },
   button: {

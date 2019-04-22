@@ -17,7 +17,10 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 const styles = theme => ({
   root: {
     flexGrow: 1,
-    height: 250,
+    minHeight: 600,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center"
   },
   input: {
     display: 'flex',
@@ -206,11 +209,11 @@ let beda2 = []
     if (this.state.displayItem2 !== null){
         console.log (this.state.displayItem2)
         return (
-            <div className={classes.root}>
+      <div className={classes.root}>
       <Paper style={{
           width: "80%",
           margin: "auto",
-          marginTop:"20px",
+          marginTop:"100px",
           marginBottom:"20px",
           padding: "10px",
           minHeight: "350px"
@@ -332,7 +335,7 @@ let beda2 = []
       <Paper style={{
           width: "80%",
           margin: "auto",
-          marginTop:"20px",
+          // marginTop:"80px",
           padding: "10px",
           minHeight: "350px"
       }}>

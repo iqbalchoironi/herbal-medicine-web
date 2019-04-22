@@ -2,7 +2,11 @@ import React, { Component } from 'react'
 import Axios from "axios";
 
 import CardExample from './card'
+import SearchInput from './SearchInput'
 
+import Typography from '@material-ui/core/Typography';
+import Breadcrumbs from '@material-ui/lab/Breadcrumbs';
+import Link from '@material-ui/core/Link';
 
 class Plant extends Component {
     constructor(props) {
@@ -93,7 +97,42 @@ class Plant extends Component {
         }
 
         return (
-            
+            <div style={{
+              display: "flex",
+              flexDirection:"column",
+              paddingTop:"100px"
+            }}>
+            <div style={{
+                width:"100%",
+                display:"flex",
+                flexDirection:"row",
+                padding:"25px",
+                paddingTop:"5px"
+              }}>
+              <div style={{
+                width:"50%",
+                display:"flex",
+                flexDirection:"row"
+              }}>
+                <Breadcrumbs aria-label="Breadcrumb">
+                  <Link color="inherit" href="/" >
+                    KMS Jamu
+                  </Link>
+                  <Link color="inherit" >
+                    Explore
+                  </Link>
+                  <Typography color="textPrimary">Plant</Typography>
+                </Breadcrumbs>
+              </div>
+              <div style={{
+                width:"50%",
+                display:"flex",
+                flexDirection:"row-reverse"
+              }}>
+                <SearchInput />
+              </div>
+              </div>
+              
               <div className="for-card">
                 {this.state.plans.map(item =>
                           <CardExample key={item.id} name={item.sname} image={item.refimg} reff={item.refCrude} />
@@ -101,8 +140,7 @@ class Plant extends Component {
                 {this.state.loadData ? <div><br></br><br></br> <br></br>loading...</div>
                   : null }
               </div>
-                
-           
+            </div>
         );
       }
 }
