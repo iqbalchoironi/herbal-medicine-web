@@ -13,9 +13,12 @@ import Plant from './PlantPage'
 import FormExplicit from './FormExplicit'
 import FormTacit from './FormTacit'
 import MapHerb from './MapEthnic'
+import HerbMeds from './HerbMedPage'
 import EthnicDetail from './EthnicDetail'
 import Login from './Login'
 import Register from './Register'
+
+import DetailHerbMed from './DetailHerbMed'
 
 import NotFound from './404'
 
@@ -44,7 +47,7 @@ class App extends Component {
           <Route exact path="/predict" component={Predict} />
 
           <Route exact path="/plant" component={Plant} />
-          {/* herbmed */}
+          <Route exact path="/herbmeds" component={HerbMeds} />
           {/* compound */}
           
           <Route exact path="/tacit" component={TacitPage} />
@@ -58,6 +61,7 @@ class App extends Component {
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
 
+          <Route exact path="/detail/herbmed" component={DetailHerbMed} />
           <Route exact path='*'  component={NotFound} />
         </Switch>
       </div>

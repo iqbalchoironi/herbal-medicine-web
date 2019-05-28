@@ -3,10 +3,14 @@ import Axios from 'axios'
 import { Link } from 'react-router-dom'
 
 import Typography from '@material-ui/core/Typography';
+import Breadcrumbs from '@material-ui/lab/Breadcrumbs';
+import Link2 from '@material-ui/core/Link';
+import SearchInput from './SearchInput'
 
 import Person from '@material-ui/icons/Person';
 import CollectionsBookmark from '@material-ui/icons/CollectionsBookmark'
 import DateRange from '@material-ui/icons/DateRange'
+import Pagination from "material-ui-flat-pagination";
 
 function ListExplicit (props) {
     return (
@@ -66,43 +70,101 @@ class ExplicitPage extends Component {
     //   }
       
       async getData(){
-        const url = 'http://ci.apps.cs.ipb.ac.id/jamu/api/explicit';
+        const url = '/jamu/api/explicit';
         const res = await Axios.get(url);
         const { data } = await res;
         let newData = this.state.explicit.concat(data.data);
         console.log(newData)
         this.setState({
           explicit: newData, 
-          loading: false
+          loading: false,
+          offset:5
         })
       }
     
         logout = event => {
             window.location.href = '/form/explicit';
         }
+        handleClick(offset,page) {
+          console.log(page)
+          this.setState({ offset });
+        }
 
     render (){
         return (
             <div style={{
                 display:"flex",
-                flexDirection:"row",
-                margin:"auto",
-                border:"1px solid black",
-                marginTop: "100px",
-                width:"90%"
+                flexDirection:"column",
+                margin: "auto",
+                marginTop:"100px",
+                width:"100%"
             }}>
                 <div style={{
-                    width:"20%"
-                }}> 
-
+                  width:"95%",
+                  display:"flex",
+                  flexDirection:"row",
+                  margin:"auto"
+                }}>
+                  <div style={{
+                    width:"50%",
+                    display:"flex",
+                    flexDirection:"row"
+                  }}>
+                    <Breadcrumbs aria-label="Breadcrumb">
+                      <Link2 color="inherit" href="/" >
+                        KMS Jamu
+                      </Link2>
+                      <Link2 color="inherit" >
+                        Explore
+                      </Link2>
+                      <Typography color="textPrimary">Plant</Typography>
+                    </Breadcrumbs>
+                  </div>
+                  <div style={{
+                    width:"50%",
+                    display:"flex",
+                    flexDirection:"row-reverse"
+                  }}>
+                    <SearchInput />
+                  </div>
                 </div>
                 <div style={{
-                    width:"70%"
+                    display:"flex",
+                    flexDirection:"row",
+                    margin:"auto",
+                    border:"hsl(0,0%,80%) 1px solid",
+                    width:"95%",
+                    marginBottom: "10px"
                 }}>
-                {this.state.explicit.map(item =>
-                    <ListExplicit key={item._id} id={item._id} name={item.firstName+' '+item.lastName} title={item.title} abstract={item.abstract} />
-                )}
-                </div>
+                    <div style={{
+                        width:"20%",
+                        maxHeight: "350px",
+                        border:"hsl(0,0%,80%) 1px solid"
+                    }}> 
+                        
+                    </div>
+                    <div style={{
+                        width:"80%",
+                        border:"hsl(0,0%,80%) 1px solid",
+                        padding: "25px",
+                        minHeight:"500px"
+                    }}>
+                      {this.state.explicit.map(item =>
+                        <ListExplicit key={item._id} id={item._id} name={item.firstName+' '+item.lastName} title={item.title} abstract={item.abstract} />
+                      )}
+                  </div>
+              </div>  
+              <Pagination
+                style={{
+                  margin:"auto",
+                  marginBottom: "10px"
+                }}
+                size='large'
+                limit={10}
+                offset={this.state.offset}
+                total={250}
+                onClick={(e,offset, page) => this.handleClick(offset,page)}
+              />
             </div>
         );
     }

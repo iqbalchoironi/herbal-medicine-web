@@ -40,7 +40,7 @@ class Login extends Component {
                 'Content-Type': 'application/json',
             }
           };
-        Axios.post('http://ci.apps.cs.ipb.ac.id/jamu/api/user/signin', {
+        Axios.post('/jamu/api/user/signin', {
             email: this.state.email,
             password: this.state.password
         },axiosConfig)

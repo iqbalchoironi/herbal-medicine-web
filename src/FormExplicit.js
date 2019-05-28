@@ -72,7 +72,7 @@ class FormExplicit extends Component {
   }
   
  async getData(){
-  const url = 'http://ci.apps.cs.ipb.ac.id/jamu/api/plant/getlist';
+  const url = '/jamu/api/plant/getlist';
   const res = await Axios.get(url);
   const { data } = await res;
   let coba = [];
@@ -144,7 +144,7 @@ class FormExplicit extends Component {
           }
       };
       
-  let url = 'http://ci.apps.cs.ipb.ac.id/jamu/api/explicit/create';
+  let url = '/jamu/api/explicit/create';
   const formData = new FormData();
   formData.append('doc',this.state.file);
   formData.append('firstName',this.state.firstName);

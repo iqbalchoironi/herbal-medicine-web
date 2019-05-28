@@ -1,22 +1,22 @@
 import React, { Component } from 'react'
 import Axios from "axios";
 
-import CardExample from './card'
+import CardHerbMed from './CardHerbMed'
 import SearchInput from './SearchInput'
 
 import Typography from '@material-ui/core/Typography';
 import Breadcrumbs from '@material-ui/lab/Breadcrumbs';
 import Link from '@material-ui/core/Link';
 
-class Plant extends Component {
+class HerbMeds extends Component {
     constructor(props) {
         super(props);
         this.state = {
           loading: true,
           loadData: false,
           inputSearch: '',
-          plans : [],
-          onSearch : [],
+          onSearch:[],
+          herbmeds : [],
           currentPage: 1
         }
         this.onScroll = this.onScroll.bind(this);
@@ -44,19 +44,22 @@ class Plant extends Component {
       };
       
      async getData(){
-      const url = '/jamu/api/plant/pages/' + this.state.currentPage;
+      const url = '/jamu/api/herbsmed/pages/' + this.state.currentPage;
       const res = await Axios.get(url);
       const { data } = await res;
-      let newData = this.state.plans.concat(data.data);
+      let newData = this.state.herbmeds.concat(data.data);
       this.setState({
-        plans: newData, 
+        herbmeds: newData, 
         loading: false
       })
     }
 
-    async getDataSearch(event){
+    async getDataSearch(){
       console.log(this.state.inputSearch)
-      const url = '/jamu/api/plant/search';
+      this.setState({
+        loadData: true
+      })
+      const url = '/jamu/api/herbsmed/search';
       let axiosConfig = {
         headers: {
             'Content-Type': 'application/json'
@@ -72,16 +75,16 @@ class Plant extends Component {
       console.log(newData)
       this.setState({
         onSearch: newData, 
-        loading: false
+        loadData: false
       })
-      event.preventDefault();
     }
 
     handleInputChange(event) {
       const target = event.target;
       const value = target.type === 'checkbox' ? target.checked : target.value;
       const name = target.name;
-  
+      console.log(value)
+      console.log(name)
       this.setState({
         [name]: value
       });
@@ -92,7 +95,7 @@ class Plant extends Component {
           return <div><br></br><br></br> <br></br>loading...</div>;
         }
     
-        if (!this.state.plans) {
+        if (!this.state.herbmeds) {
           return <div><br></br><br></br> <br></br>didn't get a person</div>;
         }
 
@@ -122,7 +125,7 @@ class Plant extends Component {
                   <Link color="inherit" >
                     Explore
                   </Link>
-                  <Typography color="textPrimary">Plant</Typography>
+                  <Typography color="textPrimary">Herbal Medicine</Typography>
                 </Breadcrumbs>
               </div>
               <div style={{
@@ -130,14 +133,14 @@ class Plant extends Component {
                 display:"flex",
                 flexDirection:"row-reverse"
               }}>
-                 <SearchInput nameInput="inputSearch" inputValue={this.state.inputSearch} inputChange={this.handleInputChange} clickButton={this.getDataSearch}/>
+                <SearchInput nameInput="inputSearch" inputValue={this.state.inputSearch} inputChange={this.handleInputChange} clickButton={this.getDataSearch}/>
               </div>
               </div>
               
               <div className="for-card">
                 {this.state.onSearch.map(item =>
-                  <CardExample key={item.id} name={item.sname} image={item.refimg} reff={item.refCrude} />
-                )}
+                          <CardHerbMed key={item.idherbsmed} name={item.name} efficacy={item.efficacy}/>
+                 )}
               </div>
             </div>
         );
@@ -168,7 +171,7 @@ class Plant extends Component {
                   <Link color="inherit" >
                     Explore
                   </Link>
-                  <Typography color="textPrimary">Plant</Typography>
+                  <Typography color="textPrimary">Herbal Medicine</Typography>
                 </Breadcrumbs>
               </div>
               <div style={{
@@ -176,14 +179,14 @@ class Plant extends Component {
                 display:"flex",
                 flexDirection:"row-reverse"
               }}>
-                 <SearchInput nameInput="inputSearch" inputValue={this.state.inputSearch} inputChange={this.handleInputChange} clickButton={this.getDataSearch}/>
+                <SearchInput nameInput="inputSearch" inputValue={this.state.inputSearch} inputChange={this.handleInputChange} clickButton={this.getDataSearch}/>
               </div>
               </div>
               
               <div className="for-card">
-                {this.state.plans.map(item =>
-                          <CardExample key={item.id} name={item.sname} image={item.refimg} reff={item.refCrude} />
-                        )}
+                {this.state.herbmeds.map(item =>
+                          <CardHerbMed key={item.idherbsmed} name={item.name} efficacy={item.efficacy} reff={item.refCrude}/>
+                 )}
                 {this.state.loadData ? <div><br></br><br></br> <br></br>loading...</div>
                   : null }
               </div>
@@ -192,4 +195,4 @@ class Plant extends Component {
       }
 }
 
-export default Plant;
+export default HerbMeds;

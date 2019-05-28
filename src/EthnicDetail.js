@@ -24,7 +24,7 @@ class EthnicDetai extends Component {
 
       async getDataPlantEthnic(){
         const {id} = this.props.match.params;
-        const url = 'http://ci.apps.cs.ipb.ac.id/jamu/api/plantethnic';
+        const url = '/jamu/api/plantethnic';
         const res = await Axios.get(url);
         const { data } = await res;
         let newData = data.data;

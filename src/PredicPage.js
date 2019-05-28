@@ -70,7 +70,7 @@ class Predict extends Component {
   }
   
  async getData(){
-  const url = 'http://ci.apps.cs.ipb.ac.id/jamu/api/plant/getlist';
+  const url = '/jamu/api/plant/getlist';
   const res = await Axios.get(url);
   const { data } = await res;
   let coba = [];
@@ -321,7 +321,7 @@ function Step2(props) {
         </FormControl>
 
         <FormControl margin="normal" fullWidth>
-          <InputLabel htmlFor="email">Email</InputLabel>
+          <label>Select herbal medicine :</label>
           <Picklist basis={props.basis} target={props.target} coba1={props.coba1} coba={props.coba}/>
         </FormControl>
       </form>

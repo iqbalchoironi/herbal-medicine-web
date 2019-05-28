@@ -43,7 +43,7 @@ export class MapHerb extends Component {
   }
 
   async getDataProvince(){
-    const url = 'http://ci.apps.cs.ipb.ac.id/jamu/api/province/';
+    const url = '/jamu/api/province/';
     const res = await Axios.get(url);
     const { data } = await res;
     let province = data.data;
@@ -64,7 +64,7 @@ export class MapHerb extends Component {
   }
   
   async getData(){
-    const url = 'http://ci.apps.cs.ipb.ac.id/jamu/api/ethnic';
+    const url = '/jamu/api/ethnic';
     const res = await Axios.get(url);
     const { data } = await res;
     let newData = this.state.ethnic.concat(data.data);
@@ -75,7 +75,7 @@ export class MapHerb extends Component {
   }
 
   async getDataPlantEthnic(){
-    const url = 'http://ci.apps.cs.ipb.ac.id/jamu/api/plantethnic/indexes';
+    const url = '/jamu/api/plantethnic/indexes';
     const res = await Axios.get(url);
     const { data } = await res;
     let newData = data.plantethnic;

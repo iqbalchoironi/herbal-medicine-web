@@ -95,7 +95,7 @@ class Navigation extends Component {
                     <div class="dropdown">
                         <li>Explore</li>
                         <div class="dropdown-content">
-                            <a href="/herbmed">Herbal Medicine</a>
+                            <a href="/herbmeds">Herbal Medicine</a>
                             <a href="/plant">Plant</a>
                             <a href="/compound">Compounds</a>
                         </div>

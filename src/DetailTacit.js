@@ -18,7 +18,7 @@ class DetailTacit extends Component {
 
   async componentDidMount(){
     const {id} = this.props.match.params;
-    const url = 'http://ci.apps.cs.ipb.ac.id/jamu/api/explicit/get/' + id;
+    const url = '/jamu/api/tacit/get/' + id;
     const res = await Axios.get(url);
     const { data } = await res;
     this.setState({
@@ -30,7 +30,7 @@ class DetailTacit extends Component {
   getFile (e){
     console.log(e.target.dataset.value)
     let doc = e.target.dataset.value
-    Axios.get(`http://ci.apps.cs.ipb.ac.id/jamu/api/explicit/file/`+e.target.dataset.value)
+    Axios.get(`/jamu/api/explicit/file/`+e.target.dataset.value)
    .then((response) => {
         FileDownload(response.data, doc);
    });
@@ -44,7 +44,7 @@ class DetailTacit extends Component {
         <Paper style={{
             width:"90%",
             margin:"auto",
-            marginTop:"20px",
+            marginTop:"70px",
             marginBottom: "10px",
             padding: "30px"
           }}>
@@ -52,22 +52,13 @@ class DetailTacit extends Component {
               {this.state.show.title}
           </Typography>
             <Typography variant="caption" gutterBottom>
-             <Person /> {this.state.show.firstName+" "+this.state.show.lastName}
-            </Typography >
-            <Typography variant="caption" gutterBottom>
-             <CollectionsBookmark /> Conference paper <DateRange /> 12-12-2001
-            </Typography>
-            <Button data-value={this.state.show.doc} onClick={this.getFile} style={{marginTop:"10px",marginBottom:"10px"}} variant="raised" size="large" color="default" gutterBottom>
-            <Typography variant="caption" gutterBottom>
-              <SaveAlt />
-                Download
-            </Typography>
-            </Button>
-            <Typography variant="title" gutterBottom>
-              Abstrak
+              <DateRange /> {this.state.show.datePublish}
             </Typography>
             <Typography variant="body1" gutterBottom align="justify">
-              {this.state.show.abstract}
+              {this.state.show.content}
+            </Typography>
+            <Typography variant="caption" gutterBottom>
+               {this.state.show.reference}
             </Typography>
             </Paper>
     );

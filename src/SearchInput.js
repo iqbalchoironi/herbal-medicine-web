@@ -3,12 +3,17 @@ import InputBase from "@material-ui/core/InputBase";
 import Icon from "@material-ui/core/Icon";
 
 const SearchInput = props => (
-  <InputBase
-    className={"SearchInput-root"}
-    placeholder={"Search..."}
-    startAdornment={<Icon>search</Icon>}
-    {...props}
-  />
+  <div>
+    <InputBase
+      className={"SearchInput-root"}
+      placeholder={"Search..."}
+      
+      name={props.nameInput}
+      value={props.inputValue}
+      onChange={props.inputChange}
+    />
+    <Icon onClick={props.clickButton}>search</Icon>
+  </div>
 );
 
 SearchInput.metadata = {

@@ -106,30 +106,45 @@ const styles = {
                         </IconButton>
                     </Paper>
                 </div>
-                <div style={{
-                    width: "100%",
-                    height:"300px",
-                    border:"black solid 1px",
+                {/* <div style={{
+                    width: "70em",
+                    height:"290px",
                     display: "flex",
-                    justifyContent : "center",
-                    alignItems : "center",
-                    backgroundColor: "#b3ffb3"
-                    
+                    backgroundColor: "#eee",
+                    margin: "auto",
+                    marginTop: "10px"
                 }}>
-
+                  <div style={{
+                    width:"70%",
+                    height:"290px"
+                  }}>
+                    <img style={{ width:"100%", height:"100%", objectFit:"cover"}} src="http://www.kelanadmc.com/photos/stories/jamu-11.jpg"></img>
+                  </div>
+                  <div>
+                    
+                  </div>
                 </div>
                 <div style={{
-                    width: "100%",
-                    height:"300px",
-                    border:"black solid 1px",
+                    width: "70em",
+                    height:"290px",
                     display: "flex",
-                    justifyContent : "center",
-                    alignItems : "center",
-                    backgroundColor: "#99ccff"
-                    
+                    backgroundColor: "#eee",
+                    margin: "auto",
+                    marginTop: "10px"
                 }}>
+                  <div style={{
+                    width:"30%",
+                    height:"290px"
+                  }}>
 
-                </div>
+                  </div>
+                  <div style={{
+                    width:"70%",
+                    height:"290px"
+                  }}>
+                    <img style={{ width:"100%", height:"100%", objectFit:"cover"}} src="http://www.obatkuat.net/wp-content/uploads/2015/11/ramuan-kuat.jpg"></img>
+                  </div>
+                </div> */}
             </div>
         )
     }

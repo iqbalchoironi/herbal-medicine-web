@@ -14,6 +14,8 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
+import CircularUnderLoad from './Loader'
+
 const styles = theme => ({
   root: {
     flexGrow: 1,
@@ -94,7 +96,7 @@ class ComparePage extends React.Component {
   }
   
  async getData(){
-  const url = 'http://ci.apps.cs.ipb.ac.id/jamu/api/herbsmed/getlist';
+  const url = '/jamu/api/herbsmed/getlist';
   const res = await Axios.get(url);
   const { data } = await res;
   let temp = [];
@@ -112,50 +114,44 @@ async handleSubmit(){
   this.setState({
     loading: true
   })
-  let res = await Axios.get('http://ci.apps.cs.ipb.ac.id/jamu/api/herbsmed/get/'+ this.state.item1.value);
+  let res = await Axios.get('/jamu/api/herbsmed/get/'+ this.state.item1.value);
   const { data } = await res;
   this.setState({
     displayItem1: data.data
   })
 
   let refCrude1 = this.state.displayItem1.refCrude;
-  let uniq = [];
-  await refCrude1.forEach(function(itm) {
-    var unique = true;
-    uniq.forEach(function(itm2) {
-        if (itm.idcrude === itm2.idcrude) unique = false;
-    });
-    if (unique)  uniq.push(itm);
+  let ok = []
+  await refCrude1.forEach(itm => {
+      Axios.get('/jamu/api/crudedrug/get/'+ itm.idcrude)
+      .then(res => ok.push(res.data.data))
 });
 let item1 = this.state.displayItem1;
-item1.refCrude = uniq
+item1.refCrude = ok
 this.setState({
     displayItem1: item1
 })
 
-  let res1 = await Axios.get('http://ci.apps.cs.ipb.ac.id/jamu/api/herbsmed/get/'+ this.state.item2.value);
+  let res1 = await Axios.get('/jamu/api/herbsmed/get/'+ this.state.item2.value);
   const data1 = await res1.data;
   this.setState({
     displayItem2: data1.data
   })
   let refCrude2 = this.state.displayItem2.refCrude;
-  let uniq1 = [];
-  refCrude2.forEach(function(itm) {
-    var unique = true;
-    uniq1.forEach(function(itm2) {
-        if (itm.idcrude === itm2.idcrude) unique = false;
-    });
-    if (unique)  uniq1.push(itm);
-});
+  let ok2 = [];
+  await refCrude2.forEach(itm => {
+      Axios.get('/jamu/api/crudedrug/get/'+ itm.idcrude)
+      .then(res => ok2.push(res.data.data))
+  });
 let item2 = this.state.displayItem2;
-item2.refCrude = uniq1
+item2.refCrude = ok2
 this.setState({
     displayItem2: item2
 })
 
   let sama = []
-  await uniq.forEach((crud1,i) => {
-    uniq1.forEach((crud2,j) => {
+  await this.state.displayItem1.refCrude.forEach((crud1) => {
+    this.state.displayItem2.refCrude.forEach((crud2) => {
       if ( crud1.idcrude === crud2.idcrude) {
         sama.push(crud1);
       }
@@ -163,7 +159,7 @@ this.setState({
   })
   
   let beda1 = []
-  await uniq.forEach(function(itm) {
+  await this.state.displayItem1.refCrude.forEach(function(itm) {
     var unique = true;
     sama.forEach(function(itm2) {
         if (itm.idcrude === itm2.idcrude) unique = false;
@@ -171,15 +167,16 @@ this.setState({
     if (unique)  beda1.push(itm);
 });
 
+
 let beda2 = []
-  await uniq1.forEach(function(itm) {
+  await this.state.displayItem2.refCrude.forEach(function(itm) {
     var unique = true;
     sama.forEach(function(itm2) {
         if (itm.idcrude === itm2.idcrude) unique = false;
     });
     if (unique)  beda2.push(itm);
 });
-
+console.log(beda2)
   this.setState({
       sama: sama,
       refCrude1: beda1,
@@ -203,17 +200,23 @@ let beda2 = []
     const { classes, theme } = this.props;
 
     if (this.state.loading) {
-        return <div><br></br><br></br> <br></br>loading...</div>;
+        return <div style={{
+          width:"100%",
+          height:"100%",
+          margin:"auto",
+          display:"flex",
+          justifyContent:"center",
+          alignItems:"center"
+        }}><CircularUnderLoad/></div>;
       }
     
     if (this.state.displayItem2 !== null){
-        console.log (this.state.displayItem2)
         return (
       <div className={classes.root}>
       <Paper style={{
           width: "80%",
           margin: "auto",
-          marginTop:"100px",
+          marginTop:"80px",
           marginBottom:"20px",
           padding: "10px",
           minHeight: "350px"
@@ -279,9 +282,13 @@ let beda2 = []
                     <ExpansionPanelDetails>
                     <Typography>
                         {item.idcrude}
+                        <br></br>
+                        {item.effect}
+                        <br></br>
+                        {item.position}
                     </Typography>
                     </ExpansionPanelDetails>
-                    </ExpansionPanel>
+                </ExpansionPanel>
             )
         })}
      </div>
@@ -293,11 +300,13 @@ let beda2 = []
             return (
                 <ExpansionPanel>
                     <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography className={classes.heading}>{item.sname}</Typography>
+                    <Typography className={classes.heading}>{item.gname}</Typography>
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails>
                     <Typography>
                         {item.idcrude}
+                        {item.name_loc1}
+                        {item.position}
                     </Typography>
                     </ExpansionPanelDetails>
                     </ExpansionPanel>
@@ -335,7 +344,7 @@ let beda2 = []
       <Paper style={{
           width: "80%",
           margin: "auto",
-          // marginTop:"80px",
+          marginTop:"80px",
           padding: "10px",
           minHeight: "350px"
       }}>
@@ -350,6 +359,21 @@ let beda2 = []
             value={this.state.item2}
             onChange={this.handleChange('item2')}
           />
+
+          <div style={{
+            height:"400px",
+            border:"hsl(0,0%,80%) 1px solid",
+            marginTop:"15px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems:"center"
+          }}>
+
+          <Typography component="h2" variant="display1" gutterBottom>
+            Select the two herbs above !, then the comparison 
+            will appear here
+          </Typography>
+          </div>
            
         </Paper>
       </div>

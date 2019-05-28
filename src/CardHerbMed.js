@@ -5,10 +5,14 @@ import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 
+import CardActions from "@material-ui/core/CardActions";
+import Button from "@material-ui/core/Button";
+import Icon from "@material-ui/core/Icon";
+
 const styles = muiBaseTheme => ({
   card: {
     maxWidth: 300,
-    height: 315,
+    height: 320,
     margin: "auto",
     transition: "0.3s",
     boxShadow: "0 8px 40px -12px rgba(0,0,0,0.3)",
@@ -27,10 +31,12 @@ const styles = muiBaseTheme => ({
     margin: `${muiBaseTheme.spacing.unit * 3}px 0`
   },
   heading: {
-    fontWeight: "bold"
+    fontWeight: "bold",
+    height: "35px"
   },
   subheading: {
-    lineHeight: 1.8
+    // lineHeight: 1.8,
+    height: "50px"
   },
   avatar: {
     display: "inline-block",
@@ -49,19 +55,38 @@ const List = ({ item }) => {
   return null;
 }
 
-function CardExample(props) {
+function CardHerbMed(props) {
   const {
     classes
   } = props;
-    console.log(props)
   return (
     <div>
       <Card className={classes.card}>
-        <CardMedia
+        {/* <CardMedia
           className={classes.media}
           image={props.image}
-        />
+        /> */}
         <CardContent className={classes.content}>
+          {/* <Typography
+            style={{
+              color:"grey",
+              fontWeight: "bold"
+            }}
+            variant={"overline"}
+            gutterBottom
+          >
+            March 20 2019
+          </Typography> */}
+          {/* <Typography
+            style={{
+              fontWeight: "900",
+              lineHeight: "1.3"
+            }}
+            variant={"h6"}
+            gutterBottom
+          >
+            What happened in Thailand?
+          </Typography> */}
           <Typography
             className={"MuiTypography--heading"}
             variant={"h6"}
@@ -71,19 +96,26 @@ function CardExample(props) {
           </Typography>
           <Typography
             className={"MuiTypography--subheading"}
+            className="block-with-text"
             variant={"caption"}
           >
-           <ul className="reff">
+           {props.efficacy}
+          </Typography>
+          <ul className="reff">
                  {props.reff.map( item => (
                     <List item = { item } />
                 ))} 
             
           </ul>
-          </Typography>
         </CardContent>
+        <CardActions className={"MuiCardActions-root"}>
+        <Button color={"primary"} fullWidth>
+          Find Out More <Icon>chevron_right_rounded</Icon>
+        </Button>
+      </CardActions>
       </Card>
     </div>
   );
 }
 
-export default withStyles(styles)(CardExample);
+export default withStyles(styles)(CardHerbMed);

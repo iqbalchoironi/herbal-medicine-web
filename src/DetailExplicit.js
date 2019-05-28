@@ -18,7 +18,7 @@ class DetailExplicit extends Component {
 
   async componentDidMount(){
     const {id} = this.props.match.params;
-    const url = 'http://ci.apps.cs.ipb.ac.id/jamu/api/explicit/get/' + id;
+    const url = '/jamu/api/explicit/get/' + id;
     const res = await Axios.get(url);
     const { data } = await res;
     this.setState({
@@ -30,7 +30,7 @@ class DetailExplicit extends Component {
   getFile (e){
     console.log(e.target.dataset.value)
     let doc = e.target.dataset.value
-    Axios.get(`http://ci.apps.cs.ipb.ac.id/jamu/api/explicit/file/`+e.target.dataset.value)
+    Axios.get(`/jamu/api/explicit/file/`+e.target.dataset.value)
    .then((response) => {
         FileDownload(response.data, doc);
    });
