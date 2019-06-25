@@ -32,14 +32,13 @@ export class MapHerb extends Component {
       ethnic: [],
       plantethnic: []
     }
-    this.onEthnicClick = this.onEthnicClick.bind(this);
+    // this.onEthnicClick = this.onEthnicClick.bind(this);
     this.closeBtn = this.closeBtn.bind(this);
   }
 
   async componentDidMount() {
     await this.getData();
     await this.getDataProvince();
-    await this.getDataPlantEthnic();
   }
 
   async getDataProvince(){
@@ -47,11 +46,10 @@ export class MapHerb extends Component {
     const res = await Axios.get(url);
     const { data } = await res;
     let province = data.data;
-    console.log(province)
     province.forEach(province => {
       province.ethnic = [];
       this.state.ethnic.forEach(ethnic => {
-        if (province._id === ethnic.province){
+        if (province._id === ethnic.refProvince){
           province.ethnic.push(ethnic);
         }
       })
@@ -67,23 +65,22 @@ export class MapHerb extends Component {
     const url = '/jamu/api/ethnic';
     const res = await Axios.get(url);
     const { data } = await res;
-    let newData = this.state.ethnic.concat(data.data);
     this.setState({
-      ethnic: newData, 
+      ethnic: data.data, 
       loading: false
     })
   }
 
-  async getDataPlantEthnic(){
-    const url = '/jamu/api/plantethnic/indexes';
-    const res = await Axios.get(url);
-    const { data } = await res;
-    let newData = data.plantethnic;
-    this.setState({
-      plantethnic: newData, 
-      loading: false
-    })
-  }
+  // async getDataPlantEthnic(){
+  //   const url = '/jamu/api/plantethnic/indexes';
+  //   const res = await Axios.get(url);
+  //   const { data } = await res;
+  //   let newData = data.plantethnic;
+  //   this.setState({
+  //     plantethnic: newData, 
+  //     loading: false
+  //   })
+  // }
 
   onMarkerClick = (props, marker, e) =>
     this.setState({
@@ -92,28 +89,28 @@ export class MapHerb extends Component {
       showingInfoWindow: true
     });
 
-  async onEthnicClick (e){
-    let onSelect = await this.state.plantethnic.filter( c => {
-      return c.refEthnic === e.target.dataset.value
-    })
+  // async onEthnicClick (e){
+  //   let onSelect = await this.state.plantethnic.filter( c => {
+  //     return c.refEthnic === e.target.dataset.value
+  //   })
     
-    var result = [];
-    await onSelect.forEach(item => {
-      var name = item.disease;
+  //   var result = [];
+  //   await onSelect.forEach(item => {
+  //     var name = item.disease;
 
-      if (!(name in result)) {
-        result[name] = [];
-        result[name].push(item);
-      } else {
-        result[name].push(item);
-      }
-    })
+  //     if (!(name in result)) {
+  //       result[name] = [];
+  //       result[name].push(item);
+  //     } else {
+  //       result[name].push(item);
+  //     }
+  //   })
 
-    this.setState({
-      onSelect: result,
-      modalOpen: 'list'
-    })
-  }
+  //  this.setState({
+  //     onSelect: result,
+  //     modalOpen: 'list'
+  //   })
+  // }
 
   onClose = props => {
     if (this.state.showingInfoWindow) {
@@ -154,7 +151,7 @@ export class MapHerb extends Component {
                       icon={LocationIcons}
                       >
                         <Popup>
-                            <p><em>{item.province_name}</em></p>
+                            <p><em>ethnic in province {item.province_name} :</em></p>
                             {item.ethnic.map(ethnic => {
                             return(
                                 <button key={ethnic._id}>

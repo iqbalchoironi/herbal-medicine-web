@@ -24,19 +24,19 @@ class EthnicDetai extends Component {
 
       async getDataPlantEthnic(){
         const {id} = this.props.match.params;
+        const urlDetailEthnic = '/jamu/api/ethnic/get/' + id
         const url = '/jamu/api/plantethnic';
-        const res = await Axios.get(url);
-        const { data } = await res;
-        let newData = data.data;
 
-        let onSelect = await newData.filter( c => {
-            return c.refEthnic === id
-          })
-          
+        const resDetailEthnic = await Axios.get(urlDetailEthnic);
+        let plantEthnic = resDetailEthnic.data.data.refPlantethnic.map( async id => {
+          let urlPlant = '/jamu/api/plantethnic/get/'+id
+          let resPlant = await Axios.get(urlPlant);
+          return resPlant.data.data;
+        })
+        Promise.all(plantEthnic).then((completed) => {
           var result = [];
-          await onSelect.forEach(item => {
-            var name = item.disease;
-      
+          completed.forEach(item => {
+            var name = item.disease_ina;
             if (!(name in result)) {
               result[name] = [];
               result[name].push(item);
@@ -44,16 +44,9 @@ class EthnicDetai extends Component {
               result[name].push(item);
             }
           })
-      
           this.setState({
-            onDisplay: result,
-            loading: false
+            onDisplay: result
           })
-        
-        
-        this.setState({
-          plantethnic: newData, 
-          loading: false
         })
       }
 
@@ -89,17 +82,21 @@ class EthnicDetai extends Component {
                             return (
                                 <ExpansionPanel>
                                     <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                                        <Typography>{plantethnic.species}</Typography>
+                                        <Typography>{plantethnic.name_ina}</Typography>
                                     </ExpansionPanelSummary>
                                     <ExpansionPanelDetails style={{
                                         display:"flex",
                                         flexDirection:"column"
                                     }}>
-                                        <Typography variant="caption" gutterBottom>{plantethnic.disease}</Typography> 
-                                        <Typography variant="caption" gutterBottom>{plantethnic.family}</Typography>
-                                        <Typography variant="caption" gutterBottom>{plantethnic.section}</Typography>
+                                        <Typography variant="caption" gutterBottom>{plantethnic.name_ina}</Typography> 
+                                        <Typography variant="caption" gutterBottom>{plantethnic.disease_ina}</Typography>
+                                        <Typography variant="caption" gutterBottom>{plantethnic.disease_ing}</Typography> 
                                         <Typography variant="caption" gutterBottom>{plantethnic.species}</Typography>
-                                        <Typography variant="caption" gutterBottom>{plantethnic.use}</Typography>
+                                        <Typography variant="caption" gutterBottom>{plantethnic.family}</Typography>
+                                        <Typography variant="caption" gutterBottom>{plantethnic.section_ina}</Typography>
+                                        <Typography variant="caption" gutterBottom>{plantethnic.section_ing}</Typography>
+                                        
+                                        
                                     </ExpansionPanelDetails>
                                 </ExpansionPanel>
                             )
