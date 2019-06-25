@@ -57,11 +57,8 @@ class DetailExplicit extends Component {
             <Typography variant="caption" gutterBottom>
              <CollectionsBookmark /> Conference paper <DateRange /> 12-12-2001
             </Typography>
-            <Button data-value={this.state.show.doc} onClick={this.getFile} style={{marginTop:"10px",marginBottom:"10px"}} variant="raised" size="large" color="default" gutterBottom>
-            <Typography variant="caption" gutterBottom>
-              <SaveAlt />
-                Download
-            </Typography>
+            <Button data-value={this.state.show.file} onClick={this.getFile} style={{marginTop:"10px",marginBottom:"10px"}} variant="raised" size="large" color="default" gutterBottom>
+              <SaveAlt/>Download
             </Button>
             <Typography variant="title" gutterBottom>
               Abstrak

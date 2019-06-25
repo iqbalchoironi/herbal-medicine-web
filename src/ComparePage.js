@@ -14,7 +14,11 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
-import CircularUnderLoad from './Loader'
+import Spinner from './Spinner'
+import LinearProgress from './LinearProgress'
+
+import { Button } from '@material-ui/core';
+import { resolve, reject } from 'q';
 
 const styles = theme => ({
   root: {
@@ -73,166 +77,251 @@ class ComparePage extends React.Component {
         super(props);
         // change code below this line
         this.state = {
-            loading: true,
-            item:[],
-            herbsmed: [],
-            item1: '',
-            item2: '',
-            displayItem1: null,
-            displayItem2: null,
-            same:[],
-            defer: [],
+            loading: false,
+            loadCompare: false,
+            compare: false,
+
+            refHerbMed:[],
+
+            forLabelherbmed1: null,
+            forLabelherbmed2: null,
+
+            herbmed1: null,
+            herbmed2: null,
+
             refCrude1: [],
             refCrude2: [],
             sama: []
         }
         // change code above this line
         this.handleChange = this.handleChange.bind(this);
+        this.getDataHerbmed1 = this.getDataHerbmed1.bind(this);
+        this.getDataHerbmed2 = this.getDataHerbmed2.bind(this);
+        this.getSame = this.getSame.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.reset = this.reset.bind(this);
       }
 
   async componentDidMount() {
-    this.getData();
+    this.setState({
+      loading: true
+    })
+    await this.getData();
   }
   
- async getData(){
-  const url = '/jamu/api/herbsmed/getlist';
-  const res = await Axios.get(url);
-  const { data } = await res;
-  let temp = [];
-  data.data.forEach(herbsmed => {
-    temp.push({label:herbsmed.name,value:herbsmed.idherbsmed});
-  });
-  this.setState({
-    item: temp, 
-    herbsmed: data.herbsmed,
-    loading: false
-  })
-}
-
-async handleSubmit(){
-  this.setState({
-    loading: true
-  })
-  let res = await Axios.get('/jamu/api/herbsmed/get/'+ this.state.item1.value);
-  const { data } = await res;
-  this.setState({
-    displayItem1: data.data
-  })
-
-  let refCrude1 = this.state.displayItem1.refCrude;
-  let ok = []
-  await refCrude1.forEach(itm => {
-      Axios.get('/jamu/api/crudedrug/get/'+ itm.idcrude)
-      .then(res => ok.push(res.data.data))
-});
-let item1 = this.state.displayItem1;
-item1.refCrude = ok
-this.setState({
-    displayItem1: item1
-})
-
-  let res1 = await Axios.get('/jamu/api/herbsmed/get/'+ this.state.item2.value);
-  const data1 = await res1.data;
-  this.setState({
-    displayItem2: data1.data
-  })
-  let refCrude2 = this.state.displayItem2.refCrude;
-  let ok2 = [];
-  await refCrude2.forEach(itm => {
-      Axios.get('/jamu/api/crudedrug/get/'+ itm.idcrude)
-      .then(res => ok2.push(res.data.data))
-  });
-let item2 = this.state.displayItem2;
-item2.refCrude = ok2
-this.setState({
-    displayItem2: item2
-})
-
-  let sama = []
-  await this.state.displayItem1.refCrude.forEach((crud1) => {
-    this.state.displayItem2.refCrude.forEach((crud2) => {
-      if ( crud1.idcrude === crud2.idcrude) {
-        sama.push(crud1);
-      }
-    })
-  })
-  
-  let beda1 = []
-  await this.state.displayItem1.refCrude.forEach(function(itm) {
-    var unique = true;
-    sama.forEach(function(itm2) {
-        if (itm.idcrude === itm2.idcrude) unique = false;
+  async getData(){
+    const url = '/jamu/api/herbsmed/getlist';
+    const res = await Axios.get(url);
+    const { data } = await res;
+    let herbsmed = data.data.map( dt => {
+      return { label : dt.name, value : dt.idherbsmed }
     });
-    if (unique)  beda1.push(itm);
-});
-
-
-let beda2 = []
-  await this.state.displayItem2.refCrude.forEach(function(itm) {
-    var unique = true;
-    sama.forEach(function(itm2) {
-        if (itm.idcrude === itm2.idcrude) unique = false;
-    });
-    if (unique)  beda2.push(itm);
-});
-console.log(beda2)
-  this.setState({
-      sama: sama,
-      refCrude1: beda1,
-      refCrude2: beda2,
+    this.setState({
+      refHerbMed: herbsmed,
       loading: false
-  })  
-}
-
+    })
+  }
 
   handleChange = name => value => {
     this.setState({
-      [name]: value,
-    });
+      [name]: value
+    })
+  }
 
-    if (name === 'item2'){
-        this.handleSubmit();
+  async getDataHerbmed1(){
+    let res = await Axios.get('/jamu/api/herbsmed/get/'+ this.state.forLabelherbmed1.value);
+    const { data } = await res;
+    this.setState({
+      herbmed1: data.data
+    })
+
+    let refCrude1 = this.state.herbmed1.refCrude;
+    let tempRefCrude1= []
+    for (let itm of refCrude1) {
+      await Axios.get('/jamu/api/crudedrug/get/'+ itm.idcrude)
+         .then(res => tempRefCrude1.push(res.data.data))
     }
-  };
+
+    let item1 = this.state.herbmed1;
+    item1.refCrude = tempRefCrude1
+    this.setState({
+        herbmed1: item1
+    })
+  }
+
+  async getDataHerbmed2(){
+    let res = await Axios.get('/jamu/api/herbsmed/get/'+ this.state.forLabelherbmed2.value);
+    const { data } = await res;
+    this.setState({
+      herbmed2: data.data
+    })
+
+    let refCrude2 = this.state.herbmed2.refCrude;
+    let tempRefCrude2= []
+    for (let itm of refCrude2) {
+      await Axios.get('/jamu/api/crudedrug/get/'+ itm.idcrude)
+         .then(res => tempRefCrude2.push(res.data.data))
+    }
+
+    let item2 = this.state.herbmed2;
+    item2.refCrude = tempRefCrude2
+    this.setState({
+        herbmed2: item2
+    })
+  }
+
+  getSame(){
+    return new Promise(resolve => {
+      let sama = [];
+      let i = 0;
+      for (let itm1 of this.state.herbmed1.refCrude){
+        if (i !== this.state.herbmed1.refCrude.leght){
+          for (let itm2 of this.state.herbmed2.refCrude){
+            if (itm1.idcrude === itm2.idcrude) {
+              sama.push(itm1)
+            }
+          }
+          i++;
+        }
+        this.setState({
+          sama:sama
+        })
+        resolve(sama);
+      }
+    })
+  }
+
+  getBeda1(){
+    return new Promise(resolve => {
+      let beda1= []
+      let i = 0;
+      let cek = false;
+      for (let itm1 of this.state.herbmed1.refCrude){
+        if (i !== this.state.herbmed1.refCrude.leght){
+          cek = false;
+          for (let sm of this.state.sama){
+            if (itm1.idcrude === sm.idcrude) {
+              cek = true;
+            }
+          }
+          i++;
+          if (cek === false) {
+            beda1.push(itm1)
+          }
+        }
+        resolve(beda1);
+      }
+    })
+  }
+
+  getBeda2(){
+    return new Promise(resolve => {
+      let beda2= []
+      let i = 0;
+      let cek = false;
+      for (let itm2 of this.state.herbmed2.refCrude){
+        if (i !== this.state.herbmed2.refCrude.leght){
+          cek = false;
+          for (let sm of this.state.sama){
+            if (itm2.idcrude === sm.idcrude) {
+              cek = true;
+            }
+          }
+          i++;
+          if (cek === false) {
+            beda2.push(itm2)
+          }
+        }
+        resolve(beda2);
+      }
+    })
+  }
+
+  async handleSubmit(){
+    this.setState({
+      loadCompare: true
+    })
+
+    await this.getDataHerbmed1();
+    await this.getDataHerbmed2();
+
+    await this.getSame();
+    let beda1 = await this.getBeda1();
+    let beda2 = await this.getBeda2();
+    
+    this.setState({
+      refCrude1: beda1,
+      refCrude2: beda2,
+      compare: true,
+      loadCompare:false
+    })
+    
+  }
+
+  reset(){
+    this.setState({
+      compare: false
+    })
+  }
 
   render() {
     const { classes, theme } = this.props;
 
-    if (this.state.loading) {
-        return <div style={{
-          width:"100%",
-          height:"100%",
-          margin:"auto",
-          display:"flex",
-          justifyContent:"center",
-          alignItems:"center"
-        }}><CircularUnderLoad/></div>;
-      }
-    
-    if (this.state.displayItem2 !== null){
-        return (
+    return (
       <div className={classes.root}>
-      <Paper style={{
+        {this.state.loading ? 
+        <Spinner />
+        :
+        <Paper style={{
           width: "80%",
           margin: "auto",
           marginTop:"80px",
-          marginBottom:"20px",
           padding: "10px",
           minHeight: "350px"
-      }}>
+        }}>
           <Select
-            options={this.state.item}
-            value={this.state.item1}
-            onChange={this.handleChange('item1')}
+            options={this.state.refHerbMed}
+            value={this.state.forLabelherbmed1}
+            onChange={this.handleChange('forLabelherbmed1')}
           />
           <div className={classes.divider} />
            <Select
-            options={this.state.item}
-            value={this.state.item2}
-            onChange={this.handleChange('item2')}
+            options={this.state.refHerbMed}
+            value={this.state.forLabelherbmed2}
+            onChange={this.handleChange('forLabelherbmed2')}
           />
-            <div style={{
+          <div style={{
+            width:"100%",
+            display:"flex",
+            flexDirection:"row",
+            justifyContent:"flex-end",
+            marginTop:"10px"
+          }}>
+            {this.state.compare ?
+              <Button style={{
+              }} onClick={this.reset}>Reset</Button>
+              :
+              <Button style={{
+              }} onClick={this.handleSubmit}>Compare</Button>
+            }
+          </div>
+          
+          {
+            this.state.loadCompare ?
+              <div style={{
+                height:"400px",
+                border:"hsl(0,0%,80%) 1px solid",
+                marginTop:"15px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems:"center"
+              }}>
+                <LinearProgress />
+              </div>
+            :
+            this.state.compare ?
+              <div>
+                <div style={{
                 display: "flex",
                 flexDirection: "row",
                 justifyContent: "space-around"
@@ -243,10 +332,10 @@ console.log(beda2)
                  marginTop: "10px"
              }}>
              <Typography variant="h5" component="h3">
-             {this.state.displayItem1.name}
+             {this.state.herbmed1.name}
              </Typography>
              <Typography component="p">
-             {this.state.displayItem1.efficacy}
+             {this.state.herbmed1.efficacy}
              </Typography>
              </Paper>
              <Paper style={{
@@ -255,10 +344,10 @@ console.log(beda2)
                  marginTop: "10px"
              }}>
              <Typography variant="h5" component="h3">
-             {this.state.displayItem2.name}
+             {this.state.herbmed2.name}
              </Typography>
              <Typography component="p">
-             {this.state.displayItem2.efficacy}
+             {this.state.herbmed2.efficacy}
              </Typography>
              </Paper>
          </div>
@@ -335,47 +424,28 @@ console.log(beda2)
             )
         })}
      </div>
-     </Paper>
-      </div>
-        )
-    }
-    return (
-      <div className={classes.root}>
-      <Paper style={{
-          width: "80%",
-          margin: "auto",
-          marginTop:"80px",
-          padding: "10px",
-          minHeight: "350px"
-      }}>
-          <Select
-            options={this.state.item}
-            value={this.state.item1}
-            onChange={this.handleChange('item1')}
-          />
-          <div className={classes.divider} />
-           <Select
-            options={this.state.item}
-            value={this.state.item2}
-            onChange={this.handleChange('item2')}
-          />
-
-          <div style={{
-            height:"400px",
-            border:"hsl(0,0%,80%) 1px solid",
-            marginTop:"15px",
-            display: "flex",
-            justifyContent: "center",
-            alignItems:"center"
-          }}>
-
-          <Typography component="h2" variant="display1" gutterBottom>
-            Select the two herbs above !, then the comparison 
-            will appear here
-          </Typography>
-          </div>
+              </div>
+               :
+               <div style={{
+                height:"400px",
+                border:"hsl(0,0%,80%) 1px solid",
+                marginTop:"15px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems:"center"
+              }}>
+    
+              <Typography component="h2" variant="display1" gutterBottom>
+                Select the two herbs above !, then the comparison 
+                will appear here
+              </Typography>
+              </div>
+          }
+          
            
         </Paper>
+        }
+      
       </div>
     );
   }
