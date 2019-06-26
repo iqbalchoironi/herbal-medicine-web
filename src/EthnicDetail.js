@@ -7,26 +7,30 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
+import Spinner from './Spinner'
+
 class EthnicDetai extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            loading: true,
+            loading: false,
             onDisplay: [],
             plantethnic: []
         }
       }
     
       async componentDidMount() {
+        this.setState({
+          loading:true
+      })
         await this.getDataPlantEthnic();
       }
 
       async getDataPlantEthnic(){
         const {id} = this.props.match.params;
         const urlDetailEthnic = '/jamu/api/ethnic/get/' + id
-        const url = '/jamu/api/plantethnic';
-
+        
         const resDetailEthnic = await Axios.get(urlDetailEthnic);
         let plantEthnic = resDetailEthnic.data.data.refPlantethnic.map( async id => {
           let urlPlant = '/jamu/api/plantethnic/get/'+id
@@ -45,13 +49,18 @@ class EthnicDetai extends Component {
             }
           })
           this.setState({
-            onDisplay: result
+            onDisplay: result,
+            loading: false
           })
         })
       }
 
     render(){
         return (
+          <div>
+            {this.state.loading ? 
+                <Spinner />
+                :
             <div style={{
                 display:"flex",
                 flexDirection:"row",
@@ -107,6 +116,8 @@ class EthnicDetai extends Component {
                 }  
                 </div>
             </div>
+            }
+          </div>
         )
     }
 }

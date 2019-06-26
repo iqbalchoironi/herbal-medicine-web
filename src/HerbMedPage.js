@@ -185,7 +185,7 @@ class HerbMeds extends Component {
               
               <div className="for-card">
                 {this.state.herbmeds.map(item =>
-                          <CardHerbMed key={item.idherbsmed} name={item.name} efficacy={item.efficacy} reff={item.refCrude}/>
+                          <CardHerbMed key={item.idherbsmed} id={item.idherbsmed} name={item.name} efficacy={item.efficacy} reff={item.refCrude}/>
                  )}
                 {this.state.loadData ? <div><br></br><br></br> <br></br>loading...</div>
                   : null }

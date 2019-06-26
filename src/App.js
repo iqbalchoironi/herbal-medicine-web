@@ -61,7 +61,7 @@ class App extends Component {
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
 
-          <Route exact path="/detail/herbmed/:id" component={DetailHerbMed} />
+          <Route exact path="/herbsmed/:id" component={DetailHerbMed} />
           <Route exact path='*'  component={NotFound} />
         </Switch>
       </div>

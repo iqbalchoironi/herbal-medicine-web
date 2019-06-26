@@ -1,14 +1,11 @@
 import React, {Component} from 'react';
 import Axios from 'axios'
-import FileDownload from 'js-file-download'
 import PropTypes from 'prop-types';
 
 import Paper from '@material-ui/core/Paper'
-import SaveAlt from '@material-ui/icons/SaveAlt';
 import Person from '@material-ui/icons/Person';
 import CollectionsBookmark from '@material-ui/icons/CollectionsBookmark'
 import DateRange from '@material-ui/icons/DateRange'
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
 import Tabs from '@material-ui/core/Tabs';
@@ -18,6 +15,9 @@ import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+
+import CardExample from './card'
+import Spinner from './Spinner'
 
 function TabContainer(props) {
     return (
@@ -32,184 +32,185 @@ function TabContainer(props) {
   };
 
 class DetailHerbMed extends Component {
-  state = {
-    value: 0,
-    show : null,
-    loading: false
-  }
+    constructor(props) {
+        super(props);
+           this.state = {
+                value: 0,
+                detailHerbMed : [],
+                loading: false
+            }
+        this.handleChange = this.handleChange.bind(this)
+        }
 
-  async componentDidMount(){
-    const {id} = this.props.match.params;
-    const url = '/jamu/api/explicit/get/' + id;
-    const res = await Axios.get(url);
-    const { data } = await res;
-    this.setState({
-      show: data.data,
-      loading: false
-    })
-  }
+        async componentDidMount(){
+            this.setState({
+                loading:true
+            })
+            await this.getData()
+          }
 
-//   getFile (e){
-//     console.log(e.target.dataset.value)
-//     let doc = e.target.dataset.value
-//     Axios.get('/jamu/api/explicit/file/`+e.target.dataset.value)
-//    .then((response) => {
-//         FileDownload(response.data, doc);
-//    });
-//   }
+          async getData(){
+            const {id} = this.props.match.params;
+            const url = '/jamu/api/herbsmed/get/' + id;
+            const res = await Axios.get(url);
+            const { data } = await res;
+            let RefCrude = await  Promise.all(data.data.refCrude.map(async dt => {
+                let urlCrude = '/jamu/api/crudedrug/get/' + dt.idcrude
+                let resCrude = await Axios.get(urlCrude);
+                let { data } = await resCrude;
+                return data.data
+            }))
 
-    handleChange = (event, value) => {
-        this.setState({ value });
-    };
+            let Plant = RefCrude.map(dt => dt.refPlant[0])
+            console.log(Plant)
+            Plant = await Promise.all(Array.from(new Set(Plant.map( dt => dt.idplant)))
+                    .map( async id => {
+                        let urlPlant = '/jamu/api/plant/get/'+id;
+                        let resPlant = await Axios.get(urlPlant)
+                        let { data } = await resPlant
+                        return data.data
+                    }))
+            let detailHerbMed = data.data
+            detailHerbMed.refCrude = RefCrude
+            detailHerbMed.refPlant = Plant
+            console.log(detailHerbMed)
+            this.setState({
+              detailHerbMed: detailHerbMed,
+              loading: false
+            })
+          }
+        
+          handleChange = (event, value) => {
+            this.setState({ value });
+          };
 
   render(){
-    const { value } = this.state;
-    if (this.state.loading) {
-      return <div><br></br><br></br> <br></br>loading...</div>;
-    }
     return(
-        <Paper style={{
-            width:"90%",
-            margin:"auto",
-            marginTop: "80px",
-            marginBottom: "10px",
-            padding: "30px"
-          }}>
-          <Paper style={{
-            width:"90%",
-            margin:"auto",
-            marginTop: "20px",
-            marginBottom: "10px",
-            padding: "30px"
-          }}>
-            <Typography variant="headline" gutterBottom>
-                Title
-            </Typography>
-                <Typography variant="caption" gutterBottom>
-                <Person /> Person
-                </Typography >
-                <Typography variant="caption" gutterBottom>
-                <CollectionsBookmark /> Conference paper <DateRange /> 12-12-2001
-                </Typography>
-            </Paper>
-           <Tabs
-            value={this.state.value}
-            onChange={this.handleChange}
-            indicatorColor="primary"
-            textColor="primary"
-            centered
-            >
-                <Tab label="Plant" />
-                <Tab label="Crude Drug" />
-                <Tab label="Compound" />
-            </Tabs>
-            <Paper style={{
-                width:"90%",
-                margin:"auto",
-                marginTop: "20px",
-                marginBottom: "10px",
-                padding: "30px"
-            }}>
-            {value === 0 && 
-            <TabContainer>
-                <ExpansionPanel>
-                    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography >Name</Typography>
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails>
-                    <Typography>
-                        item
-                    </Typography>
-                    </ExpansionPanelDetails>
-                </ExpansionPanel>
-                <ExpansionPanel>
-                    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography >Name</Typography>
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails>
-                    <Typography>
-                        item
-                    </Typography>
-                    </ExpansionPanelDetails>
-                </ExpansionPanel>
-                <ExpansionPanel>
-                    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography >Name</Typography>
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails>
-                    <Typography>
-                        item
-                    </Typography>
-                    </ExpansionPanelDetails>
-                </ExpansionPanel>
-            </TabContainer>}
-            {value === 1 && <TabContainer>
-                <ExpansionPanel>
-                    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography >Name</Typography>
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails>
-                    <Typography>
-                        item
-                    </Typography>
-                    </ExpansionPanelDetails>
-                </ExpansionPanel>
-                <ExpansionPanel>
-                    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography >Name</Typography>
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails>
-                    <Typography>
-                        item
-                    </Typography>
-                    </ExpansionPanelDetails>
-                </ExpansionPanel>
-                <ExpansionPanel>
-                    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography >Name</Typography>
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails>
-                    <Typography>
-                        item
-                    </Typography>
-                    </ExpansionPanelDetails>
-                </ExpansionPanel>
-            </TabContainer>}
-            {value === 2 && <TabContainer>
-                <ExpansionPanel>
-                    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography >Name</Typography>
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails>
-                    <Typography>
-                        item
-                    </Typography>
-                    </ExpansionPanelDetails>
-                </ExpansionPanel>
-                <ExpansionPanel>
-                    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography >Name</Typography>
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails>
-                    <Typography>
-                        item
-                    </Typography>
-                    </ExpansionPanelDetails>
-                </ExpansionPanel>
-                <ExpansionPanel>
-                    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography >Name</Typography>
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails>
-                    <Typography>
-                        item
-                    </Typography>
-                    </ExpansionPanelDetails>
-                </ExpansionPanel>
-            </TabContainer>}
-            </Paper>
-        </Paper>
-    );
+        <div>
+            {this.state.loading ? 
+                <Spinner />
+                :
+                <div>
+                <Paper style={{
+                    width:"90%",
+                    margin:"auto",
+                    marginTop: "80px",
+                    marginBottom: "10px",
+                    padding: "30px"
+                  }}>
+                    <Paper style={{
+                        width:"90%",
+                        margin:"auto",
+                        marginTop: "20px",
+                        marginBottom: "10px",
+                        padding: "30px"
+                    }}>
+                        <Typography variant="headline" gutterBottom>
+                            {this.state.detailHerbMed.name}
+                        </Typography>
+                        <Typography variant="caption" gutterBottom>
+                            {this.state.detailHerbMed.efficacy}
+                        </Typography >
+                    </Paper>
+                   <Tabs
+                    value={this.state.value}
+                    onChange={this.handleChange}
+                    indicatorColor="primary"
+                    textColor="primary"
+                    centered
+                    >
+                        <Tab label="Plant" />
+                        <Tab label="Crude Drug" />
+                        <Tab label="Compound" />
+                    </Tabs>
+                    <Paper style={{
+                        width:"90%",
+                        margin:"auto",
+                        marginTop: "20px",
+                        marginBottom: "10px",
+                        padding: "30px"
+                    }}>
+                    {this.state.value === 0 && 
+                    <TabContainer>
+                        {this.state.detailHerbMed.refPlant !== undefined &&
+                        <div className="for-card">
+                        {this.state.detailHerbMed.refPlant.map(item =>
+                                  <CardExample key={item.id} name={item.sname} image={item.refimg} reff={item.refCrude} />
+                                )}
+                        </div>
+                        }
+                        
+                    </TabContainer>}
+                    {this.state.value === 1 && 
+                    <TabContainer>
+                    {this.state.detailHerbMed.refCrude !== undefined &&
+                    this.state.detailHerbMed.refCrude.map( itm =>{
+                        return(
+                            <ExpansionPanel>
+                                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                                <Typography >{itm.sname}</Typography>
+                                </ExpansionPanelSummary>
+                                <ExpansionPanelDetails style={{
+                                        display:"flex",
+                                        flexDirection:"column"
+                                    }}>
+                                    <Typography variant="title" gutterBottom>
+                                        {itm.name_en}
+                                    </Typography>
+                                    <Typography variant="caption" gutterBottom>
+                                        {itm.gname}
+                                    </Typography>
+                                    <Typography variant="caption" gutterBottom>
+                                        {itm.position}
+                                    </Typography>
+                                    <Typography variant="caption" gutterBottom>
+                                        {itm.effect}
+                                    </Typography>
+                                </ExpansionPanelDetails>
+                            </ExpansionPanel>
+                        )
+                    })
+                    }
+                    
+                </TabContainer>}
+                    {this.state.value === 2 && <TabContainer>
+                        <ExpansionPanel>
+                            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                            <Typography >Name</Typography>
+                            </ExpansionPanelSummary>
+                            <ExpansionPanelDetails>
+                            <Typography>
+                                item
+                            </Typography>
+                            </ExpansionPanelDetails>
+                        </ExpansionPanel>
+                        <ExpansionPanel>
+                            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                            <Typography >Name</Typography>
+                            </ExpansionPanelSummary>
+                            <ExpansionPanelDetails>
+                            <Typography>
+                                item
+                            </Typography>
+                            </ExpansionPanelDetails>
+                        </ExpansionPanel>
+                        <ExpansionPanel>
+                            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                            <Typography >Name</Typography>
+                            </ExpansionPanelSummary>
+                            <ExpansionPanelDetails>
+                            <Typography>
+                                item
+                            </Typography>
+                            </ExpansionPanelDetails>
+                        </ExpansionPanel>
+                    </TabContainer>}
+                    </Paper>
+                </Paper>
+            </div>
+            }
+        </div>
+    )
   }
 }
 
