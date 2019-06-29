@@ -9,13 +9,14 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import Spinner from './Spinner'
 
-class EthnicDetai extends Component {
+class EthnicDetail extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             loading: false,
             onDisplay: [],
+            ethnic :[],
             plantethnic: []
         }
       }
@@ -24,6 +25,12 @@ class EthnicDetai extends Component {
         this.setState({
           loading:true
       })
+      let url = '/jamu/api/ethnic/getlist'
+      let res = await Axios.get(url);
+      let {data} = await res
+      this.setState({
+        ethnic: data.data
+    })
         await this.getDataPlantEthnic();
       }
 
@@ -73,10 +80,18 @@ class EthnicDetai extends Component {
                 <div style={{
                     width:"20%",
                     border:"1px solid black",
-                    height:"350px",
                     marginRight: "10px"
                 }}> 
-
+                {this.state.ethnic !== undefined && 
+                  this.state.ethnic.map(itm => {
+                    return (
+                      <li key={itm._id} id={itm._id} style={{
+                        color:"grey",
+                        fontSize:"14px"
+                      }}>ethnic {itm.name}</li>
+                    )
+                  })
+                }
                 </div>
                 <div style={{
                     width:"70%",
@@ -122,4 +137,4 @@ class EthnicDetai extends Component {
     }
 }
 
-export default EthnicDetai;
+export default EthnicDetail;

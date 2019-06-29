@@ -63,7 +63,9 @@ class DetailHerbMed extends Component {
 
             let Plant = RefCrude.map(dt => dt.refPlant[0])
             console.log(Plant)
-            Plant = await Promise.all(Array.from(new Set(Plant.map( dt => dt.idplant)))
+            Plant = await Promise.all(Array.from(new Set(Plant.filter(dt => dt !== null).map( dt =>{
+                    return dt.idplant
+            } )))
                     .map( async id => {
                         let urlPlant = '/jamu/api/plant/get/'+id;
                         let resPlant = await Axios.get(urlPlant)
