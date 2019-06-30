@@ -79,25 +79,25 @@ class Navigation extends Component {
                     <div class="dropdown">
                         <li>Knowledge Sharing </li>
                         <div class="dropdown-content">
-                            <a href="/tacit">Tacit</a>
-                            <a href="/explicit">Explicit</a>
+                            <Link to="/tacit">Tacit</Link>
+                            <Link to="/explicit">Explicit</Link>
                         </div>
                     </div> 
 
                     <div class="dropdown">
                         <li>Analize</li>
                         <div class="dropdown-content">
-                            <a href="/compare">Comparison</a>
-                            <a href="/predict">Prediction</a>
+                            <Link to="/compare">Comparison</Link>
+                            <Link to="/predict">Prediction</Link>
                         </div>
                     </div> 
 
                     <div class="dropdown">
                         <li>Explore</li>
                         <div class="dropdown-content">
-                            <a href="/herbmeds">Herbal Medicine</a>
-                            <a href="/plant">Plant</a>
-                            <a href="/compound">Compounds</a>
+                            <Link to="/herbmeds">Herbal Medicine</Link>
+                            <Link to="/plant">Plant</Link>
+                            <Link to="/compound">Compounds</Link>
                         </div>
                     </div> 
 
