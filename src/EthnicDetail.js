@@ -34,9 +34,11 @@ class EthnicDetail extends Component {
         this.state = {
             loading: false,
             onDisplay: [],
+            plantEthnic:[],
             ethnic :[],
             detailEthnic: []
         }
+        this.handleSearch = this.handleSearch.bind(this);
       }
     
       async componentDidMount() {
@@ -81,13 +83,46 @@ class EthnicDetail extends Component {
               result[name].push(item);
             }
           })
+          console.log(result)
           this.setState({
             detailEthnic: DetailEthnic,
             onDisplay: result,
+            plantEthnic: result,
             loading: false
           })
         })
       }
+
+      handleSearch(e){
+        // this.setState({
+        //     loading: true 
+        // })
+        if(e.target.value === ''){
+            this.setState({ 
+                onDisplay: this.state.plantEthnic
+            })
+        }else{
+            const regex = new RegExp(e.target.value, "ig");
+            let filter = [];
+            Object.keys(this.state.plantEthnic).forEach((key, i) =>{
+              let name = key;
+              this.state.plantEthnic[key].forEach((plantethnic) => {
+                if (plantethnic.name_ina.match(regex) !== null){
+                  if (!(name in filter)) {
+                    filter[name] = [];
+                    filter[name].push(plantethnic);
+                  } else {
+                    filter[name].push(plantethnic);
+                  }
+                }
+              })
+            })
+            this.setState({
+                onDisplay: filter,
+                loading: false 
+            })
+        }
+    }
 
     render(){
         return (
@@ -127,7 +162,7 @@ class EthnicDetail extends Component {
                 display:"flex",
                 flexDirection:"row-reverse"
               }}>
-                 <SearchInput nameInput="inputSearch" />
+                 <SearchInput nameInput="inputSearch" inputChange={this.handleSearch}/>
               </div>
               </div>
               <Paper style={{
