@@ -24,6 +24,7 @@ import NotFound from './404'
 
 
 import './App.css'
+import DetailPlant from './DetailPlant';
 
 class App extends Component {
   
@@ -47,7 +48,9 @@ class App extends Component {
           <Route exact path="/predict" component={Predict} />
 
           <Route exact path="/plant" component={Plant} />
+          <Route exact path="/plant/:id" component={DetailPlant} />
           <Route exact path="/herbmeds" component={HerbMeds} />
+          <Route exact path="/herbsmed/:id" component={DetailHerbMed} />
           {/* compound */}
           
           <Route exact path="/tacit" component={TacitPage} />
@@ -61,7 +64,6 @@ class App extends Component {
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
 
-          <Route exact path="/herbsmed/:id" component={DetailHerbMed} />
           <Route exact path='*'  component={NotFound} />
         </Switch>
       </div>

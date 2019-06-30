@@ -145,6 +145,65 @@ const styles = {
                     <img style={{ width:"100%", height:"100%", objectFit:"cover"}} src="http://www.obatkuat.net/wp-content/uploads/2015/11/ramuan-kuat.jpg"></img>
                   </div>
                 </div> */}
+                <div style={{
+                   width:"90%",
+                   margin:"auto",
+                   marginTop: "20px",
+                   marginBottom: "20px",
+                   display: "grid",
+                   gridTemplateColumns: "repeat(auto-fill, minmax(16rem, 1fr))",
+                   gridGap: "2rem"
+                }}>
+                   <div style={{
+                      height:"280px",
+                      width:"280px",
+                      border:"1px black solid"
+                    }}>
+                    </div>
+                    <div style={{
+                      height:"280px",
+                      width:"280px",
+                      border:"1px black solid"
+                    }}>
+                    </div>
+                    <div style={{
+                      height:"280px",
+                      width:"280px",
+                      border:"1px black solid"
+                    }}>
+                    </div>
+                    <div style={{
+                      height:"280px",
+                      width:"280px",
+                      border:"1px black solid"
+                    }}>
+                    </div>
+                    <div style={{
+                      height:"280px",
+                      width:"280px",
+                      border:"1px black solid"
+                    }}>
+                    </div>
+                    <div style={{
+                      height:"280px",
+                      width:"280px",
+                      border:"1px black solid"
+                    }}>
+                    </div>
+                    <div style={{
+                      height:"280px",
+                      width:"280px",
+                      border:"1px black solid"
+                    }}>
+                    </div>
+                    <div style={{
+                      height:"280px",
+                      width:"280px",
+                      border:"1px black solid"
+                    }}>
+                    </div>
+
+                </div>
             </div>
         )
     }
