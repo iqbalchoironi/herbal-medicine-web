@@ -48,7 +48,7 @@ class Login extends Component {
         const user = data.data;
         if (user.succes !== false) {
             localStorage.setItem("user",JSON.stringify(user));
-            window.location.href = '/plant';
+            window.location.href = '/';
         }
         })
         .catch(err => {
