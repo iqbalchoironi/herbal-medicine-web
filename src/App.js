@@ -25,6 +25,7 @@ import NotFound from './404'
 
 import './App.css'
 import DetailPlant from './DetailPlant';
+import { ProtectedRoute } from "./protected.route";
 
 class App extends Component {
   
@@ -38,31 +39,31 @@ class App extends Component {
             null
           }
         <Switch>
-          <Route exact path="/" component={Landing} />
+          <ProtectedRoute exact path="/" component={Landing} />
 
-          <Route exact path="/explicit" component={ExplicitPage} />
-          <Route exact  path="/explicit/:id" component={DetailExplicit} />
-          <Route exact path="/form/explicit" component={FormExplicit} />
+          <ProtectedRoute exact path="/explicit" component={ExplicitPage} />
+          <ProtectedRoute exact  path="/explicit/:id" component={DetailExplicit} />
+          <ProtectedRoute exact path="/form/explicit" component={FormExplicit} />
           
-          <Route exact path="/compare" component={ComparePage} />
-          <Route exact path="/predict" component={Predict} />
+          <ProtectedRoute exact path="/compare" component={ComparePage} />
+          <ProtectedRoute exact path="/predict" component={Predict} />
 
-          <Route exact path="/plant" component={Plant} />
-          <Route exact path="/plant/:id" component={DetailPlant} />
-          <Route exact path="/herbmeds" component={HerbMeds} />
-          <Route exact path="/herbsmed/:id" component={DetailHerbMed} />
+          <ProtectedRoute exact path="/plant" component={Plant} />
+          <ProtectedRoute exact path="/plant/:id" component={DetailPlant} />
+          <ProtectedRoute exact path="/herbmeds" component={HerbMeds} />
+          <ProtectedRoute exact path="/herbsmed/:id" component={DetailHerbMed} />
           {/* compound */}
           
-          <Route exact path="/tacit" component={TacitPage} />
-          <Route exact path="/tacit/:id" component={DetailTacit} />
-          <Route exact path="/form/tacit" component={FormTacit} />
+          <ProtectedRoute exact path="/tacit" component={TacitPage} />
+          <ProtectedRoute exact path="/tacit/:id" component={DetailTacit} />
+          <ProtectedRoute exact path="/form/tacit" component={FormTacit} />
           
           
-          <Route exact path="/map/ethnic" component={MapHerb} />
-          <Route exact path="/ethnic/:id" component={EthnicDetail} />
+          <ProtectedRoute exact path="/map/ethnic" component={MapHerb} />
+          <ProtectedRoute exact path="/ethnic/:id" component={EthnicDetail} />
 
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/register" component={Register} />
+          <ProtectedRoute exact path="/login" component={Login} />
+          <ProtectedRoute exact path="/register" component={Register} />
 
           <Route exact path='*'  component={NotFound} />
         </Switch>
