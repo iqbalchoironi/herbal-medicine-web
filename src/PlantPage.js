@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Axios from "axios";
 
-import CardExample from './card'
+import Card from './card'
 import SearchInput from './SearchInput'
 
 import Typography from '@material-ui/core/Typography';
@@ -116,12 +116,8 @@ class Plant extends Component {
                 flexDirection:"row"
               }}>
                 <Breadcrumbs aria-label="Breadcrumb">
-                  <Link color="inherit" href="/" >
-                    KMS Jamu
-                  </Link>
-                  <Link color="inherit" >
-                    Explore
-                  </Link>
+                  <Link color="inherit" href="/" >KMS Jamu</Link>
+                  <Link color="inherit" >Explore</Link>
                   <Typography color="textPrimary">Plant</Typography>
                 </Breadcrumbs>
               </div>
@@ -136,7 +132,7 @@ class Plant extends Component {
               
               <div className="for-card">
                 {this.state.onSearch.map(item =>
-                  <CardExample key={item.id} name={item.sname} image={item.refimg} reff={item.refCrude} />
+                  <Card key={item.id} name={item.sname} image={item.refimg} reff={item.refCrude} />
                 )}
               </div>
             </div>
@@ -182,7 +178,7 @@ class Plant extends Component {
               
               <div className="for-card">
                 {this.state.plans.map(item =>
-                          <CardExample key={item.id} name={item.sname} image={item.refimg} reff={item.refCrude} />
+                          <Card key={item.id} name={item.sname} image={item.refimg} reff={item.refCrude} />
                         )}
                 {this.state.loadData ? <div><br></br><br></br> <br></br>loading...</div>
                   : null }

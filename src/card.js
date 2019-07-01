@@ -49,11 +49,10 @@ const List = ({ item }) => {
   return null;
 }
 
-function CardExample(props) {
+function CardPlant(props) {
   const {
     classes
   } = props;
-    console.log(props)
   return (
     <div>
       <Card className={classes.card}>
@@ -86,4 +85,4 @@ function CardExample(props) {
   );
 }
 
-export default withStyles(styles)(CardExample);
+export default withStyles(styles)(CardPlant);
