@@ -6,6 +6,7 @@ import Paper from '@material-ui/core/Paper';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton'
+import ButtonCard from './ButtonCard'
 
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -69,6 +70,46 @@ const styles = {
 
   function Landing(props) {
     const { classes } = props;
+    const images = [{
+      url: '/asset/herbsmed.jpeg',
+      title: 'Herbal Medicine',
+      directory: '/herbmeds'
+    },
+    {
+      url: '/asset/plant.jpeg',
+      title: 'Plant',
+      directory: '/plant'
+    },
+    {
+      url: '/asset/compound.jpeg',
+      title: 'Compound',
+      directory: '/compound',
+    },
+    {
+      url: '/asset/comparision.jpeg',
+      title: 'Comparision',
+      directory: '/compare'
+    },
+    {
+      url: '/asset/prediction.jpeg',
+      title: 'Prediction',
+      directory: '/predict'
+    },
+    {
+      url: '/asset/tacit.jpeg',
+      title: 'Tacit Knowledge',
+      directory: '/tacit'
+    },
+    {
+      url: '/asset/explicit.jpeg',
+      title: 'Explicit Knowledge',
+      directory: '/explicit'
+    },
+    {
+      url: '/asset/plant_ethnic.jpeg',
+      title: 'Plant Used Ethnic',
+      directory: '/map/ethnic'
+    },]
         return (
             <div style={{
                 display:"flex",
@@ -81,7 +122,7 @@ const styles = {
                     display: "flex",
                     justifyContent : "center",
                     alignItems : "center",
-                    backgroundColor: "pink"
+                    backgroundColor: "#a9ba9d"
                     
                 }}>
                     <Paper className={classes.root} elevation={1}>
@@ -146,7 +187,7 @@ const styles = {
                   </div>
                 </div> */}
                 <div style={{
-                   width:"90%",
+                   width:"95%",
                    margin:"auto",
                    marginTop: "20px",
                    marginBottom: "20px",
@@ -154,56 +195,23 @@ const styles = {
                    gridTemplateColumns: "repeat(auto-fill, minmax(16rem, 1fr))",
                    gridGap: "2rem"
                 }}>
-                   <div style={{
-                      height:"280px",
-                      width:"280px",
-                      border:"1px black solid"
-                    }}>
-                    </div>
-                    <div style={{
-                      height:"280px",
-                      width:"280px",
-                      border:"1px black solid"
-                    }}>
-                    </div>
-                    <div style={{
-                      height:"280px",
-                      width:"280px",
-                      border:"1px black solid"
-                    }}>
-                    </div>
-                    <div style={{
-                      height:"280px",
-                      width:"280px",
-                      border:"1px black solid"
-                    }}>
-                    </div>
-                    <div style={{
-                      height:"280px",
-                      width:"280px",
-                      border:"1px black solid"
-                    }}>
-                    </div>
-                    <div style={{
-                      height:"280px",
-                      width:"280px",
-                      border:"1px black solid"
-                    }}>
-                    </div>
-                    <div style={{
-                      height:"280px",
-                      width:"280px",
-                      border:"1px black solid"
-                    }}>
-                    </div>
-                    <div style={{
-                      height:"280px",
-                      width:"280px",
-                      border:"1px black solid"
-                    }}>
-                    </div>
-
+                  {images.map(image => {
+                    return <ButtonCard image={image} />
+                  })}
+                      
                 </div>
+
+                <div style={{
+                    width: "100%",
+                    height:"300px",
+                    display: "flex",
+                    justifyContent : "center",
+                    alignItems : "center",
+                    backgroundColor: "grey"
+                    
+                }}>
+                </div>
+                
             </div>
         )
     }
