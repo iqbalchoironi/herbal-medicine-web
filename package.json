@@ -8,6 +8,7 @@
     "@material-ui/icons": "^3.0.2",
     "@material-ui/lab": "^3.0.0-alpha.30",
     "axios": "^0.18.0",
+    "draft-js": "^0.10.5",
     "js-file-download": "^0.4.5",
     "leaflet": "^1.4.0",
     "material-ui-flat-pagination": "^3.2.0",

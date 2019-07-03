@@ -57,6 +57,7 @@ class DetailTacit extends Component {
             <Typography variant="body1" gutterBottom align="justify">
               {this.state.show.content}
             </Typography>
+            {/* <Editor editorState={editorState} readOnly={true} /> */}
             <Typography variant="caption" gutterBottom>
                {this.state.show.reference}
             </Typography>
