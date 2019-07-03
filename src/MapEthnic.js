@@ -9,6 +9,8 @@ import { Link } from 'react-router-dom'
 import L from 'leaflet';
 import locationIcons from './placeholder.svg';
 
+import Spinner from './Spinner'
+
 const mapStyles = {
   width: '100%',
   height: '90%'
@@ -23,6 +25,7 @@ export class MapHerb extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      loading: false,
       showingInfoWindow: false,
       modalOpen:'',
       onSelect: [],
@@ -37,8 +40,14 @@ export class MapHerb extends Component {
   }
 
   async componentDidMount() {
+    this.setState({
+      loading: true
+    })
     await this.getData();
     await this.getDataProvince();
+    this.setState({
+      loading: false
+    })
   }
 
   async getDataProvince(){
@@ -133,39 +142,44 @@ export class MapHerb extends Component {
       <div style={{
           marginTop: "70px"
       }}>
-        <Map style={{
-             height:"550px",
-             width:"100%"
-        }}
-        center={center} 
-        zoom={5.4}
-        onViewportChanged={this.onViewportChanged}
-        viewport={this.state.viewport}>
-        <TileLayer
-          attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        {this.state.province.map( item => (
-                    <Marker
-                      position={[item.province_lat, item.province_lon]}
-                      icon={LocationIcons}
-                      >
-                        <Popup>
-                            <p><em>ethnic in province {item.province_name} :</em></p>
-                            {item.ethnic.map(ethnic => {
-                            return(
-                                <button key={ethnic._id}>
-                                  <Link to={`/ethnic/${ ethnic._id }`}>
-                                      {ethnic.name}
-                                  </Link>
-                                </button>
-                            )
-                            })}
-                        </Popup>
+        {
+          this.state.loading ?
+          <Spinner />
+          :
+          <Map style={{
+            height:"550px",
+            width:"100%"
+            }}
+            center={center} 
+            zoom={5.4}
+            onViewportChanged={this.onViewportChanged}
+            viewport={this.state.viewport}>
+            <TileLayer
+              attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            {this.state.province.map( item => (
+                        <Marker
+                          position={[item.province_lat, item.province_lon]}
+                          icon={LocationIcons}
+                          >
+                            <Popup>
+                                <p><em>ethnic in province {item.province_name} :</em></p>
+                                {item.ethnic.map(ethnic => {
+                                return(
+                                    <button key={ethnic._id}>
+                                      <Link to={`/ethnic/${ ethnic._id }`}>
+                                          {ethnic.name}
+                                      </Link>
+                                    </button>
+                                )
+                                })}
+                            </Popup>
 
-                    </Marker>
-                ))} 
-      </Map>
+                        </Marker>
+                    ))} 
+          </Map>
+        }
       </div>
     );
   }

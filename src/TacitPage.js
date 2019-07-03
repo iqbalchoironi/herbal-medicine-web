@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import Axios from 'axios'
 import { Link } from 'react-router-dom'
 
@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Breadcrumbs from '@material-ui/lab/Breadcrumbs';
 import Link2 from '@material-ui/core/Link';
 import SearchInput from './SearchInput'
+import Spinner from './Spinner'
 
 import Person from '@material-ui/icons/Person';
 import CollectionsBookmark from '@material-ui/icons/CollectionsBookmark'
@@ -128,43 +129,50 @@ class TacitPage extends Component {
                     <SearchInput />
                   </div>
                 </div>
-                <div style={{
+                {
+                  this.state.loading ?
+                  <Spinner />
+                  :
+                  <Fragment>
+                  <div style={{
                     display:"flex",
                     flexDirection:"row",
                     margin:"auto",
                     border:"hsl(0,0%,80%) 1px solid",
                     width:"95%",
                     marginBottom: "10px"
-                }}>
-                    <div style={{
-                        width:"20%",
-                        maxHeight: "350px",
-                        border:"hsl(0,0%,80%) 1px solid"
-                    }}> 
-                        
-                    </div>
-                    <div style={{
-                        width:"80%",
-                        border:"hsl(0,0%,80%) 1px solid",
-                        padding: "25px",
-                        minHeight:"500px"
                     }}>
-                      {this.state.explicit.map(item =>
-                        <ListTacit key={item._id} id={item._id} name={item.firstName+' '+item.lastName} title={item.title} abstract={item.abstract} />
-                      )}
-                  </div>
-              </div>  
-              <Pagination
-                style={{
-                  margin:"auto",
-                  marginBottom: "10px"
-                }}
-                size='large'
-                limit={10}
-                offset={this.state.offset}
-                total={250}
-                onClick={(e,offset, page) => this.handleClick(offset,page)}
-              />
+                        <div style={{
+                            width:"20%",
+                            maxHeight: "350px",
+                            border:"hsl(0,0%,80%) 1px solid"
+                        }}> 
+                            
+                        </div>
+                        <div style={{
+                            width:"80%",
+                            border:"hsl(0,0%,80%) 1px solid",
+                            padding: "25px",
+                            minHeight:"500px"
+                        }}>
+                          {this.state.explicit.map(item =>
+                            <ListTacit key={item._id} id={item._id} name={item.firstName+' '+item.lastName} title={item.title} abstract={item.abstract} />
+                          )}
+                      </div>
+                  </div>  
+                  <Pagination
+                    style={{
+                      margin:"auto",
+                      marginBottom: "10px"
+                    }}
+                    size='large'
+                    limit={10}
+                    offset={this.state.offset}
+                    total={250}
+                    onClick={(e,offset, page) => this.handleClick(offset,page)}
+                  />
+                  </Fragment> 
+                }
             </div>
         );
     }

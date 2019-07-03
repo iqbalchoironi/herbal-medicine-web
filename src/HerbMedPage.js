@@ -3,6 +3,7 @@ import Axios from "axios";
 
 import CardHerbMed from './CardHerbMed'
 import SearchInput from './SearchInput'
+import Spinner from './Spinner'
 
 import Typography from '@material-ui/core/Typography';
 import Breadcrumbs from '@material-ui/lab/Breadcrumbs';
@@ -91,14 +92,6 @@ class HerbMeds extends Component {
     }
 
       render() {
-        if (this.state.loading) {
-          return <div><br></br><br></br> <br></br>loading...</div>;
-        }
-    
-        if (!this.state.herbmeds) {
-          return <div><br></br><br></br> <br></br>didn't get a person</div>;
-        }
-
         if(this.state.inputSearch !== '' && this.state.onSearch !== []){
           return (
             <div style={{
@@ -182,14 +175,19 @@ class HerbMeds extends Component {
                 <SearchInput nameInput="inputSearch" inputValue={this.state.inputSearch} inputChange={this.handleInputChange} clickButton={this.getDataSearch}/>
               </div>
               </div>
+              {
+                this.state.loading ?
+                <Spinner />
+                :
+                <div className="for-card">
+                  {this.state.herbmeds.map(item =>
+                            <CardHerbMed key={item.idherbsmed} id={item.idherbsmed} name={item.name} efficacy={item.efficacy} reff={item.refCrude}/>
+                  )}
+                  {this.state.loadData ? <div><br></br><br></br> <br></br>loading...</div>
+                    : null }
+                </div>
+              }
               
-              <div className="for-card">
-                {this.state.herbmeds.map(item =>
-                          <CardHerbMed key={item.idherbsmed} id={item.idherbsmed} name={item.name} efficacy={item.efficacy} reff={item.refCrude}/>
-                 )}
-                {this.state.loadData ? <div><br></br><br></br> <br></br>loading...</div>
-                  : null }
-              </div>
             </div>
         );
       }

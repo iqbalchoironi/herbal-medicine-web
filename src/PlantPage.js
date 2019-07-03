@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Axios from "axios";
 
+import Spinner from './Spinner'
 import Card from './card'
 import SearchInput from './SearchInput'
 
@@ -88,13 +89,6 @@ class Plant extends Component {
     }
 
       render() {
-        if (this.state.loading) {
-          return <div><br></br><br></br> <br></br>loading...</div>;
-        }
-    
-        if (!this.state.plans) {
-          return <div><br></br><br></br> <br></br>didn't get a person</div>;
-        }
 
         if(this.state.inputSearch !== '' && this.state.onSearch !== []){
           return (
@@ -175,7 +169,9 @@ class Plant extends Component {
                  <SearchInput nameInput="inputSearch" inputValue={this.state.inputSearch} inputChange={this.handleInputChange} clickButton={this.getDataSearch}/>
               </div>
               </div>
-              
+              { this.state.loading ?
+              <Spinner />
+              :  
               <div className="for-card">
                 {this.state.plans.map(item =>
                           <Card key={item.id} name={item.sname} image={item.refimg} reff={item.refCrude} />
@@ -183,6 +179,8 @@ class Plant extends Component {
                 {this.state.loadData ? <div><br></br><br></br> <br></br>loading...</div>
                   : null }
               </div>
+              }
+              
             </div>
         );
       }

@@ -118,7 +118,6 @@ const styles = {
                 <div style={{
                     width: "100%",
                     height:"500px",
-                    border:"black solid 1px",
                     display: "flex",
                     justifyContent : "center",
                     alignItems : "center",

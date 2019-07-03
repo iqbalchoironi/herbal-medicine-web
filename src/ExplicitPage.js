@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import Axios from 'axios'
 import { Link } from 'react-router-dom'
 
@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Breadcrumbs from '@material-ui/lab/Breadcrumbs';
 import Link2 from '@material-ui/core/Link';
 import SearchInput from './SearchInput'
+import Spinner from './Spinner'
 
 import Person from '@material-ui/icons/Person';
 import CollectionsBookmark from '@material-ui/icons/CollectionsBookmark'
@@ -99,61 +100,66 @@ class ExplicitPage extends Component {
                 marginTop:"100px",
                 width:"100%"
             }}>
+              <div style={{
+                width:"95%",
+                display:"flex",
+                flexDirection:"row",
+                margin:"auto"
+              }}>
                 <div style={{
-                  width:"95%",
+                  width:"50%",
                   display:"flex",
-                  flexDirection:"row",
-                  margin:"auto"
+                  flexDirection:"row"
                 }}>
-                  <div style={{
-                    width:"50%",
-                    display:"flex",
-                    flexDirection:"row"
-                  }}>
-                    <Breadcrumbs aria-label="Breadcrumb">
-                      <Link2 color="inherit" href="/" >
-                        KMS Jamu
-                      </Link2>
-                      <Link2 color="inherit" >
-                        Explore
-                      </Link2>
-                      <Typography color="textPrimary">Plant</Typography>
-                    </Breadcrumbs>
-                  </div>
-                  <div style={{
-                    width:"50%",
-                    display:"flex",
-                    flexDirection:"row-reverse"
-                  }}>
-                    <SearchInput />
-                  </div>
+                  <Breadcrumbs aria-label="Breadcrumb">
+                    <Link2 color="inherit" href="/" >
+                      KMS Jamu
+                    </Link2>
+                    <Link2 color="inherit" >
+                      Explore
+                    </Link2>
+                    <Typography color="textPrimary">Plant</Typography>
+                  </Breadcrumbs>
                 </div>
                 <div style={{
-                    display:"flex",
-                    flexDirection:"row",
-                    margin:"auto",
-                    border:"hsl(0,0%,80%) 1px solid",
-                    width:"95%",
-                    marginBottom: "10px"
+                  width:"50%",
+                  display:"flex",
+                  flexDirection:"row-reverse"
                 }}>
-                    <div style={{
-                        width:"20%",
-                        maxHeight: "350px",
-                        border:"hsl(0,0%,80%) 1px solid"
-                    }}> 
-                        
-                    </div>
-                    <div style={{
-                        width:"80%",
-                        border:"hsl(0,0%,80%) 1px solid",
-                        padding: "25px",
-                        minHeight:"500px"
-                    }}>
-                      {this.state.explicit.map(item =>
-                        <ListExplicit key={item._id} id={item._id} name={item.firstName+' '+item.lastName} title={item.title} abstract={item.abstract} />
-                      )}
+                  <SearchInput />
+                </div>
+              </div>
+            { this.state.loading ?
+              <Spinner/>
+              :
+              <Fragment>
+              
+              <div style={{
+                  display:"flex",
+                  flexDirection:"row",
+                  margin:"auto",
+                  border:"hsl(0,0%,80%) 1px solid",
+                  width:"95%",
+                  marginBottom: "10px"
+              }}>
+                  <div style={{
+                      width:"20%",
+                      maxHeight: "350px",
+                      border:"hsl(0,0%,80%) 1px solid"
+                  }}> 
+                      
                   </div>
-              </div>  
+                  <div style={{
+                      width:"80%",
+                      border:"hsl(0,0%,80%) 1px solid",
+                      padding: "25px",
+                      minHeight:"500px"
+                  }}>
+                    {this.state.explicit.map(item =>
+                      <ListExplicit key={item._id} id={item._id} name={item.firstName+' '+item.lastName} title={item.title} abstract={item.abstract} />
+                    )}
+                    </div>
+                </div>  
               <Pagination
                 style={{
                   margin:"auto",
@@ -164,7 +170,9 @@ class ExplicitPage extends Component {
                 offset={this.state.offset}
                 total={250}
                 onClick={(e,offset, page) => this.handleClick(offset,page)}
-              />
+              />  
+            </Fragment>
+          }
             </div>
         );
     }
