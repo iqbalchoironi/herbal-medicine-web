@@ -44,7 +44,7 @@ class DetailExplicit extends Component {
         <Paper style={{
             width:"90%",
             margin:"auto",
-            marginTop: "70px",
+            marginTop: "100px",
             marginBottom: "10px",
             padding: "30px"
           }}>
@@ -62,6 +62,12 @@ class DetailExplicit extends Component {
             </Button>
             <Typography variant="title" gutterBottom>
               Abstrak
+            </Typography>
+            <Typography variant="body1" gutterBottom align="justify">
+              {this.state.show.abstract}
+            </Typography>
+            <Typography variant="title" gutterBottom>
+              Description
             </Typography>
             <Typography variant="body1" gutterBottom align="justify">
               {this.state.show.abstract}

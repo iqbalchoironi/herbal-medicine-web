@@ -132,7 +132,7 @@ class HerbMeds extends Component {
               
               <div className="for-card">
                 {this.state.onSearch.map(item =>
-                          <CardHerbMed key={item.idherbsmed} name={item.name} efficacy={item.efficacy}/>
+                           <CardHerbMed key={item.idherbsmed} id={item.idherbsmed} name={item.name} efficacy={item.efficacy} reff={item.refCrude}/>
                  )}
               </div>
             </div>

@@ -55,6 +55,9 @@ class DetailPlant extends Component {
             const url = '/jamu/api/plant/get/' + id;
             const res = await Axios.get(url);
             const { data } = await res;
+            // const urlDesc = 'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&titles='+ data.data.sname;
+            // const resDesc = await Axios.get(urlDesc,{ headers: {'Access-Control-Allow-Origin': "*"} });
+            // console.log(resDesc)
             let RefCrude = await  Promise.all(data.data.refCrude.map(async dt => {
                 let urlCrude = '/jamu/api/crudedrug/get/' + dt.idcrude
                 let resCrude = await Axios.get(urlCrude);

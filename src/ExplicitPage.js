@@ -16,12 +16,14 @@ import Pagination from "material-ui-flat-pagination";
 function ListExplicit (props) {
     return (
         <div style={{
-            marginTop: "25px"
+            marginTop: "0",
+            marginBottom: "26px",
+            maxWidth: "80%"
         }}> 
-        <Typography variant="subheading" style={{
-            color: "#1976d8"
-        }}>
-        <Link to={`/explicit/${ props.id }`}>
+        <Typography variant="title">
+        <Link style={{ 
+          textDecoration: 'none'
+          }} to={`/explicit/${ props.id }`}>
             {props.title}
         </Link>
         </Typography>
@@ -31,7 +33,11 @@ function ListExplicit (props) {
         <Typography variant="caption" >
              <CollectionsBookmark /> Conference paper <DateRange /> 12-12-2001
         </Typography>
-        <p className="block-with-text">
+        <p style={{
+          marginBlockStart: "5px",
+          fontFamily: "arial,sans-serif",
+          fontSize: "small"
+        }} className="block-with-text">
             {props.abstract}
         </p>
        </div>
@@ -47,6 +53,8 @@ class ExplicitPage extends Component {
           loadData: false,
           explicit : [],
           currentPage: 1,
+          offset:5,
+          pages: null
         }
         // this.onScroll = this.onScroll.bind(this);
       }
@@ -70,25 +78,25 @@ class ExplicitPage extends Component {
     //     }
     //   }
       
+    async handleClick(offset,page) {
+      console.log(page)
+      await this.setState({ currentPage: page, offset });
+      this.getData();
+    }
+
       async getData(){
-        const url = '/jamu/api/explicit';
+        const url = '/jamu/api/explicit/pages/' + this.state.currentPage;
         const res = await Axios.get(url);
         const { data } = await res;
-        let newData = this.state.explicit.concat(data.data);
-        console.log(newData)
         this.setState({
-          explicit: newData, 
-          loading: false,
-          offset:5
+          pages: data.pages,
+          explicit: data.data, 
+          loading: false
         })
       }
     
         logout = event => {
             window.location.href = '/form/explicit';
-        }
-        handleClick(offset,page) {
-          console.log(page)
-          this.setState({ offset });
         }
 
     render (){
@@ -168,7 +176,7 @@ class ExplicitPage extends Component {
                 size='large'
                 limit={10}
                 offset={this.state.offset}
-                total={250}
+                total={10 * this.state.pages}
                 onClick={(e,offset, page) => this.handleClick(offset,page)}
               />  
             </Fragment>

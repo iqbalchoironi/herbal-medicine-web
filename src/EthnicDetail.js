@@ -67,11 +67,7 @@ class EthnicDetail extends Component {
         
         const resDetailEthnic = await Axios.get(urlDetailEthnic);
         const DetailEthnic = await resDetailEthnic.data.data;
-        let plantEthnic = resDetailEthnic.data.data.refPlantethnic.map( async id => {
-          let urlPlant = '/jamu/api/plantethnic/get/'+id
-          let resPlant = await Axios.get(urlPlant);
-          return resPlant.data.data;
-        })
+        let plantEthnic = resDetailEthnic.data.data.refPlantethnic;
         Promise.all(plantEthnic).then((completed) => {
           var result = [];
           completed.forEach(item => {
