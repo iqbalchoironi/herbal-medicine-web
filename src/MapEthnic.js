@@ -58,8 +58,10 @@ export class MapHerb extends Component {
     province.forEach(province => {
       province.ethnic = [];
       this.state.ethnic.forEach(ethnic => {
-        if (province._id === ethnic.refProvince){
-          province.ethnic.push(ethnic);
+        if (ethnic.refProvince !== undefined){
+          if (province._id === ethnic.refProvince._id){
+            province.ethnic.push(ethnic);
+          }
         }
       })
     })

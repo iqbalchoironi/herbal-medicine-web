@@ -23,6 +23,7 @@ import {
   } from "@material-ui/core";
 
 import Picklist from './components/pick-list';
+import Spinner from './Spinner';
 
 const styles = theme => ({
   root: {
@@ -50,6 +51,7 @@ class Predict extends Component {
     // change code below this line
     this.state = {
         loading: true,
+        onPredic: true,
         activeStep: 0,
         skipped: new Set(),
         item:[],
@@ -63,6 +65,7 @@ class Predict extends Component {
     this.coba = this.coba.bind(this);
     this.coba1 = this.coba1.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   async componentDidMount() {
@@ -106,7 +109,7 @@ class Predict extends Component {
         this.state.itemtarget.forEach(item => {
             this.state.item.forEach(i => {
             if(i.sname === item){
-                target.push(i.idplant);
+                target.push(i);
             }
             })
         });
@@ -156,14 +159,30 @@ class Predict extends Component {
     console.log(this.state)
     event.preventDefault();
   }  
+
+  async handleSubmit (event ){
+    this.setState({
+      onPredic: true
+    })
+    this.handleNext()
+    this.setState({
+      onPredic: false
+    })
+    
+          event.preventDefault();
+  }
+
   render() {
     const { classes } = this.props;
-    const steps = ['Select campaign settings', 'Create an ad group', 'Result'];
+    const steps = ['Select Type of Prediction', `Choose Method and ${this.state.type}`, 'Sumarry'];
     const { activeStep } = this.state;
 
     return (
       <Paper className={classes.root} elevation={4}>
-      <div>
+        {
+          this.state.loading ? <Spinner /> 
+          :
+          <div>
         <Stepper activeStep={activeStep}>
           {steps.map((label, index) => {
             const props = {};
@@ -194,9 +213,11 @@ class Predict extends Component {
       minHeight: "400px"
     }}>
 
+    {this.state.onPredic ? <Spinner /> :
     <Typography className={classes.instructions}>
         All steps completed - you&quot;re finished
     </Typography>
+    }
     
     </Paper>  
             </div>
@@ -246,19 +267,35 @@ class Predict extends Component {
                   Back
                 </Button>
 
+                {activeStep === 1 ? 
+                 <Button
+                 variant="raised"
+                 color="primary"
+                 onClick={this.handleNext}
+                 className={classes.button}
+               >
+                 {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+               </Button>
+                :
+                (activeStep === steps.length - 1) 
+                  ? 
                 <Button
                   variant="raised"
                   color="primary"
-                  onClick={this.handleNext}
-                  className={classes.button}
-                >
-                  {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                </Button>
+                  onClick={this.handleSubmit}
+                  className={classes.button}>Submit</Button> : 
+                  <Button
+                variant="raised"
+                color="primary"
+                onClick={this.handleNext}
+                className={classes.button}>Next</Button>}
               </div>
             </div>
           )}
         </div>
       </div>
+        }
+      
       </Paper>
     );
   }
@@ -337,14 +374,25 @@ function Step3(props) {
     <Paper style={{
       display: "flex",
       justifyContent : "center",
+      alignItems : "center",
+      flexDirection:"column",
       width: "50%",
       minHeight: "400px"
     }}>
-    <h6> Sumarry</h6>
-    <p>{props.type}</p>
-    <p>{props.model}</p>
-    <p>{props.target}</p>
+    <div style={{
+      width: "80%"
+    }}>
+      <h3> Sumarry :</h3>
+    </div>
     
+    <label>Type of Prediction :</label>
+    <span>{props.type}</span>
+    <label>Type of Method :</label>
+    <span>{props.model}</span>
+    <label>{`Selected ${props.type} :`}</label>
+    <ul>
+      {props.target.map(dt => <li>{dt.sname}</li>)}
+    </ul>
     </Paper>
     );
 }
