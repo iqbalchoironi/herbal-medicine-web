@@ -11,6 +11,9 @@ import locationIcons from './placeholder.svg';
 
 import Spinner from './Spinner'
 
+import SnackBar from './SnackBar'
+import ErorPage from './ErorPage'
+
 const mapStyles = {
   width: '100%',
   height: '90%'
@@ -33,9 +36,16 @@ export class MapHerb extends Component {
       selectedPlace: {},
       province: [],
       ethnic: [],
-      plantethnic: []
+      plantethnic: [],
+      snackbar: {
+        open: false,
+        success: false,
+        message: '',
+      }
     }
     // this.onEthnicClick = this.onEthnicClick.bind(this);
+    this.closeBtn = this.closeBtn.bind(this);
+    this.afterUpdate = this.afterUpdate.bind(this);
     this.closeBtn = this.closeBtn.bind(this);
   }
 
@@ -51,7 +61,7 @@ export class MapHerb extends Component {
   }
 
   async getDataProvince(){
-    const url = '/jamu/api/province/';
+    try {const url = '/jamu/api/province/';
     const res = await Axios.get(url);
     const { data } = await res;
     let province = data.data;
@@ -65,21 +75,36 @@ export class MapHerb extends Component {
         }
       })
     })
-
+    this.afterUpdate(data.success, data.message);
     this.setState({
       province: province, 
       loading: false
-    })
+    })} catch (err){
+      console.log(err.message)
+      this.afterUpdate(false, err.message);
+      this.setState({
+        onEror: true,
+        loading: false
+      })
+    }
   }
   
   async getData(){
-    const url = '/jamu/api/ethnic';
+    try {const url = '/jamu/api/ethnic';
     const res = await Axios.get(url);
     const { data } = await res;
+    this.afterUpdate(data.success, data.message);
     this.setState({
       ethnic: data.data, 
       loading: false
-    })
+    })} catch (err){
+      console.log(err.message)
+      this.afterUpdate(false, err.message);
+      this.setState({
+        onEror: true,
+        loading: false
+      })
+    }
   }
 
   // async getDataPlantEthnic(){
@@ -132,9 +157,23 @@ export class MapHerb extends Component {
     }
   };
 
+  async afterUpdate (success, message){
+    this.setState({
+      snackbar: {
+        open: true,
+        success: success,
+        message: message,
+      }
+    })
+  }
+
   closeBtn() {
     this.setState({
-      modalOpen: ''
+      snackbar: {
+        open: false,
+        success: false,
+        message: '',
+      }
     })
   }
 
@@ -145,6 +184,8 @@ export class MapHerb extends Component {
           marginTop: "70px"
       }}>
         {
+                this.state.onEror ? <ErorPage />
+                :
           this.state.loading ?
           <Spinner />
           :
@@ -181,6 +222,10 @@ export class MapHerb extends Component {
                         </Marker>
                     ))} 
           </Map>
+        }
+        {this.state.snackbar.open === true ? <SnackBar data={this.state.snackbar} close={this.closeBtn}/>
+        : 
+        null
         }
       </div>
     );

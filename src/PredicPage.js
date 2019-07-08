@@ -15,6 +15,9 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
 import Select from '@material-ui/core/Select';
 
+import SnackBar from './SnackBar'
+import ErorPage from './ErorPage'
+
 import {
     FormControl,
     InputLabel,
@@ -59,13 +62,20 @@ class Predict extends Component {
         itemtarget : [],
         type: '',
         model:'',
-        target: []
+        target: [],
+        snackbar: {
+          open: false,
+          success: false,
+          message: '',
+        }
     }
     // change code above this line
     this.coba = this.coba.bind(this);
     this.coba1 = this.coba1.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.afterUpdate = this.afterUpdate.bind(this);
+        this.closeBtn = this.closeBtn.bind(this);
   }
 
   async componentDidMount() {
@@ -73,7 +83,7 @@ class Predict extends Component {
   }
   
  async getData(){
-  const url = '/jamu/api/plant/getlist';
+  try {const url = '/jamu/api/plant/getlist';
   const res = await Axios.get(url);
   const { data } = await res;
   let coba = [];
@@ -81,7 +91,19 @@ class Predict extends Component {
   data.data.forEach(plant => {
     coba.push(plant.sname);
   });
-  this.setState({itembasis: coba, item: data.data, loading: false})
+  this.afterUpdate(data.success, data.message);
+  this.setState({
+    itembasis: coba, 
+    item: data.data, 
+    loading: false})
+  } catch (err){
+    console.log(err.message)
+    this.afterUpdate(false, err.message);
+    this.setState({
+      onEror: true,
+      loading: false
+    })
+  }
 }
   optionsArray = [{
     label: 'svm',
@@ -172,16 +194,39 @@ class Predict extends Component {
           event.preventDefault();
   }
 
+  async afterUpdate (success, message){
+    this.setState({
+      snackbar: {
+        open: true,
+        success: success,
+        message: message,
+      }
+    })
+  }
+
+  closeBtn() {
+    this.setState({
+      snackbar: {
+        open: false,
+        success: false,
+        message: '',
+      }
+    })
+  }
+
   render() {
     const { classes } = this.props;
     const steps = ['Select Type of Prediction', `Choose Method and ${this.state.type}`, 'Sumarry'];
     const { activeStep } = this.state;
 
     return (
-      <Paper className={classes.root} elevation={4}>
+      <div>
         {
-          this.state.loading ? <Spinner /> 
+          this.state.onEror ? <ErorPage />
           :
+        this.state.loading ? <Spinner /> 
+        :
+      <Paper className={classes.root} elevation={4}>
           <div>
         <Stepper activeStep={activeStep}>
           {steps.map((label, index) => {
@@ -294,9 +339,13 @@ class Predict extends Component {
           )}
         </div>
       </div>
-        }
-      
       </Paper>
+      }
+       {this.state.snackbar.open === true ? <SnackBar data={this.state.snackbar} close={this.closeBtn}/>
+              : 
+              null
+              }
+      </div>
     );
   }
 }

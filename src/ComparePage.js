@@ -20,6 +20,9 @@ import LinearProgress from './LinearProgress'
 import { Button } from '@material-ui/core';
 import { resolve, reject } from 'q';
 
+import SnackBar from './SnackBar'
+import ErorPage from './ErorPage'
+
 const styles = theme => ({
   root: {
     flexGrow: 1,
@@ -91,7 +94,12 @@ class ComparePage extends React.Component {
 
             refCrude1: [],
             refCrude2: [],
-            sama: []
+            sama: [],
+            snackbar: {
+              open: false,
+              success: false,
+              message: '',
+            }
         }
         // change code above this line
         this.handleChange = this.handleChange.bind(this);
@@ -100,6 +108,8 @@ class ComparePage extends React.Component {
         this.getSame = this.getSame.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.reset = this.reset.bind(this);
+        this.afterUpdate = this.afterUpdate.bind(this);
+        this.closeBtn = this.closeBtn.bind(this);
       }
 
   async componentDidMount() {
@@ -110,16 +120,24 @@ class ComparePage extends React.Component {
   }
   
   async getData(){
-    const url = '/jamu/api/herbsmed/getlist';
+   try { const url = '/jamu/api/herbsmed/getlist';
     const res = await Axios.get(url);
     const { data } = await res;
     let herbsmed = data.data.map( dt => {
       return { label : dt.name, value : dt.idherbsmed }
     });
+    this.afterUpdate(data.success, data.message);
     this.setState({
       refHerbMed: herbsmed,
       loading: false
-    })
+    })} catch (err){
+      console.log(err.message)
+      this.afterUpdate(false, err.message);
+      this.setState({
+        onEror: true,
+        loading: false
+      })
+    }
   }
 
   handleChange = name => value => {
@@ -129,7 +147,7 @@ class ComparePage extends React.Component {
   }
 
   async getDataHerbmed1(){
-    let res = await Axios.get('/jamu/api/herbsmed/get/'+ this.state.forLabelherbmed1.value);
+    try {let res = await Axios.get('/jamu/api/herbsmed/get/'+ this.state.forLabelherbmed1.value);
     const { data } = await res;
     this.setState({
       herbmed1: data.data
@@ -144,13 +162,21 @@ class ComparePage extends React.Component {
 
     let item1 = this.state.herbmed1;
     item1.refCrude = tempRefCrude1
+    this.afterUpdate(data.success, data.message);
     this.setState({
         herbmed1: item1
-    })
+    })} catch (err){
+      console.log(err.message)
+      this.afterUpdate(false, err.message);
+      this.setState({
+        onEror: true,
+        loading: false
+      })
+    }
   }
 
   async getDataHerbmed2(){
-    let res = await Axios.get('/jamu/api/herbsmed/get/'+ this.state.forLabelherbmed2.value);
+    try {let res = await Axios.get('/jamu/api/herbsmed/get/'+ this.state.forLabelherbmed2.value);
     const { data } = await res;
     this.setState({
       herbmed2: data.data
@@ -165,9 +191,17 @@ class ComparePage extends React.Component {
 
     let item2 = this.state.herbmed2;
     item2.refCrude = tempRefCrude2
+    this.afterUpdate(data.success, data.message);
     this.setState({
         herbmed2: item2
-    })
+    })} catch (err){
+      console.log(err.message)
+      this.afterUpdate(false, err.message);
+      this.setState({
+        onEror: true,
+        loading: false
+      })
+    }
   }
 
   getSame(){
@@ -264,12 +298,35 @@ class ComparePage extends React.Component {
     })
   }
 
+  async afterUpdate (success, message){
+    this.setState({
+      snackbar: {
+        open: true,
+        success: success,
+        message: message,
+      }
+    })
+  }
+
+  closeBtn() {
+    this.setState({
+      snackbar: {
+        open: false,
+        success: false,
+        message: '',
+      }
+    })
+  }
+
   render() {
     const { classes, theme } = this.props;
 
     return (
       <div className={classes.root}>
-        {this.state.loading ? 
+        {
+          this.state.onEror ? <ErorPage />
+          :
+        this.state.loading ? 
         <Spinner />
         :
         <Paper style={{
@@ -445,7 +502,10 @@ class ComparePage extends React.Component {
            
         </Paper>
         }
-      
+         {this.state.snackbar.open === true ? <SnackBar data={this.state.snackbar} close={this.closeBtn}/>
+          : 
+          null
+          }
       </div>
     );
   }

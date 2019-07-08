@@ -22,10 +22,14 @@ import DetailHerbMed from './DetailHerbMed'
 
 import NotFound from './404'
 
+import axios from "axios";
 
 import './App.css'
 import DetailPlant from './DetailPlant';
 import {ProtectedRoute} from "./protected.route";
+
+
+axios.defaults.baseURL = 'http://ci.apps.cs.ipb.ac.id';
 
 class App extends Component {
   

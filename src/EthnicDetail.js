@@ -23,6 +23,9 @@ import Divider from '@material-ui/core/Divider';
 import InboxIcon from '@material-ui/icons/Inbox';
 import Location from '@material-ui/icons/LocationOn';
 
+import SnackBar from './SnackBar'
+import ErorPage from './ErorPage'
+
 function ListItemLink(props) {
   return <ListItem button component="a" {...props} />;
 }
@@ -36,21 +39,36 @@ class EthnicDetail extends Component {
             onDisplay: [],
             plantEthnic:[],
             ethnic :[],
-            detailEthnic: []
+            detailEthnic: [],
+            snackbar: {
+              open: false,
+              success: false,
+              message: '',
+            }
         }
         this.handleSearch = this.handleSearch.bind(this);
+        this.afterUpdate = this.afterUpdate.bind(this);
+        this.closeBtn = this.closeBtn.bind(this);
       }
     
       async componentDidMount() {
-        this.setState({
-          loading:true
-      })
-      let url = '/jamu/api/ethnic/getlist'
-      let res = await Axios.get(url);
-      let {data} = await res
-      this.setState({
-        ethnic: data.data
-    })
+       try { this.setState({
+              loading:true
+          })
+          let url = '/jamu/api/ethnic/getlist'
+          let res = await Axios.get(url);
+          let {data} = await res
+          this.afterUpdate(data.success, data.message);
+          this.setState({
+            ethnic: data.data
+          })} catch (err){
+            console.log(err.message)
+            this.afterUpdate(false, err.message);
+            this.setState({
+              onEror: true,
+              loading: false
+            })
+          }
         await this.getDataPlantEthnic();
       }
 
@@ -62,7 +80,7 @@ class EthnicDetail extends Component {
       }
 
       async getDataPlantEthnic(){
-        const {id} = this.props.match.params;
+        try {const {id} = this.props.match.params;
         const urlDetailEthnic = '/jamu/api/ethnic/get/' + id
         
         const resDetailEthnic = await Axios.get(urlDetailEthnic);
@@ -80,13 +98,21 @@ class EthnicDetail extends Component {
             }
           })
           console.log(result)
+          this.afterUpdate(true, 'load detail ethnic with plant use for herbal medicine success');
           this.setState({
             detailEthnic: DetailEthnic,
             onDisplay: result,
             plantEthnic: result,
             loading: false
           })
-        })
+        })} catch (err){
+          console.log(err.message)
+          this.afterUpdate(false, err.message);
+          this.setState({
+            onEror: true,
+            loading: false
+          })
+        }
       }
 
       handleSearch(e){
@@ -118,6 +144,26 @@ class EthnicDetail extends Component {
                 loading: false 
             })
         }
+    }
+
+    async afterUpdate (success, message){
+      this.setState({
+        snackbar: {
+          open: true,
+          success: success,
+          message: message,
+        }
+      })
+    }
+
+    closeBtn() {
+      this.setState({
+        snackbar: {
+          open: false,
+          success: false,
+          message: '',
+        }
+      })
     }
 
     render(){
@@ -161,6 +207,9 @@ class EthnicDetail extends Component {
                  <SearchInput nameInput="inputSearch" inputChange={this.handleSearch}/>
               </div>
               </div>
+              {
+                this.state.onEror ? <ErorPage />
+                :
               <Paper style={{
                 display:"flex",
                 flexDirection:"row",
@@ -233,8 +282,13 @@ class EthnicDetail extends Component {
                 }  
                 </Paper>
             </Paper>
+            }
             </div>
             }
+            {this.state.snackbar.open === true ? <SnackBar data={this.state.snackbar} close={this.closeBtn}/>
+              : 
+              null
+              }
           </div>
         )
     }

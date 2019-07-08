@@ -9,20 +9,31 @@ import Typography from '@material-ui/core/Typography';
 import Breadcrumbs from '@material-ui/lab/Breadcrumbs';
 import Link from '@material-ui/core/Link';
 
+import SnackBar from './SnackBar'
+import ErorPage from './ErorPage'
+
 class HerbMeds extends Component {
     constructor(props) {
         super(props);
         this.state = {
+          onEror: false,
           loading: true,
           loadData: false,
           inputSearch: '',
           onSearch:[],
           herbmeds : [],
-          currentPage: 1
+          currentPage: 1,
+          snackbar: {
+            open: false,
+            success: false,
+            message: '',
+          }
         }
         this.onScroll = this.onScroll.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.getDataSearch = this.getDataSearch.bind(this);
+        this.afterUpdate = this.afterUpdate.bind(this);
+        this.closeBtn = this.closeBtn.bind(this);
       }
 
       async componentDidMount() {
@@ -45,14 +56,26 @@ class HerbMeds extends Component {
       };
       
      async getData(){
-      const url = '/jamu/api/herbsmed/pages/' + this.state.currentPage;
-      const res = await Axios.get(url);
-      const { data } = await res;
-      let newData = this.state.herbmeds.concat(data.data);
-      this.setState({
-        herbmeds: newData, 
-        loading: false
-      })
+      try {
+        const url = '/jamu/api/herbsmed/pages/' + this.state.currentPage;
+        const res = await Axios.get(url);
+        const { data } = await res;
+        let newData = this.state.herbmeds.concat(data.data);
+        console.log(res)
+        this.afterUpdate(data.success, data.message);
+        this.setState({
+          herbmeds: newData, 
+          loading: false
+        })
+      } catch (err){
+        console.log(err.message)
+        this.afterUpdate(false, err.message);
+        this.setState({
+          onEror: true,
+          loading: false
+        })
+      }
+      
     }
 
     async getDataSearch(){
@@ -89,6 +112,26 @@ class HerbMeds extends Component {
       this.setState({
         [name]: value
       });
+    }
+
+    async afterUpdate (success, message){
+      this.setState({
+        snackbar: {
+          open: true,
+          success: success,
+          message: message,
+        }
+      })
+    }
+
+    closeBtn() {
+      this.setState({
+        snackbar: {
+          open: false,
+          success: false,
+          message: '',
+        }
+      })
     }
 
       render() {
@@ -176,6 +219,8 @@ class HerbMeds extends Component {
               </div>
               </div>
               {
+                this.state.onEror ? <ErorPage />
+                :
                 this.state.loading ?
                 <Spinner />
                 :
@@ -183,9 +228,11 @@ class HerbMeds extends Component {
                   {this.state.herbmeds.map(item =>
                             <CardHerbMed key={item.idherbsmed} id={item.idherbsmed} name={item.name} efficacy={item.efficacy} reff={item.refCrude}/>
                   )}
-                  {this.state.loadData ? <div><br></br><br></br> <br></br>loading...</div>
-                    : null }
                 </div>
+              }
+              {this.state.snackbar.open === true ? <SnackBar data={this.state.snackbar} close={this.closeBtn}/>
+              : 
+              null
               }
               
             </div>

@@ -9,22 +9,44 @@ import CollectionsBookmark from '@material-ui/icons/CollectionsBookmark'
 import DateRange from '@material-ui/icons/DateRange'
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import Spinner from './Spinner'
+
+import SnackBar from './SnackBar'
+import ErorPage from './ErorPage'
 
 class DetailExplicit extends Component {
-  state = {
-    show : null,
-    loading: true
-  }
+  constructor(props) {
+    super(props);
+       this.state = {
+        show : null,
+        loading: true,
+        snackbar: {
+          open: false,
+          success: false,
+          message: '',
+        }
+        }
+    this.afterUpdate = this.afterUpdate.bind(this);
+    this.closeBtn = this.closeBtn.bind(this);
+    }
 
   async componentDidMount(){
-    const {id} = this.props.match.params;
+    try {const {id} = this.props.match.params;
     const url = '/jamu/api/explicit/get/' + id;
     const res = await Axios.get(url);
     const { data } = await res;
+    this.afterUpdate(data.success, data.message);
     this.setState({
       show: data.data,
       loading: false
-    })
+    })} catch (err){
+      console.log(err.message)
+      this.afterUpdate(false, err.message);
+      this.setState({
+        onEror: true,
+        loading: false
+      })
+    }
   }
 
   getFile (e){
@@ -36,11 +58,35 @@ class DetailExplicit extends Component {
    });
   }
 
+  async afterUpdate (success, message){
+    this.setState({
+      snackbar: {
+        open: true,
+        success: success,
+        message: message,
+      }
+    })
+  }
+
+  closeBtn() {
+    this.setState({
+      snackbar: {
+        open: false,
+        success: false,
+        message: '',
+      }
+    })
+  }
+
   render(){
-    if (this.state.loading) {
-      return <div><br></br><br></br> <br></br>loading...</div>;
-    }
     return(
+      <div>
+      {
+        this.state.onEror ? <ErorPage />
+        :
+    this.state.loading ? 
+        <Spinner />
+        :
         <Paper style={{
             width:"90%",
             margin:"auto",
@@ -73,6 +119,12 @@ class DetailExplicit extends Component {
               {this.state.show.abstract}
             </Typography>
             </Paper>
+      }
+       {this.state.snackbar.open === true ? <SnackBar data={this.state.snackbar} close={this.closeBtn}/>
+              : 
+              null
+              }
+      </div>
     );
   }
 }

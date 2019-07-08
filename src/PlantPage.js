@@ -9,6 +9,9 @@ import Typography from '@material-ui/core/Typography';
 import Breadcrumbs from '@material-ui/lab/Breadcrumbs';
 import Link from '@material-ui/core/Link';
 
+import SnackBar from './SnackBar'
+import ErorPage from './ErorPage'
+
 class Plant extends Component {
     constructor(props) {
         super(props);
@@ -18,11 +21,18 @@ class Plant extends Component {
           inputSearch: '',
           plans : [],
           onSearch : [],
-          currentPage: 1
+          currentPage: 1,
+          snackbar: {
+            open: false,
+            success: false,
+            message: '',
+          }
         }
         this.onScroll = this.onScroll.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.getDataSearch = this.getDataSearch.bind(this);
+        this.afterUpdate = this.afterUpdate.bind(this);
+        this.closeBtn = this.closeBtn.bind(this);
       }
 
       async componentDidMount() {
@@ -45,18 +55,26 @@ class Plant extends Component {
       };
       
      async getData(){
-      const url = '/jamu/api/plant/pages/' + this.state.currentPage;
+      try {const url = '/jamu/api/plant/pages/' + this.state.currentPage;
       const res = await Axios.get(url);
       const { data } = await res;
       let newData = this.state.plans.concat(data.data);
+      this.afterUpdate(data.success, data.message);
       this.setState({
         plans: newData, 
         loading: false
-      })
+      })} catch (err){
+        console.log(err.message)
+        this.afterUpdate(false, err.message);
+        this.setState({
+          onEror: true,
+          loading: false
+        })
+      }
     }
 
     async getDataSearch(event){
-      console.log(this.state.inputSearch)
+     try { console.log(this.state.inputSearch)
       const url = '/jamu/api/plant/search';
       let axiosConfig = {
         headers: {
@@ -71,10 +89,18 @@ class Plant extends Component {
       const { data } = await res;
       let newData = data.data;
       console.log(newData)
+      this.afterUpdate(data.success, data.message);
       this.setState({
         onSearch: newData, 
         loading: false
-      })
+      })}catch (err){
+        console.log(err.message)
+        this.afterUpdate(false, err.message);
+        this.setState({
+          onEror: true,
+          loading: false
+        })
+      }
       event.preventDefault();
     }
 
@@ -86,6 +112,26 @@ class Plant extends Component {
       this.setState({
         [name]: value
       });
+    }
+
+    async afterUpdate (success, message){
+      this.setState({
+        snackbar: {
+          open: true,
+          success: success,
+          message: message,
+        }
+      })
+    }
+
+    closeBtn() {
+      this.setState({
+        snackbar: {
+          open: false,
+          success: false,
+          message: '',
+        }
+      })
     }
 
       render() {
@@ -169,7 +215,10 @@ class Plant extends Component {
                  <SearchInput nameInput="inputSearch" inputValue={this.state.inputSearch} inputChange={this.handleInputChange} clickButton={this.getDataSearch}/>
               </div>
               </div>
-              { this.state.loading ?
+              {
+                this.state.onEror ? <ErorPage />
+                :
+              this.state.loading ?
               <Spinner />
               :  
               <div className="for-card">
@@ -179,6 +228,10 @@ class Plant extends Component {
                 {this.state.loadData ? <div><br></br><br></br> <br></br>loading...</div>
                   : null }
               </div>
+              }
+              {this.state.snackbar.open === true ? <SnackBar data={this.state.snackbar} close={this.closeBtn}/>
+              : 
+              null
               }
               
             </div>

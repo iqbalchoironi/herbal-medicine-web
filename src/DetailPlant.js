@@ -20,6 +20,10 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import CardExample from './card'
 import Spinner from './Spinner'
 
+import SnackBar from './SnackBar'
+import ErorPage from './ErorPage'
+
+
 function TabContainer(props) {
     return (
       <Typography component="div" style={{ padding: 8 * 3 }}>
@@ -38,9 +42,16 @@ class DetailPlant extends Component {
            this.state = {
                 value: 0,
                 detailPlant : [],
-                loading: false
+                loading: false,
+                snackbar: {
+                    open: false,
+                    success: false,
+                    message: '',
+                  }
             }
         this.handleChange = this.handleChange.bind(this)
+        this.afterUpdate = this.afterUpdate.bind(this);
+        this.closeBtn = this.closeBtn.bind(this);
         }
 
         async componentDidMount(){
@@ -51,7 +62,7 @@ class DetailPlant extends Component {
           }
 
           async getData(){
-            const {id} = this.props.match.params;
+           try { const {id} = this.props.match.params;
             const url = '/jamu/api/plant/get/' + id;
             const res = await Axios.get(url);
             const { data } = await res;
@@ -68,20 +79,51 @@ class DetailPlant extends Component {
             let detailPlant = data.data
             detailPlant.refCrude = RefCrude
             console.log(detailPlant)
+            this.afterUpdate(data.success, data.message);
             this.setState({
               detailPlant: detailPlant,
               loading: false
-            })
+            })} catch (err){
+                console.log(err.message)
+                this.afterUpdate(false, err.message);
+                this.setState({
+                  onEror: true,
+                  loading: false
+                })
+              }
           }
         
           handleChange = (event, value) => {
             this.setState({ value });
           };
 
+          async afterUpdate (success, message){
+            this.setState({
+              snackbar: {
+                open: true,
+                success: success,
+                message: message,
+              }
+            })
+          }
+      
+          closeBtn() {
+            this.setState({
+              snackbar: {
+                open: false,
+                success: false,
+                message: '',
+              }
+            })
+          }
+
   render(){
     return(
         <div>
-            {this.state.loading ? 
+            {
+                this.state.onEror ? <ErorPage />
+                :
+            this.state.loading ? 
                 <Spinner />
                 :
                 <div>
@@ -227,6 +269,10 @@ class DetailPlant extends Component {
                 </Paper>
             </div>
             }
+             {this.state.snackbar.open === true ? <SnackBar data={this.state.snackbar} close={this.closeBtn}/>
+              : 
+              null
+              }
         </div>
     )
   }

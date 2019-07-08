@@ -13,6 +13,9 @@ import CollectionsBookmark from '@material-ui/icons/CollectionsBookmark'
 import DateRange from '@material-ui/icons/DateRange'
 import Pagination from "material-ui-flat-pagination";
 
+import SnackBar from './SnackBar'
+import ErorPage from './ErorPage'
+
 function ListTacit (props) {
     return (
         <div style={{
@@ -47,8 +50,15 @@ class TacitPage extends Component {
           loadData: false,
           explicit : [],
           currentPage: 1,
+          snackbar: {
+            open: false,
+            success: false,
+            message: '',
+          }
         }
         // this.onScroll = this.onScroll.bind(this);
+        this.afterUpdate = this.afterUpdate.bind(this);
+        this.closeBtn = this.closeBtn.bind(this);
       }
     
       async componentDidMount() {
@@ -71,16 +81,24 @@ class TacitPage extends Component {
     //   }
       
       async getData(){
-        const url = '/jamu/api/tacit';
+        try {const url = '/jamu/api/tacit';
         const res = await Axios.get(url);
         const { data } = await res;
         let newData = this.state.explicit.concat(data.data);
         console.log(newData)
+        this.afterUpdate(data.success, data.message);
         this.setState({
           explicit: newData, 
           loading: false,
           offset:5
-        })
+        })} catch (err){
+          console.log(err.message)
+          this.afterUpdate(false, err.message);
+          this.setState({
+            onEror: true,
+            loading: false
+          })
+        }
       }
     
         logout = event => {
@@ -89,6 +107,26 @@ class TacitPage extends Component {
         handleClick(offset,page) {
           console.log(page)
           this.setState({ offset });
+        }
+
+        async afterUpdate (success, message){
+          this.setState({
+            snackbar: {
+              open: true,
+              success: success,
+              message: message,
+            }
+          })
+        }
+    
+        closeBtn() {
+          this.setState({
+            snackbar: {
+              open: false,
+              success: false,
+              message: '',
+            }
+          })
         }
 
     render (){
@@ -118,7 +156,7 @@ class TacitPage extends Component {
                       <Link2 color="inherit" >
                         Explore
                       </Link2>
-                      <Typography color="textPrimary">Plant</Typography>
+                      <Typography color="textPrimary">Tacit Knowledge</Typography>
                     </Breadcrumbs>
                   </div>
                   <div style={{
@@ -130,6 +168,8 @@ class TacitPage extends Component {
                   </div>
                 </div>
                 {
+                this.state.onEror ? <ErorPage />
+                :
                   this.state.loading ?
                   <Spinner />
                   :
@@ -173,6 +213,10 @@ class TacitPage extends Component {
                   />
                   </Fragment> 
                 }
+                 {this.state.snackbar.open === true ? <SnackBar data={this.state.snackbar} close={this.closeBtn}/>
+                  : 
+                  null
+                  }
             </div>
         );
     }

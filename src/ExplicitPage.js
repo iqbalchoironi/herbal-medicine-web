@@ -13,6 +13,9 @@ import CollectionsBookmark from '@material-ui/icons/CollectionsBookmark'
 import DateRange from '@material-ui/icons/DateRange'
 import Pagination from "material-ui-flat-pagination";
 
+import SnackBar from './SnackBar'
+import ErorPage from './ErorPage'
+
 function ListExplicit (props) {
     return (
         <div style={{
@@ -54,9 +57,16 @@ class ExplicitPage extends Component {
           explicit : [],
           currentPage: 1,
           offset:5,
-          pages: null
+          pages: null,
+          snackbar: {
+            open: false,
+            success: false,
+            message: '',
+          }
         }
         // this.onScroll = this.onScroll.bind(this);
+        this.afterUpdate = this.afterUpdate.bind(this);
+        this.closeBtn = this.closeBtn.bind(this);
       }
     
       async componentDidMount() {
@@ -85,18 +95,46 @@ class ExplicitPage extends Component {
     }
 
       async getData(){
-        const url = '/jamu/api/explicit/pages/' + this.state.currentPage;
+        try {const url = '/jamu/api/explicit/pages/' + this.state.currentPage;
         const res = await Axios.get(url);
         const { data } = await res;
+        this.afterUpdate(data.success, data.message);
         this.setState({
           pages: data.pages,
           explicit: data.data, 
           loading: false
-        })
+        })} catch (err){
+          console.log(err.message)
+          this.afterUpdate(false, err.message);
+          this.setState({
+            onEror: true,
+            loading: false
+          })
+        }
       }
     
         logout = event => {
             window.location.href = '/form/explicit';
+        }
+
+        async afterUpdate (success, message){
+          this.setState({
+            snackbar: {
+              open: true,
+              success: success,
+              message: message,
+            }
+          })
+        }
+    
+        closeBtn() {
+          this.setState({
+            snackbar: {
+              open: false,
+              success: false,
+              message: '',
+            }
+          })
         }
 
     render (){
@@ -126,7 +164,7 @@ class ExplicitPage extends Component {
                     <Link2 color="inherit" >
                       Explore
                     </Link2>
-                    <Typography color="textPrimary">Plant</Typography>
+                    <Typography color="textPrimary">Explicit Knowledge</Typography>
                   </Breadcrumbs>
                 </div>
                 <div style={{
@@ -137,7 +175,10 @@ class ExplicitPage extends Component {
                   <SearchInput />
                 </div>
               </div>
-            { this.state.loading ?
+              {
+                this.state.onEror ? <ErorPage />
+                :
+            this.state.loading ?
               <Spinner/>
               :
               <Fragment>
@@ -181,6 +222,10 @@ class ExplicitPage extends Component {
               />  
             </Fragment>
           }
+           {this.state.snackbar.open === true ? <SnackBar data={this.state.snackbar} close={this.closeBtn}/>
+              : 
+              null
+              }
             </div>
         );
     }

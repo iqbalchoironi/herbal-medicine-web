@@ -11,30 +11,53 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
 import { Editor, EditorState, convertFromRaw } from "draft-js";
+import Spinner from './Spinner'
+
+import SnackBar from './SnackBar'
+import ErorPage from './ErorPage'
+
 class DetailTacit extends Component {
-  state = {
-    content: null,
-    datePublish: null,
-    file: null,
-    title: null,
-    loading: true
-  }
+  constructor(props) {
+    super(props);
+       this.state = {
+        content: null,
+        datePublish: null,
+        file: null,
+        title: null,
+        loading: true,
+        snackbar: {
+          open: false,
+          success: false,
+          message: '',
+        }
+        }
+    this.afterUpdate = this.afterUpdate.bind(this);
+    this.closeBtn = this.closeBtn.bind(this);
+    }
 
   async componentDidMount(){
-    const {id} = this.props.match.params;
+    try{const {id} = this.props.match.params;
     const url = '/jamu/api/tacit/get/' + id;
     const res = await Axios.get(url);
     let data = await res.data.data;
     let content = await JSON.parse(data.content)
     const contentState = await convertFromRaw(content);
     const editorState = await EditorState.createWithContent(contentState);
+    this.afterUpdate(res.data.success, res.data.message);
     this.setState({
       content: editorState,
       datePublish: data.datePublish,
       file: data.file,
       title: data.title,
       loading: false
-    })
+    })} catch (err){
+      console.log(err.message)
+      this.afterUpdate(false, err.message);
+      this.setState({
+        onEror: true,
+        loading: false
+      })
+    }
   }
 
   getFile (e){
@@ -46,13 +69,35 @@ class DetailTacit extends Component {
    });
   }
 
+  async afterUpdate (success, message){
+    this.setState({
+      snackbar: {
+        open: true,
+        success: success,
+        message: message,
+      }
+    })
+  }
+
+  closeBtn() {
+    this.setState({
+      snackbar: {
+        open: false,
+        success: false,
+        message: '',
+      }
+    })
+  }
+
   render(){
-    console.log(this.state)
-    
-    if (this.state.loading) {
-      return <div><br></br><br></br> <br></br>loading...</div>;
-    }
     return(
+      <div>
+      {
+        this.state.onEror ? <ErorPage />
+        :
+    this.state.loading ? 
+        <Spinner />
+        :
         <Paper style={{
             width:"90%",
             margin:"auto",
@@ -74,6 +119,12 @@ class DetailTacit extends Component {
                {this.state.reference}
             </Typography>
             </Paper>
+      }
+       {this.state.snackbar.open === true ? <SnackBar data={this.state.snackbar} close={this.closeBtn}/>
+              : 
+              null
+              }
+      </div>
     );
   }
 }
