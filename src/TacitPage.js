@@ -21,7 +21,7 @@ function ListTacit (props) {
         <div style={{
             marginTop: "25px"
         }}> 
-        <Typography variant="subheading" style={{
+        <Typography variant="subtitle1" style={{
             color: "#1976d8"
         }}>
         <Link to={`/tacit/${ props.id }`}>

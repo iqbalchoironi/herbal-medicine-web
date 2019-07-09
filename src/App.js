@@ -29,7 +29,7 @@ import DetailPlant from './DetailPlant';
 import {ProtectedRoute} from "./protected.route";
 
 
-axios.defaults.baseURL = 'http://ci.apps.cs.ipb.ac.id';
+axios.defaults.baseURL = 'http://localhost:3003';
 
 class App extends Component {
   

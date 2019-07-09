@@ -23,7 +23,7 @@ function ListExplicit (props) {
             marginBottom: "26px",
             maxWidth: "80%"
         }}> 
-        <Typography variant="title">
+        <Typography variant="subtitle1">
         <Link style={{ 
           textDecoration: 'none'
           }} to={`/explicit/${ props.id }`}>
