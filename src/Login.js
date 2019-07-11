@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Axios from 'axios';
-
+import ButtonProgress from './ButtonProgress'
 import Paper from '@material-ui/core/Paper';
 import {
     FormControl,
@@ -14,6 +14,7 @@ class Login extends Component {
         super(props);
     
         this.state = {
+          loading: false,
           email: null,
           password: null
         };
@@ -34,7 +35,9 @@ class Login extends Component {
       }
     
       handleSubmit = event => {
-          console.log(this.state)
+        this.setState({
+          loading: true
+        })
         let axiosConfig = {
             headers: {
                 'Content-Type': 'application/json',
@@ -50,8 +53,15 @@ class Login extends Component {
             localStorage.setItem("user",JSON.stringify(user));
             window.location.href = '/';
         }
+        this.setState({
+          loading: false
+        })
         })
         .catch(err => {
+
+          this.setState({
+            loading: false
+          })
         });
         event.preventDefault();
       }
@@ -86,7 +96,7 @@ class Login extends Component {
                     marginBottom: "10px",
                     padding: "30px"
                 }}>
-                    <FormControl margin="normal" fullWidth>
+                    <FormControl required margin="normal" fullWidth>
                         <InputLabel htmlFor="email">email</InputLabel>
                         <Input onChange={this.handleChange} id="email" type="email" required/>
                     </FormControl>
@@ -96,7 +106,7 @@ class Login extends Component {
                         <Input onChange={this.handleChange} id="password" type="password" required/>
                     </FormControl>
 
-                    <Button style={{ width:"100%"}}onClick={this.handleSubmit} variant="contained" color="primary" size="medium">Login</Button>
+                    <ButtonProgress loading={this.state.loading} handleButtonClick={this.handleSubmit} />
                 </Paper>
             </div>
         )
