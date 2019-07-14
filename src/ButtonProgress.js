@@ -36,8 +36,8 @@ export default function ButtonProgress(props) {
               width:'100%'
           }}
           variant="contained"
-          color="primary"
-          disabled={props.loading}
+          color="#7AC143" 
+          disabled={props.loading || props.disable}
           onClick={props.handleButtonClick}
         >
           login
