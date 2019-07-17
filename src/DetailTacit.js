@@ -99,18 +99,21 @@ class DetailTacit extends Component {
         <Spinner />
         :
         <Paper style={{
-            width:"90%",
+            width:"70%",
             margin:"auto",
-            marginTop:"70px",
+            marginTop:"100px",
             marginBottom: "10px",
-            padding: "30px"
+            padding: "30px",
+            backgroundColor: 'rgba(255, 255, 255, 1)'
           }}>
-           <Typography variant="headline" gutterBottom>
+           <h1 style={{
+             textAlign:"center"
+           }}>
               {this.state.title}
-          </Typography>
-            <Typography variant="caption" gutterBottom>
+          </h1>
+            <h5>
               <DateRange /> {this.state.datePublish}
-            </Typography>
+            </h5>
             {/* <Typography variant="body1" gutterBottom align="justify">
               {this.state.show.content}
             </Typography> */}

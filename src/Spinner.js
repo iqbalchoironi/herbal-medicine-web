@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import loading from './loading.gif';
 
 const styles = theme => ({
   progress: {
@@ -24,7 +25,8 @@ function Spinner(props) {
         bottom: "0",
         right: "0"
     }}>
-      <CircularProgress className={classes.progress} />
+      {/* <CircularProgress className={classes.progress} /> */}
+      <img src={loading} alt="Logo" />;
     </div>
   );
 }

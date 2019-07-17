@@ -30,9 +30,10 @@ import Spinner from './Spinner';
 
 const styles = theme => ({
   root: {
-    width: '90%',
+    width: '70%',
     margin: 'auto',
     marginTop: '100px',
+    marginBottom: '50px',
     padding: "10px"
   },
   button: {

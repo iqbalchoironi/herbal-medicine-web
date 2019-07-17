@@ -330,11 +330,12 @@ class ComparePage extends React.Component {
         <Spinner />
         :
         <Paper style={{
-          width: "80%",
+          width: "70%",
           margin: "auto",
           marginTop:"80px",
           padding: "10px",
-          minHeight: "350px"
+          minHeight: "350px",
+          backgroundColor:"#f8f8f8"
         }}>
           <Select
             options={this.state.refHerbMed}
@@ -488,10 +489,15 @@ class ComparePage extends React.Component {
                 border:"hsl(0,0%,80%) 1px solid",
                 marginTop:"15px",
                 display: "flex",
+                flexDirection:"column",
                 justifyContent: "center",
-                alignItems:"center"
+                alignItems:"center",
+                backgroundColor:"white"
               }}>
-    
+              <img style={{
+                width: "250px",
+                height: "250px"
+              }} src={'/asset/comparision.jpeg'} alt="Logo" />
               <Typography component="h2" variant="display1" gutterBottom>
                 Select the two herbs above !, then the comparison 
                 will appear here

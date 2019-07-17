@@ -9,6 +9,8 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import { Link } from 'react-router-dom'
 
+import logo from './logo-header.png';
+
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu'
 
@@ -68,12 +70,20 @@ class Navigation extends Component {
         }}
         >
           <Toolbar>
+          <img style={{
+                height: "40px",
+                marginTop: "5px",
+                width: "12%"
+              }}
+              src={logo} alt="Logo" />
             <div className="menu" style={{
-              width:"50%",
+              width:"80%",
               display:"flex",
-              
             }}>
-              <ul>
+              
+              <ul style={{
+                paddingLeft:"15px"
+              }}>
                     <li><Link to='/'>Home</Link></li>
 
                     <div class="dropdown">
@@ -109,7 +119,7 @@ class Navigation extends Component {
             </div>
            
             <div style={{
-              width:"50%",
+              width:"20%",
               display:"flex",
               flexDirection:"row-reverse"
             }}>

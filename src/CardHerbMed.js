@@ -13,7 +13,7 @@ import { Link } from 'react-router-dom'
 const styles = muiBaseTheme => ({
   card: {
     maxWidth: 300,
-    height: 320,
+    minHeight: 320,
     margin: "auto",
     transition: "0.3s",
     boxShadow: "0 8px 40px -12px rgba(0,0,0,0.3)",
@@ -89,15 +89,12 @@ function CardHerbMed(props) {
             What happened in Thailand?
           </Typography> */}
           <Typography
-            className={"MuiTypography--heading"}
-            variant={"h6"}
+            className={classes.heading}
             gutterBottom
           >
             {props.name}
           </Typography>
           <Typography
-            className={"MuiTypography--subheading"}
-            className="block-with-text"
             variant={"caption"}
           >
            {props.efficacy}
@@ -109,11 +106,9 @@ function CardHerbMed(props) {
             
           </ul>
         </CardContent>
-        <CardActions className={"MuiCardActions-root"}>
-        <Button color={"primary"} fullWidth>
-          <Link to={`/herbsmed/${ props.id }`}>
-          Find Out More <Icon>chevron_right_rounded</Icon>
-          </Link>
+        <CardActions>
+        <Button href={`/herbsmed/${ props.id }`} >
+          Read More <Icon>chevron_right_rounded</Icon>
         </Button>
       </CardActions>
       </Card>

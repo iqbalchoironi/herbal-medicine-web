@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { withStyles } from '@material-ui/core/styles';
 import Axios from "axios";
 
 import Spinner from './Spinner'
@@ -9,8 +10,29 @@ import Typography from '@material-ui/core/Typography';
 import Breadcrumbs from '@material-ui/lab/Breadcrumbs';
 import Link from '@material-ui/core/Link';
 
+import Paper from '@material-ui/core/Paper';
+import SearchIcon from '@material-ui/icons/Search';
+import InputBase from '@material-ui/core/InputBase';
+import IconButton from '@material-ui/core/IconButton'
+
 import SnackBar from './SnackBar'
 import ErorPage from './ErorPage'
+
+const styles = {
+  root: {
+      padding: '2px 4px',
+      display: 'flex',
+      alignItems: 'center',
+      width: 400,
+  },
+  input: {
+    marginLeft: 8,
+    flex: 1,
+  },
+  iconButton: {
+    padding: 10,
+  }
+};
 
 class Plant extends Component {
     constructor(props) {
@@ -135,49 +157,7 @@ class Plant extends Component {
     }
 
       render() {
-
-        if(this.state.inputSearch !== '' && this.state.onSearch !== []){
-          return (
-            <div style={{
-              display: "flex",
-              flexDirection:"column",
-              paddingTop:"90px"
-
-            }}>
-            <div style={{
-                width:"90%",
-                display:"flex",
-                flexDirection:"row",
-                margin:"auto"
-              }}>
-              <div style={{
-                width:"50%",
-                display:"flex",
-                flexDirection:"row"
-              }}>
-                <Breadcrumbs aria-label="Breadcrumb">
-                  <Link color="inherit" href="/" >KMS Jamu</Link>
-                  <Link color="inherit" >Explore</Link>
-                  <Typography color="textPrimary">Plant</Typography>
-                </Breadcrumbs>
-              </div>
-              <div style={{
-                width:"50%",
-                display:"flex",
-                flexDirection:"row-reverse"
-              }}>
-                 <SearchInput nameInput="inputSearch" inputValue={this.state.inputSearch} inputChange={this.handleInputChange} clickButton={this.getDataSearch}/>
-              </div>
-              </div>
-              
-              <div className="for-card">
-                {this.state.onSearch.map(item =>
-                  <Card key={item.id} name={item.sname} image={item.refimg} reff={item.refCrude} />
-                )}
-              </div>
-            </div>
-        );
-      }
+        const { classes } = this.props;
 
         return (
             <div style={{
@@ -212,7 +192,12 @@ class Plant extends Component {
                 display:"flex",
                 flexDirection:"row-reverse"
               }}>
-                 <SearchInput nameInput="inputSearch" inputValue={this.state.inputSearch} inputChange={this.handleInputChange} clickButton={this.getDataSearch}/>
+                 <Paper className={classes.root} elevation={1}>
+                        <InputBase className={classes.input} name="inputSearch" value={this.state.inputSearch} onChange={this.handleInputChange} placeholder="Search here..." />
+                        <IconButton className={classes.iconButton} onClick={this.getDataSearch} aria-label="Search">
+                            <SearchIcon />
+                        </IconButton>
+                    </Paper>  
               </div>
               </div>
               {
@@ -222,11 +207,17 @@ class Plant extends Component {
               <Spinner />
               :  
               <div className="for-card">
-                {this.state.plans.map(item =>
-                          <Card key={item.id} name={item.sname} image={item.refimg} reff={item.refCrude} />
-                        )}
-                {this.state.loadData ? <div><br></br><br></br> <br></br>loading...</div>
-                  : null }
+                {
+                  this.state.inputSearch !== '' && this.state.onSearch.length !== null 
+                  ?
+                  this.state.onSearch.map(item =>
+                        <Card key={item.id} id={item.idplant} name={item.sname} image={item.refimg} reff={item.refCrude} />
+                      )
+                  :
+                   this.state.plans.map(item =>
+                        <Card key={item.id} id={item.idplant} name={item.sname} image={item.refimg} reff={item.refCrude} />
+                      ) 
+                }
               </div>
               }
               {this.state.snackbar.open === true ? <SnackBar data={this.state.snackbar} close={this.closeBtn}/>
@@ -239,4 +230,4 @@ class Plant extends Component {
       }
 }
 
-export default Plant;
+export default withStyles(styles)(Plant);

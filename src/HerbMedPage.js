@@ -9,8 +9,30 @@ import Typography from '@material-ui/core/Typography';
 import Breadcrumbs from '@material-ui/lab/Breadcrumbs';
 import Link from '@material-ui/core/Link';
 
+import Paper from '@material-ui/core/Paper';
+import SearchIcon from '@material-ui/icons/Search';
+import InputBase from '@material-ui/core/InputBase';
+import IconButton from '@material-ui/core/IconButton';
+import { withStyles } from '@material-ui/core/styles';
+
 import SnackBar from './SnackBar'
 import ErorPage from './ErorPage'
+
+const styles = {
+  root: {
+      padding: '2px 4px',
+      display: 'flex',
+      alignItems: 'center',
+      width: 400,
+  },
+  input: {
+    marginLeft: 8,
+    flex: 1,
+  },
+  iconButton: {
+    padding: 10,
+  }
+};
 
 class HerbMeds extends Component {
     constructor(props) {
@@ -135,53 +157,7 @@ class HerbMeds extends Component {
     }
 
       render() {
-        if(this.state.inputSearch !== '' && this.state.onSearch !== []){
-          return (
-            <div style={{
-              display: "flex",
-              flexDirection:"column",
-              paddingTop:"90px"
-
-            }}>
-            <div style={{
-                width:"90%",
-                display:"flex",
-                flexDirection:"row",
-                margin:"auto"
-              }}>
-              <div style={{
-                width:"50%",
-                display:"flex",
-                flexDirection:"row"
-              }}>
-                <Breadcrumbs aria-label="Breadcrumb">
-                  <Link color="inherit" href="/" >
-                    KMS Jamu
-                  </Link>
-                  <Link color="inherit" >
-                    Explore
-                  </Link>
-                  <Typography color="textPrimary">Herbal Medicine</Typography>
-                </Breadcrumbs>
-              </div>
-              <div style={{
-                width:"50%",
-                display:"flex",
-                flexDirection:"row-reverse"
-              }}>
-                <SearchInput nameInput="inputSearch" inputValue={this.state.inputSearch} inputChange={this.handleInputChange} clickButton={this.getDataSearch}/>
-              </div>
-              </div>
-              
-              <div className="for-card">
-                {this.state.onSearch.map(item =>
-                           <CardHerbMed key={item.idherbsmed} id={item.idherbsmed} name={item.name} efficacy={item.efficacy} reff={item.refCrude}/>
-                 )}
-              </div>
-            </div>
-        );
-      }
-
+        const { classes } = this.props;
         return (
             <div style={{
               display: "flex",
@@ -215,7 +191,12 @@ class HerbMeds extends Component {
                 display:"flex",
                 flexDirection:"row-reverse"
               }}>
-                <SearchInput nameInput="inputSearch" inputValue={this.state.inputSearch} inputChange={this.handleInputChange} clickButton={this.getDataSearch}/>
+                <Paper className={classes.root} elevation={1}>
+                    <InputBase className={classes.input} name="inputSearch" value={this.state.inputSearch} onChange={this.handleInputChange} placeholder="Search here..." />
+                    <IconButton className={classes.iconButton} onClick={this.getDataSearch} aria-label="Search">
+                        <SearchIcon />
+                    </IconButton>
+                </Paper>  
               </div>
               </div>
               {
@@ -225,9 +206,17 @@ class HerbMeds extends Component {
                 <Spinner />
                 :
                 <div className="for-card">
-                  {this.state.herbmeds.map(item =>
-                            <CardHerbMed key={item.idherbsmed} id={item.idherbsmed} name={item.name} efficacy={item.efficacy} reff={item.refCrude}/>
-                  )}
+                  {
+                  this.state.inputSearch !== '' && this.state.onSearch.length !== null 
+                  ?
+                  this.state.onSearch.map(item =>
+                    <CardHerbMed key={item.idherbsmed} id={item.idherbsmed} name={item.name} efficacy={item.efficacy} reff={item.refCrude}/>
+                      )
+                  :
+                   this.state.herbmeds.map(item =>
+                    <CardHerbMed key={item.idherbsmed} id={item.idherbsmed} name={item.name} efficacy={item.efficacy} reff={item.refCrude}/>
+                      ) 
+                }
                 </div>
               }
               {this.state.snackbar.open === true ? <SnackBar data={this.state.snackbar} close={this.closeBtn}/>
@@ -240,4 +229,4 @@ class HerbMeds extends Component {
       }
 }
 
-export default HerbMeds;
+export default withStyles(styles)(HerbMeds);

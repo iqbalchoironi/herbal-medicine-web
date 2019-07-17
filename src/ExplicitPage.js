@@ -3,6 +3,7 @@ import Axios from 'axios'
 import { Link } from 'react-router-dom'
 
 import Typography from '@material-ui/core/Typography';
+import AppBar from '@material-ui/core/AppBar';
 import Breadcrumbs from '@material-ui/lab/Breadcrumbs';
 import Link2 from '@material-ui/core/Link';
 import SearchInput from './SearchInput'
@@ -13,36 +14,82 @@ import CollectionsBookmark from '@material-ui/icons/CollectionsBookmark'
 import DateRange from '@material-ui/icons/DateRange'
 import Pagination from "material-ui-flat-pagination";
 
+import Divider from '@material-ui/core/Divider';
+
+import Button from '@material-ui/core/Button';
 import SnackBar from './SnackBar'
 import ErorPage from './ErorPage'
+
+import Paper from '@material-ui/core/Paper';
+import SearchIcon from '@material-ui/icons/Search';
+import InputBase from '@material-ui/core/InputBase';
+import IconButton from '@material-ui/core/IconButton';
+import { withStyles } from '@material-ui/core/styles';
+
+import { makeStyles } from '@material-ui/core/styles';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
+
+import Icon from "@material-ui/core/Icon";
+
+const styles = {
+  root: {
+      padding: '2px 4px',
+      display: 'flex',
+      alignItems: 'center',
+      width: 400,
+  },
+  input: {
+    marginLeft: 8,
+    flex: 1,
+  },
+  iconButton: {
+    padding: 10,
+  },
+  formControl: {
+    margin: 24,
+  },
+  group: {
+    margin: 8,
+  },
+};
 
 function ListExplicit (props) {
     return (
         <div style={{
             marginTop: "0",
             marginBottom: "26px",
-            maxWidth: "80%"
+            maxWidth: "85%"
         }}> 
-        <Typography variant="subtitle1">
-        <Link style={{ 
+        <h1 style={{
+          color: "#0071bc",
+          fontWeight: "500",
+          fontSize: "1.5em"
+        }}>
+        {/* <Link style={{ 
           textDecoration: 'none'
           }} to={`/explicit/${ props.id }`}>
             {props.title}
-        </Link>
-        </Typography>
+        </Link> */}
+          {props.title}
+        </h1>
         <Typography variant="caption" >
              <Person /> {props.name}
         </Typography >
         <Typography variant="caption" >
              <CollectionsBookmark /> Conference paper <DateRange /> 12-12-2001
         </Typography>
-        <p style={{
-          marginBlockStart: "5px",
-          fontFamily: "arial,sans-serif",
-          fontSize: "small"
-        }} className="block-with-text">
+        <p className="block-with-text">
             {props.abstract}
         </p>
+        <Button href={`/explicit/${ props.id }`} >
+          Read More <Icon>chevron_right_rounded</Icon>
+        </Button>
+        <Divider light />
        </div>
     )
 }
@@ -62,11 +109,17 @@ class ExplicitPage extends Component {
             open: false,
             success: false,
             message: '',
-          }
+          },
+          inputSearch: '',
+          name: '',
+          type: ''
         }
         // this.onScroll = this.onScroll.bind(this);
         this.afterUpdate = this.afterUpdate.bind(this);
         this.closeBtn = this.closeBtn.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.getDataSearch = this.getDataSearch.bind(this);
+        this.changeFilter = this.changeFilter.bind(this);
       }
     
       async componentDidMount() {
@@ -117,6 +170,80 @@ class ExplicitPage extends Component {
             window.location.href = '/form/explicit';
         }
 
+        async getDataSearch(){
+          console.log(this.state.inputSearch)
+          this.setState({
+            loadData: true
+          })
+          const url = '/jamu/api/explicit/search/sort';
+          let axiosConfig = {
+            headers: {
+                'Content-Type': 'application/json'
+              }
+            };
+          const res =  await Axios.get(url,{
+            params: {
+              search: this.state.inputSearch
+            }
+          },axiosConfig);
+          const { data } = await res;
+          let newData = data.data;
+          console.log(newData)
+          this.setState({
+            explicit: newData, 
+            loadData: false
+          })
+        }
+
+        async changeFilter(event){
+
+          const target = event.target;
+          const value = target.type === 'checkbox' ? target.checked : target.value;
+          const name = target.name;
+          console.log(value)
+          console.log(name)
+          await this.setState({
+            [name]: value
+          });
+
+          console.log(this.state.inputSearch)
+          this.setState({
+            loadData: true
+          })
+          const url = '/jamu/api/explicit/search/sort';
+          let axiosConfig = {
+            headers: {
+                'Content-Type': 'application/json'
+              }
+            };
+          const res =  await Axios.get(url,{
+            params: {
+              search: this.state.inputSearch,
+              date: this.state.date,
+              name: this.state.name,
+            }
+          },axiosConfig);
+          const { data } = await res;
+          let newData = data.data;
+          console.log(newData)
+          this.setState({
+            explicit: newData, 
+            loadData: false
+          })
+        }
+    
+        handleInputChange(event) {
+          const target = event.target;
+          const value = target.type === 'checkbox' ? target.checked : target.value;
+          const name = target.name;
+          console.log(value)
+          console.log(name)
+          this.setState({
+            [name]: value
+          });
+        }
+
+
         async afterUpdate (success, message){
           this.setState({
             snackbar: {
@@ -138,6 +265,7 @@ class ExplicitPage extends Component {
         }
 
     render (){
+      const { classes } = this.props;
         return (
             <div style={{
                 display:"flex",
@@ -172,7 +300,12 @@ class ExplicitPage extends Component {
                   display:"flex",
                   flexDirection:"row-reverse"
                 }}>
-                  <SearchInput />
+                  <Paper className={classes.root} elevation={1}>
+                      <InputBase className={classes.input} name="inputSearch" value={this.state.inputSearch} onChange={this.handleInputChange} placeholder="Search here..." />
+                      <IconButton className={classes.iconButton} onClick={this.getDataSearch} aria-label="Search">
+                          <SearchIcon />
+                      </IconButton>
+                  </Paper>  
                 </div>
               </div>
               {
@@ -187,22 +320,56 @@ class ExplicitPage extends Component {
                   display:"flex",
                   flexDirection:"row",
                   margin:"auto",
-                  border:"hsl(0,0%,80%) 1px solid",
+                  //border:"hsl(0,0%,80%) 1px solid",
                   width:"95%",
+                  marginTop: "10px",
                   marginBottom: "10px"
               }}>
                   <div style={{
                       width:"20%",
-                      maxHeight: "350px",
-                      border:"hsl(0,0%,80%) 1px solid"
+                      //position: "fixed"
+                      //border:"hsl(0,0%,80%) 1px solid"
                   }}> 
-                      
+                    <div style={{
+                      width:"20%",
+                      position: "fixed"
+                    }}>
+                      <h1 style={{
+                        margin :"0",
+                      }}>FILTER :</h1>
+                     <FormControl component="fieldset" className={classes.formControl}>
+                      <FormLabel component="legend">Date :</FormLabel>
+                      <RadioGroup
+                        aria-label="Date"
+                        name="date"
+                        className={classes.group}
+                        onChange={this.changeFilter}
+                      >
+                        <FormControlLabel value="asc" control={<Radio />} label="Ascending" />
+                        <FormControlLabel value="desc" control={<Radio />} label="Descending" />
+                      </RadioGroup>
+                    </FormControl>
+
+                    <FormControl component="fieldset" className={classes.formControl}>
+                      <FormLabel component="legend">Name :</FormLabel>
+                      <RadioGroup
+                        aria-label="Name"
+                        name="name"
+                        className={classes.group}
+                        onChange={this.changeFilter}
+                      >
+                        <FormControlLabel value="asc" control={<Radio />} label="Ascending" />
+                        <FormControlLabel value="desc" control={<Radio />} label="Descending" />
+                      </RadioGroup>
+                    </FormControl>
+                    </div>
                   </div>
                   <div style={{
                       width:"80%",
-                      border:"hsl(0,0%,80%) 1px solid",
+                      //border:"hsl(0,0%,80%) 1px solid",
                       padding: "25px",
-                      minHeight:"500px"
+                      minHeight:"500px",
+                      backgroundColor: "#f1f1f1"
                   }}>
                     {this.state.explicit.map(item =>
                       <ListExplicit key={item._id} id={item._id} name={item.firstName+' '+item.lastName} title={item.title} abstract={item.abstract} />
@@ -231,4 +398,4 @@ class ExplicitPage extends Component {
     }
 }
 
-export default ExplicitPage;
+export default withStyles(styles)(ExplicitPage);

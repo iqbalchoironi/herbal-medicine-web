@@ -68,7 +68,9 @@
 
 .reff li {
   border: 1px solid #ebebeb;
-    color: #7a7a7a;
+  background-color:#ebebeb;
+  
+    color: grey;
     padding: 0.1rem 0.4rem;
     font-size: 0.88rem;
     border-radius: 3px;
@@ -77,6 +79,11 @@
 
 .reff li:hover { 
   background-color: var(--color-accent);
-  color: white;
+  color: grey;
   cursor: pointer;
+}
+
+div.DraftEditor-root {
+  font-family: 'medium-content-serif-font', 'Georgia', 'Cambria', "Times New Roman", 'Times', 'serif';
+  color: rgba(0, 0, 0, 0.84);
 }

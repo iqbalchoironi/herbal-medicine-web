@@ -363,7 +363,8 @@ class Landing extends Component{
                     display: "flex",
                     justifyContent : "center",
                     alignItems : "center",
-                    backgroundColor: "#a9ba9d"
+                    backgroundImage: `url(/asset/bg-search.png)`,
+                    backgroundSize: 'cover'
                     
                 }}>
                     <Paper className={classes.root} elevation={1}>
@@ -442,13 +443,25 @@ class Landing extends Component{
                       
                 </div>
 
-                <div style={{
+                {/* <div style={{
                     width: "100%",
                     height:"300px",
                     display: "flex",
                     justifyContent : "center",
                     alignItems : "center",
                     backgroundColor: "grey"
+                    
+                }}>
+                </div> */}
+
+                <div style={{
+                    width: "100%",
+                    height:"300px",
+                    backgroundImage: `url(/asset/footer.png)`,
+                    backgroundSize: 'cover',
+                    display: "flex",
+                    justifyContent : "center",
+                    alignItems : "center",
                     
                 }}>
                 </div>

@@ -13,8 +13,45 @@ import CollectionsBookmark from '@material-ui/icons/CollectionsBookmark'
 import DateRange from '@material-ui/icons/DateRange'
 import Pagination from "material-ui-flat-pagination";
 
+import Paper from '@material-ui/core/Paper';
+import SearchIcon from '@material-ui/icons/Search';
+import InputBase from '@material-ui/core/InputBase';
+import IconButton from '@material-ui/core/IconButton';
+import { withStyles } from '@material-ui/core/styles';
+
+import { makeStyles } from '@material-ui/core/styles';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
+
 import SnackBar from './SnackBar'
 import ErorPage from './ErorPage'
+
+
+const styles = {
+  root: {
+      padding: '2px 4px',
+      display: 'flex',
+      alignItems: 'center',
+      width: 400,
+  },
+  input: {
+    marginLeft: 8,
+    flex: 1,
+  },
+  iconButton: {
+    padding: 10,
+  },
+  formControl: {
+    margin: 24,
+  },
+  group: {
+    margin: 8,
+  },
+};
 
 function ListTacit (props) {
     return (
@@ -48,17 +85,23 @@ class TacitPage extends Component {
         this.state = {
           loading: true,
           loadData: false,
-          explicit : [],
+          inputSearch: '',
+          tacit : [],
           currentPage: 1,
           snackbar: {
             open: false,
             success: false,
-            message: '',
-          }
+            message: ''
+          },
+          name: '',
+          type: ''
         }
         // this.onScroll = this.onScroll.bind(this);
         this.afterUpdate = this.afterUpdate.bind(this);
         this.closeBtn = this.closeBtn.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.getDataSearch = this.getDataSearch.bind(this);
+        this.changeFilter = this.changeFilter.bind(this);
       }
     
       async componentDidMount() {
@@ -84,11 +127,11 @@ class TacitPage extends Component {
         try {const url = '/jamu/api/tacit';
         const res = await Axios.get(url);
         const { data } = await res;
-        let newData = this.state.explicit.concat(data.data);
+        let newData = this.state.tacit.concat(data.data);
         console.log(newData)
         this.afterUpdate(data.success, data.message);
         this.setState({
-          explicit: newData, 
+          tacit: newData, 
           loading: false,
           offset:5
         })} catch (err){
@@ -102,11 +145,84 @@ class TacitPage extends Component {
       }
     
         logout = event => {
-            window.location.href = '/form/explicit';
+            window.location.href = '/form/tacit';
         }
         handleClick(offset,page) {
           console.log(page)
           this.setState({ offset });
+        }
+
+        async getDataSearch(){
+          console.log(this.state.inputSearch)
+          this.setState({
+            loadData: true
+          })
+          const url = '/jamu/api/tacit/search/sort';
+          let axiosConfig = {
+            headers: {
+                'Content-Type': 'application/json'
+              }
+            };
+          const res =  await Axios.get(url,{
+            params: {
+              search: this.state.inputSearch
+            }
+          },axiosConfig);
+          const { data } = await res;
+          let newData = data.data;
+          console.log(newData)
+          this.setState({
+            tacit: newData, 
+            loadData: false
+          })
+        }
+
+        async changeFilter(event){
+
+          const target = event.target;
+          const value = target.type === 'checkbox' ? target.checked : target.value;
+          const name = target.name;
+          console.log(value)
+          console.log(name)
+          await this.setState({
+            [name]: value
+          });
+
+          console.log(this.state.inputSearch)
+          this.setState({
+            loadData: true
+          })
+          const url = '/jamu/api/tacit/search/sort';
+          let axiosConfig = {
+            headers: {
+                'Content-Type': 'application/json'
+              }
+            };
+          const res =  await Axios.get(url,{
+            params: {
+              search: this.state.inputSearch,
+              date: this.state.date,
+              name: this.state.name,
+            }
+          },axiosConfig);
+          const { data } = await res;
+          let newData = data.data;
+          console.log(newData)
+          this.setState({
+            tacit: newData, 
+            loadData: false
+          })
+        }
+    
+        handleInputChange(event) {
+          const target = event.target;
+          const value = target.type === 'checkbox' ? target.checked : target.value;
+          const name = target.name;
+          console.log(value)
+          console.log(name)
+          this.setState({
+            [name]: value
+          });
         }
 
         async afterUpdate (success, message){
@@ -130,6 +246,7 @@ class TacitPage extends Component {
         }
 
     render (){
+      const { classes } = this.props;
         return (
             <div style={{
                 display:"flex",
@@ -164,7 +281,12 @@ class TacitPage extends Component {
                     display:"flex",
                     flexDirection:"row-reverse"
                   }}>
-                    <SearchInput />
+                    <Paper className={classes.root} elevation={1}>
+                        <InputBase className={classes.input} name="inputSearch" value={this.state.inputSearch} onChange={this.handleInputChange} placeholder="Search here..." />
+                        <IconButton className={classes.iconButton} onClick={this.getDataSearch} aria-label="Search">
+                            <SearchIcon />
+                        </IconButton>
+                    </Paper>  
                   </div>
                 </div>
                 {
@@ -178,24 +300,55 @@ class TacitPage extends Component {
                     display:"flex",
                     flexDirection:"row",
                     margin:"auto",
-                    border:"hsl(0,0%,80%) 1px solid",
                     width:"95%",
-                    marginBottom: "10px"
+                    marginBottom: "10px",
+                    marginTop: "10px"
                     }}>
+                      <div style={{
+                      width:"20%",
+                      }}> 
                         <div style={{
                             width:"20%",
-                            maxHeight: "350px",
-                            border:"hsl(0,0%,80%) 1px solid"
+                            position: "fixed"
                         }}> 
-                            
+                             <h1 style={{
+                                margin :"0",
+                              }}>FILTER :</h1>
+                            <FormControl component="fieldset" className={classes.formControl}>
+                              <FormLabel component="legend">Date :</FormLabel>
+                              <RadioGroup
+                                aria-label="Date"
+                                name="date"
+                                className={classes.group}
+                                onChange={this.changeFilter}
+                              >
+                                <FormControlLabel value="asc" control={<Radio />} label="Ascending" />
+                                <FormControlLabel value="desc" control={<Radio />} label="Descending" />
+                              </RadioGroup>
+                            </FormControl>
+
+                            <FormControl component="fieldset" className={classes.formControl}>
+                              <FormLabel component="legend">Name :</FormLabel>
+                              <RadioGroup
+                                aria-label="Name"
+                                name="name"
+                                className={classes.group}
+                                onChange={this.changeFilter}
+                              >
+                                <FormControlLabel value="asc" control={<Radio />} label="Ascending" />
+                                <FormControlLabel value="desc" control={<Radio />} label="Descending" />
+                              </RadioGroup>
+                            </FormControl>
+                        </div>
                         </div>
                         <div style={{
                             width:"80%",
-                            border:"hsl(0,0%,80%) 1px solid",
+                            // border:"hsl(0,0%,80%) 1px solid",
                             padding: "25px",
-                            minHeight:"500px"
+                            minHeight:"500px",
+                            backgroundColor: "#f1f1f1"
                         }}>
-                          {this.state.explicit.map(item =>
+                          {this.state.tacit.map(item =>
                             <ListTacit key={item._id} id={item._id} name={item.firstName+' '+item.lastName} title={item.title} abstract={item.abstract} />
                           )}
                       </div>
@@ -208,7 +361,7 @@ class TacitPage extends Component {
                     size='large'
                     limit={10}
                     offset={this.state.offset}
-                    total={250}
+                    total={10 * this.state.pages}
                     onClick={(e,offset, page) => this.handleClick(offset,page)}
                   />
                   </Fragment> 
@@ -222,4 +375,4 @@ class TacitPage extends Component {
     }
 }
 
-export default TacitPage;
+export default withStyles(styles)(TacitPage);
