@@ -18,16 +18,18 @@ import Spinner from './Spinner'
 import LinearProgress from './LinearProgress'
 
 import { Button } from '@material-ui/core';
-import { resolve, reject } from 'q';
 
 import SnackBar from './SnackBar'
 import ErorPage from './ErorPage'
+
+import Footer from './Footer'
 
 const styles = theme => ({
   root: {
     flexGrow: 1,
     minHeight: 600,
     display: "flex",
+    flexDirection: "column",
     justifyContent: "center",
     alignItems: "center"
   },
@@ -332,7 +334,8 @@ class ComparePage extends React.Component {
         <Paper style={{
           width: "70%",
           margin: "auto",
-          marginTop:"80px",
+          marginTop:"90px",
+          marginBottom:"30px",
           padding: "10px",
           minHeight: "350px",
           backgroundColor:"#f8f8f8"
@@ -507,6 +510,12 @@ class ComparePage extends React.Component {
           
            
         </Paper>
+        }
+        {
+          this.state.loading ?
+          null
+          :
+          <Footer />
         }
          {this.state.snackbar.open === true ? <SnackBar data={this.state.snackbar} close={this.closeBtn}/>
           : 

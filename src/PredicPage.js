@@ -18,6 +18,8 @@ import Select from '@material-ui/core/Select';
 import SnackBar from './SnackBar'
 import ErorPage from './ErorPage'
 
+import Footer from './Footer'
+
 import {
     FormControl,
     InputLabel,
@@ -33,7 +35,7 @@ const styles = theme => ({
     width: '70%',
     margin: 'auto',
     marginTop: '100px',
-    marginBottom: '50px',
+    marginBottom: '40px',
     padding: "10px"
   },
   button: {
@@ -342,6 +344,12 @@ class Predict extends Component {
       </div>
       </Paper>
       }
+      {
+          this.state.loading ?
+          null
+          :
+          <Footer />
+        }
        {this.state.snackbar.open === true ? <SnackBar data={this.state.snackbar} close={this.closeBtn}/>
               : 
               null

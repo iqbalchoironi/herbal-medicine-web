@@ -12,18 +12,17 @@ import ButtonCard from './ButtonCard'
 import CardHerbMed from './CardHerbMed'
 import Card from './card'
 
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
+
 import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import NativeSelect from '@material-ui/core/NativeSelect';
-import { blue } from '@material-ui/core/colors';
+
 
 import { Link } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import Person from '@material-ui/icons/Person';
 import CollectionsBookmark from '@material-ui/icons/CollectionsBookmark'
 import DateRange from '@material-ui/icons/DateRange'
+
+import Footer from './Footer'
 
 const BootstrapInput = withStyles(theme => ({
     root: {
@@ -454,18 +453,8 @@ class Landing extends Component{
                 }}>
                 </div> */}
 
-                <div style={{
-                    width: "100%",
-                    height:"300px",
-                    backgroundImage: `url(/asset/footer.png)`,
-                    backgroundSize: 'cover',
-                    display: "flex",
-                    justifyContent : "center",
-                    alignItems : "center",
-                    
-                }}>
-                </div>
-                
+                {/* footer */}
+                <Footer />
             </div>
           }
         </div>
