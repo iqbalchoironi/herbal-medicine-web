@@ -17,6 +17,7 @@ import HerbMeds from './HerbMedPage'
 import EthnicDetail from './EthnicDetail'
 import Login from './Login'
 import Register from './Register'
+import SearchPage from './SearchPage'
 
 import DetailHerbMed from './DetailHerbMed'
 
@@ -41,6 +42,7 @@ class App extends Component {
         <ButtonAppBar/>
         <Switch>
           <ProtectedRoute exact path="/" component={Landing} />
+          <ProtectedRoute exact path="/search/:query" component={SearchPage} />
 
           <ProtectedRoute exact path="/explicit" component={ExplicitPage} />
           <ProtectedRoute exact  path="/explicit/:id" component={DetailExplicit} />

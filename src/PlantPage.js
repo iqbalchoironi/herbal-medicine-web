@@ -42,7 +42,7 @@ class Plant extends Component {
           loadData: false,
           inputSearch: '',
           plans : [],
-          onSearch : [],
+          onSearch : false,
           currentPage: 1,
           snackbar: {
             open: false,
@@ -55,6 +55,7 @@ class Plant extends Component {
         this.getDataSearch = this.getDataSearch.bind(this);
         this.afterUpdate = this.afterUpdate.bind(this);
         this.closeBtn = this.closeBtn.bind(this);
+        this.handleKeyDown = this.handleKeyDown.bind(this);
       }
 
       async componentDidMount() {
@@ -62,10 +63,16 @@ class Plant extends Component {
         this.getData();
       }
 
+      handleKeyDown (event) {
+        if (event.key === 'Enter') {
+          this.getDataSearch(event)
+        }
+      }
+
       async onScroll() {
         if (
           (window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 500) &&
-          !this.props.isLoading
+          !this.props.isLoading && this.state.onSearch === false
         ){
           // Do awesome stuff like loading more content!
           await this.setState({
@@ -97,6 +104,10 @@ class Plant extends Component {
 
     async getDataSearch(event){
      try { console.log(this.state.inputSearch)
+      this.setState({
+        loading: true,
+        onSearch: true
+      })
       const url = '/jamu/api/plant/search';
       let axiosConfig = {
         headers: {
@@ -113,7 +124,7 @@ class Plant extends Component {
       console.log(newData)
       this.afterUpdate(data.success, data.message);
       this.setState({
-        onSearch: newData, 
+        plans: newData, 
         loading: false
       })}catch (err){
         console.log(err.message)
@@ -193,7 +204,7 @@ class Plant extends Component {
                 flexDirection:"row-reverse"
               }}>
                  <Paper className={classes.root} elevation={1}>
-                        <InputBase className={classes.input} name="inputSearch" value={this.state.inputSearch} onChange={this.handleInputChange} placeholder="Search here..." />
+                        <InputBase className={classes.input} name="inputSearch" value={this.state.inputSearch} onChange={this.handleInputChange} onKeyDown={this.handleKeyDown} placeholder="Search here..." />
                         <IconButton className={classes.iconButton} onClick={this.getDataSearch} aria-label="Search">
                             <SearchIcon />
                         </IconButton>
@@ -208,12 +219,6 @@ class Plant extends Component {
               :  
               <div className="for-card">
                 {
-                  this.state.inputSearch !== '' && this.state.onSearch.length !== null 
-                  ?
-                  this.state.onSearch.map(item =>
-                        <Card key={item.id} id={item.idplant} name={item.sname} image={item.refimg} reff={item.refCrude} />
-                      )
-                  :
                    this.state.plans.map(item =>
                         <Card key={item.id} id={item.idplant} name={item.sname} image={item.refimg} reff={item.refCrude} />
                       ) 

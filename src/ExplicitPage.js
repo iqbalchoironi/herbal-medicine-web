@@ -101,6 +101,7 @@ class ExplicitPage extends Component {
         this.state = {
           loading: true,
           loadData: false,
+          onSearch: [],
           explicit : [],
           currentPage: 1,
           offset:5,
@@ -120,6 +121,7 @@ class ExplicitPage extends Component {
         this.handleInputChange = this.handleInputChange.bind(this);
         this.getDataSearch = this.getDataSearch.bind(this);
         this.changeFilter = this.changeFilter.bind(this);
+        this.handleKeyDown = this.handleKeyDown.bind(this);
       }
     
       async componentDidMount() {
@@ -127,19 +129,11 @@ class ExplicitPage extends Component {
         this.getData();
       }
       
-    //   async onScroll() {
-    //     if (
-    //       window.innerHeight + document.documentElement.scrollTop
-    //       === document.documentElement.offsetHeight
-    //     ) {
-    //       // Do awesome stuff like loading more content!
-    //       await this.setState({
-    //         loadData: true,
-    //         currentPage: this.state.currentPage + 1
-    //       })
-    //       this.getData();
-    //     }
-    //   }
+      handleKeyDown (event) {
+        if (event.key === 'Enter') {
+          this.getDataSearch(event)
+        }
+      }
       
     async handleClick(offset,page) {
       console.log(page)
@@ -190,7 +184,7 @@ class ExplicitPage extends Component {
           let newData = data.data;
           console.log(newData)
           this.setState({
-            explicit: newData, 
+            onSearch: newData, 
             loadData: false
           })
         }
@@ -226,10 +220,17 @@ class ExplicitPage extends Component {
           const { data } = await res;
           let newData = data.data;
           console.log(newData)
-          this.setState({
-            explicit: newData, 
-            loadData: false
-          })
+          if (this.state.inputSearch === '' ){
+            this.setState({
+              explicit: newData, 
+              loadData: false
+            })
+          }else {
+            this.setState({
+              onSearch: newData, 
+              loadData: false
+            })
+          }
         }
     
         handleInputChange(event) {
@@ -301,7 +302,7 @@ class ExplicitPage extends Component {
                   flexDirection:"row-reverse"
                 }}>
                   <Paper className={classes.root} elevation={1}>
-                      <InputBase className={classes.input} name="inputSearch" value={this.state.inputSearch} onChange={this.handleInputChange} placeholder="Search here..." />
+                      <InputBase className={classes.input} name="inputSearch" value={this.state.inputSearch} onChange={this.handleInputChange} onKeyDown={this.handleKeyDown} placeholder="Search here..." />
                       <IconButton className={classes.iconButton} onClick={this.getDataSearch} aria-label="Search">
                           <SearchIcon />
                       </IconButton>
@@ -371,9 +372,17 @@ class ExplicitPage extends Component {
                       minHeight:"500px",
                       backgroundColor: "#f1f1f1"
                   }}>
-                    {this.state.explicit.map(item =>
-                      <ListExplicit key={item._id} id={item._id} name={item.firstName+' '+item.lastName} title={item.title} abstract={item.abstract} />
-                    )}
+                    {
+                      this.state.inputSearch !== '' && this.state.onSearch.length !== 0 
+                      ?
+                      this.state.onSearch.map(item =>
+                        <ListExplicit key={item._id} id={item._id} name={item.firstName+' '+item.lastName} title={item.title} abstract={item.abstract} />
+                      )
+                      :
+                      this.state.explicit.map(item =>
+                        <ListExplicit key={item._id} id={item._id} name={item.firstName+' '+item.lastName} title={item.title} abstract={item.abstract} />
+                      )
+                  }
                     </div>
                 </div>  
               <Pagination
@@ -384,7 +393,7 @@ class ExplicitPage extends Component {
                 size='large'
                 limit={10}
                 offset={this.state.offset}
-                total={10 * this.state.pages}
+                total={this.state.onSearch.length === 0 ? 10 * this.state.pages : this.state.pages}
                 onClick={(e,offset, page) => this.handleClick(offset,page)}
               />  
             </Fragment>
