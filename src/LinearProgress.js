@@ -6,8 +6,8 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 const styles = {
   root: {
     flexGrow: 1,
-    width: "80%"
-  },
+    width: '80%'
+  }
 };
 
 function LinearIndeterminate(props) {
@@ -20,7 +20,7 @@ function LinearIndeterminate(props) {
 }
 
 LinearIndeterminate.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(LinearIndeterminate);

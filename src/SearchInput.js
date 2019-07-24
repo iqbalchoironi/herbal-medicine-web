@@ -1,13 +1,12 @@
-import React from "react";
-import InputBase from "@material-ui/core/InputBase";
-import Icon from "@material-ui/core/Icon";
+import React from 'react';
+import InputBase from '@material-ui/core/InputBase';
+import Icon from '@material-ui/core/Icon';
 
 const SearchInput = props => (
   <div>
     <InputBase
-      className={"SearchInput-root"}
-      placeholder={"Search..."}
-      
+      className={'SearchInput-root'}
+      placeholder={'Search...'}
       name={props.nameInput}
       value={props.inputValue}
       onChange={props.inputChange}
@@ -17,8 +16,8 @@ const SearchInput = props => (
 );
 
 SearchInput.metadata = {
-  name: "Search Input", // mandatory
-  description: "Trust me! you will need it somewhere" // optional
+  name: 'Search Input', // mandatory
+  description: 'Trust me! you will need it somewhere' // optional
 };
 SearchInput.getTheme = muiBaseTheme => {
   // ATTENTION!
@@ -31,14 +30,14 @@ SearchInput.getTheme = muiBaseTheme => {
   return {
     MuiInputBase: {
       root: {
-        "&.SearchInput-root": {
+        '&.SearchInput-root': {
           backgroundColor,
           borderRadius,
           padding: `${space}px ${space * 2}px`,
-          "& .material-icons": {
+          '& .material-icons': {
             fontSize: 20,
             color: iconColor,
-            "&:first-child": {
+            '&:first-child': {
               marginRight: space
             }
           }

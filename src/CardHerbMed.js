@@ -1,63 +1,61 @@
-import React from "react";
-import { withStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
+import React from 'react';
+import { withStyles } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
 
-import CardActions from "@material-ui/core/CardActions";
-import Button from "@material-ui/core/Button";
-import Icon from "@material-ui/core/Icon";
+import CardActions from '@material-ui/core/CardActions';
+import Button from '@material-ui/core/Button';
+import Icon from '@material-ui/core/Icon';
 
 const styles = muiBaseTheme => ({
   card: {
     maxWidth: 300,
     minHeight: 320,
-    margin: "auto",
-    transition: "0.3s",
-    boxShadow: "0 8px 40px -12px rgba(0,0,0,0.3)",
-    "&:hover": {
-      boxShadow: "0 16px 70px -12.125px rgba(0,0,0,0.3)"
+    margin: 'auto',
+    transition: '0.3s',
+    boxShadow: '0 8px 40px -12px rgba(0,0,0,0.3)',
+    '&:hover': {
+      boxShadow: '0 16px 70px -12.125px rgba(0,0,0,0.3)'
     }
   },
   media: {
-    paddingTop: "56.25%"
+    paddingTop: '56.25%'
   },
   content: {
-    textAlign: "left",
+    textAlign: 'left',
     padding: muiBaseTheme.spacing.unit * 3
   },
   divider: {
     margin: `${muiBaseTheme.spacing.unit * 3}px 0`
   },
   heading: {
-    fontWeight: "bold",
-    height: "35px"
+    fontWeight: 'bold',
+    height: '35px'
   },
   subheading: {
     // lineHeight: 1.8,
-    height: "50px"
+    height: '50px'
   },
   avatar: {
-    display: "inline-block",
-    border: "2px solid white",
-    "&:not(:first-of-type)": {
+    display: 'inline-block',
+    border: '2px solid white',
+    '&:not(:first-of-type)': {
       marginLeft: -muiBaseTheme.spacing.unit
     }
   }
 });
 
 const List = ({ item }) => {
-  if(item.sname !== ''){
-    return <li>{item.sname}</li>
+  if (item.sname !== '') {
+    return <li>{item.sname}</li>;
   }
 
   return null;
-}
+};
 
 function CardHerbMed(props) {
-  const {
-    classes
-  } = props;
+  const { classes } = props;
   return (
     <div>
       <Card className={classes.card}>
@@ -86,29 +84,21 @@ function CardHerbMed(props) {
           >
             What happened in Thailand?
           </Typography> */}
-          <Typography
-            className={classes.heading}
-            gutterBottom
-          >
+          <Typography className={classes.heading} gutterBottom>
             {props.name}
           </Typography>
-          <Typography
-            variant={"caption"}
-          >
-           {props.efficacy}
-          </Typography>
+          <Typography variant={'caption'}>{props.efficacy}</Typography>
           <ul className="reff">
-                 {props.reff.map( item => (
-                    <List item = { item } />
-                ))} 
-            
+            {props.reff.map(item => (
+              <List item={item} />
+            ))}
           </ul>
         </CardContent>
         <CardActions>
-        <Button href={`/herbsmed/${ props.id }`} >
-          Read More <Icon>chevron_right_rounded</Icon>
-        </Button>
-      </CardActions>
+          <Button href={`/herbsmed/${props.id}`}>
+            Read More <Icon>chevron_right_rounded</Icon>
+          </Button>
+        </CardActions>
       </Card>
     </div>
   );

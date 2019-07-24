@@ -1,13 +1,10 @@
-import React from "react";
-import { Route, Redirect } from "react-router-dom";
+import React from 'react';
+import { Route, Redirect } from 'react-router-dom';
 
-export const ProtectedRoute = ({
-  component: Component,
-  ...rest
-}) => {
-    let user = localStorage.getItem("user")
-        user = JSON.parse(user)
-        console.log(user)
+export const ProtectedRoute = ({ component: Component, ...rest }) => {
+  let user = localStorage.getItem('user');
+  user = JSON.parse(user);
+  console.log(user);
   return (
     <Route
       {...rest}
@@ -18,7 +15,7 @@ export const ProtectedRoute = ({
           return (
             <Redirect
               to={{
-                pathname: "/login",
+                pathname: '/login',
                 state: {
                   from: props.location
                 }

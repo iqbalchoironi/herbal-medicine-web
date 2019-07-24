@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Typography from '@material-ui/core/Typography';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
 const styles = theme => ({
   root: {
     height: '280px',
-    width: '280px',
+    width: '280px'
   },
   image: {
     position: 'relative',
@@ -20,15 +20,15 @@ const styles = theme => ({
     '&:hover, &$focusVisible': {
       zIndex: 1,
       '& $imageBackdrop': {
-        opacity: 0.15,
+        opacity: 0.15
       },
       '& $imageMarked': {
-        opacity: 0,
+        opacity: 0
       },
       '& $imageTitle': {
-        border: '4px solid currentColor',
-      },
-    },
+        border: '4px solid currentColor'
+      }
+    }
   },
   focusVisible: {},
   imageButton: {
@@ -40,7 +40,7 @@ const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    color: theme.palette.common.white,
+    color: theme.palette.common.white
   },
   imageSrc: {
     position: 'absolute',
@@ -49,7 +49,7 @@ const styles = theme => ({
     top: 0,
     bottom: 0,
     backgroundSize: 'cover',
-    backgroundPosition: 'center 100%',
+    backgroundPosition: 'center 100%'
   },
   imageBackdrop: {
     position: 'absolute',
@@ -59,11 +59,12 @@ const styles = theme => ({
     bottom: 0,
     backgroundColor: theme.palette.common.black,
     opacity: 0.4,
-    transition: theme.transitions.create('opacity'),
+    transition: theme.transitions.create('opacity')
   },
   imageTitle: {
     position: 'relative',
-    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 4}px ${theme.spacing.unit + 6}px`,
+    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 4}px ${theme
+      .spacing.unit + 6}px`
   },
   imageMarked: {
     height: 3,
@@ -72,52 +73,50 @@ const styles = theme => ({
     position: 'absolute',
     bottom: -2,
     left: 'calc(50% - 9px)',
-    transition: theme.transitions.create('opacity'),
-  },
+    transition: theme.transitions.create('opacity')
+  }
 });
-
-
 
 function ButtonCard(props) {
   const { classes } = props;
   return (
     <div className={classes.root}>
-        <ButtonBase
-          component={Link} 
-          to={props.image.directory}
-          focusRipple
-          key={props.image.title}
-          className={classes.image}
-          focusVisibleClassName={classes.focusVisible}
+      <ButtonBase
+        component={Link}
+        to={props.image.directory}
+        focusRipple
+        key={props.image.title}
+        className={classes.image}
+        focusVisibleClassName={classes.focusVisible}
+        style={{
+          width: '280px'
+        }}
+      >
+        <span
+          className={classes.imageSrc}
           style={{
-            width: '280px',
+            backgroundImage: `url(${props.image.url})`
           }}
-        >
-          <span
-            className={classes.imageSrc}
-            style={{
-              backgroundImage: `url(${props.image.url})`,
-            }}
-          />
-          <span className={classes.imageBackdrop} />
-          <span className={classes.imageButton}>
-            <Typography
-              component="span"
-              variant="subtitle1"
-              color="inherit"
-              className={classes.imageTitle}
-            >
-              {props.image.title}
-              <span className={classes.imageMarked} />
-            </Typography>
-          </span>
-        </ButtonBase>
+        />
+        <span className={classes.imageBackdrop} />
+        <span className={classes.imageButton}>
+          <Typography
+            component="span"
+            variant="subtitle1"
+            color="inherit"
+            className={classes.imageTitle}
+          >
+            {props.image.title}
+            <span className={classes.imageMarked} />
+          </Typography>
+        </span>
+      </ButtonBase>
     </div>
   );
 }
 
 ButtonCard.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(ButtonCard);

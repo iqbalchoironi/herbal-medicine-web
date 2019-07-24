@@ -1,83 +1,96 @@
 import React, { Component } from 'react';
-import { Switch,Route } from 'react-router-dom'
-import ButtonAppBar from './Navigation'
+import { Switch, Route } from 'react-router-dom';
+import ButtonAppBar from './Navigation';
 
-import Landing from './Landing'
-import ExplicitPage from './ExplicitPage'
-import DetailExplicit from './DetailExplicit'
-import TacitPage from './TacitPage'
-import DetailTacit from './DetailTacit'
-import ComparePage from './ComparePage'
-import Predict from './PredicPage'
-import Plant from './PlantPage'
-import FormExplicit from './FormExplicit'
-import FormTacit from './FormTacit'
-import MapHerb from './MapEthnic'
-import HerbMeds from './HerbMedPage'
-import EthnicDetail from './EthnicDetail'
-import Login from './Login'
-import Register from './Register'
-import SearchPage from './SearchPage'
+import Landing from './Landing';
+import ExplicitPage from './ExplicitPage';
+import DetailExplicit from './DetailExplicit';
+import TacitPage from './TacitPage';
+import DetailTacit from './DetailTacit';
+import ComparePage from './ComparePage';
+import Predict from './PredicPage';
+import Plant from './PlantPage';
+import FormExplicit from './FormExplicit';
+import FormTacit from './FormTacit';
+import MapHerb from './MapEthnic';
+import HerbMeds from './HerbMedPage';
+import EthnicDetail from './EthnicDetail';
+import Login from './Login';
+import Register from './Register';
+import SearchPage from './SearchPage';
 
-import DetailHerbMed from './DetailHerbMed'
+import DetailHerbMed from './DetailHerbMed';
 
-import NotFound from './404'
+import NotFound from './404';
 
-import axios from "axios";
+import axios from 'axios';
 
-import './App.css'
+import './App.css';
 import DetailPlant from './DetailPlant';
-import {ProtectedRoute} from "./protected.route";
-
+import { ProtectedRoute } from './protected.route';
 
 // axios.defaults.baseURL = 'http://api.jamumedicine.com';
 axios.defaults.baseURL = 'http://localhost:3003';
 class App extends Component {
-  
   render() {
     const path = window.location.pathname;
-    if (path !== '/login'  && path !== '/register') {
+    if (path !== '/login' && path !== '/register') {
       return (
-      <div>
-        <ButtonAppBar/>
-        <Switch>
-          <ProtectedRoute exact path="/" component={Landing} />
-          <ProtectedRoute exact path="/search/:query" component={SearchPage} />
+        <div>
+          <ButtonAppBar />
+          <Switch>
+            <ProtectedRoute exact path="/" component={Landing} />
+            <ProtectedRoute
+              exact
+              path="/search/:query"
+              component={SearchPage}
+            />
 
-          <ProtectedRoute exact path="/explicit" component={ExplicitPage} />
-          <ProtectedRoute exact  path="/explicit/:id" component={DetailExplicit} />
-          <ProtectedRoute exact path="/form/explicit" component={FormExplicit} />
-          
-          <ProtectedRoute exact path="/compare" component={ComparePage} />
-          <ProtectedRoute exact path="/predict" component={Predict} />
+            <ProtectedRoute exact path="/explicit" component={ExplicitPage} />
+            <ProtectedRoute
+              exact
+              path="/explicit/:id"
+              component={DetailExplicit}
+            />
+            <ProtectedRoute
+              exact
+              path="/form/explicit"
+              component={FormExplicit}
+            />
 
-          <ProtectedRoute exact path="/plant" component={Plant} />
-          <ProtectedRoute exact path="/plant/:id" component={DetailPlant} />
-          <ProtectedRoute exact path="/herbmeds" component={HerbMeds} />
-          <ProtectedRoute exact path="/herbsmed/:id" component={DetailHerbMed} />
-          {/* compound */}
-          
-          <ProtectedRoute exact path="/tacit" component={TacitPage} />
-          <ProtectedRoute exact path="/tacit/:id" component={DetailTacit} />
-          <ProtectedRoute exact path="/form/tacit" component={FormTacit} />
-          
-          
-          <ProtectedRoute exact path="/map/ethnic" component={MapHerb} />
-          <ProtectedRoute exact path="/ethnic/:id" component={EthnicDetail} />
+            <ProtectedRoute exact path="/compare" component={ComparePage} />
+            <ProtectedRoute exact path="/predict" component={Predict} />
 
-          <ProtectedRoute exact path="/login" component={Login} />
-          <ProtectedRoute exact path="/register" component={Register} />
+            <ProtectedRoute exact path="/plant" component={Plant} />
+            <ProtectedRoute exact path="/plant/:id" component={DetailPlant} />
+            <ProtectedRoute exact path="/herbmeds" component={HerbMeds} />
+            <ProtectedRoute
+              exact
+              path="/herbsmed/:id"
+              component={DetailHerbMed}
+            />
+            {/* compound */}
 
-          <Route exact path='*'  component={NotFound} />
-        </Switch>
-      </div>
-    )
-      }
-      return (
-        <Switch>
-          <Route exact path="/login" component={Login} />
-        </Switch>
-      )
+            <ProtectedRoute exact path="/tacit" component={TacitPage} />
+            <ProtectedRoute exact path="/tacit/:id" component={DetailTacit} />
+            <ProtectedRoute exact path="/form/tacit" component={FormTacit} />
+
+            <ProtectedRoute exact path="/map/ethnic" component={MapHerb} />
+            <ProtectedRoute exact path="/ethnic/:id" component={EthnicDetail} />
+
+            <ProtectedRoute exact path="/login" component={Login} />
+            <ProtectedRoute exact path="/register" component={Register} />
+
+            <Route exact path="*" component={NotFound} />
+          </Switch>
+        </div>
+      );
+    }
+    return (
+      <Switch>
+        <Route exact path="/login" component={Login} />
+      </Switch>
+    );
   }
 }
 

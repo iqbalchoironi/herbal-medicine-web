@@ -12,8 +12,8 @@ const useStyles = makeStyles(theme => ({
   },
   wrapper: {
     margin: theme.spacing(1),
-    width:'100%',
-    position: 'relative',
+    width: '100%',
+    position: 'relative'
   },
   buttonProgress: {
     color: green[500],
@@ -21,8 +21,8 @@ const useStyles = makeStyles(theme => ({
     top: '50%',
     left: '50%',
     marginTop: -12,
-    marginLeft: -12,
-  },
+    marginLeft: -12
+  }
 }));
 
 export default function ButtonProgress(props) {
@@ -33,16 +33,18 @@ export default function ButtonProgress(props) {
       <div className={classes.wrapper}>
         <Button
           style={{
-              width:'100%'
+            width: '100%'
           }}
           variant="contained"
-          color="#7AC143" 
+          color="#7AC143"
           disabled={props.loading || props.disable}
           onClick={props.handleButtonClick}
         >
           login
         </Button>
-        {props.loading && <CircularProgress size={24} className={classes.buttonProgress} />}
+        {props.loading && (
+          <CircularProgress size={24} className={classes.buttonProgress} />
+        )}
       </div>
     </div>
   );
