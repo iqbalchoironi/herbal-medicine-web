@@ -3,12 +3,8 @@ import Axios from 'axios'
 import PropTypes from 'prop-types';
 
 import Paper from '@material-ui/core/Paper'
-import Person from '@material-ui/icons/Person';
-import CollectionsBookmark from '@material-ui/icons/CollectionsBookmark'
-import DateRange from '@material-ui/icons/DateRange'
 import Typography from '@material-ui/core/Typography';
 
-import CardMedia from "@material-ui/core/CardMedia";
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
@@ -17,7 +13,6 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
-import CardExample from './card'
 import Spinner from './Spinner'
 
 import SnackBar from './SnackBar'
@@ -149,24 +144,21 @@ class DetailPlant extends Component {
                                marginRight: "20px"
                            }}>
                                <img style={{
-                                   width: "100%",
                                    verticalAlign: "middle",
                                    borderStyle: "none",
                                    maxHeight: "250px",
                                    width:"250px"
                                }}
+
+                               alt=''
                                className="img-card" src={this.state.detailPlant.refimg}></img>
                             </div>
-                            <div style={{
-                            }}>
-                                <Typography variant="caption" gutterBottom>
-                                    {this.state.detailPlant.idplant}
-                                </Typography >
+                            <div>
                                 <Typography style={{
                                     color:"grey",
                                     fontSize:"30px"
                                 }} variant="headline" gutterBottom>
-                                    {this.state.detailPlant.sname}
+                                    <i>{this.state.detailPlant.sname}</i>
                                 </Typography>
                             </div>
                         </div>
@@ -208,24 +200,36 @@ class DetailPlant extends Component {
                         return(
                             <ExpansionPanel>
                                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                                <Typography >{itm.sname}</Typography>
+                                    <Typography > <i>{itm.sname}</i></Typography>
                                 </ExpansionPanelSummary>
                                 <ExpansionPanelDetails style={{
                                         display:"flex",
                                         flexDirection:"column"
                                     }}>
-                                    <Typography variant="title" gutterBottom>
+                                        <Typography variant="title" gutterBottom>
                                         {itm.name_en}
-                                    </Typography>
-                                    <Typography variant="caption" gutterBottom>
-                                        {itm.gname}
-                                    </Typography>
-                                    <Typography variant="caption" gutterBottom>
-                                        {itm.position}
-                                    </Typography>
-                                    <Typography variant="caption" gutterBottom>
-                                        {itm.effect}
-                                    </Typography>
+                                        </Typography>
+                                        <Typography variant="caption" gutterBottom>
+                                        name_loc1 : {itm.name_loc1}
+                                        </Typography>
+                                        <Typography variant="caption" gutterBottom>
+                                        name_loc2 : {itm.name_loc2}
+                                        </Typography>
+                                        <Typography variant="caption" gutterBottom>
+                                        gname : {itm.gname}
+                                        </Typography>
+                                        <Typography variant="caption" gutterBottom>
+                                        position : {itm.position}
+                                        </Typography>
+                                        <Typography variant="caption" gutterBottom>
+                                        effect : {itm.position}
+                                        </Typography>
+                                        <Typography variant="caption" gutterBottom>
+                                        effect_loc :  {itm.effect}
+                                        </Typography>
+                                        <Typography variant="caption" gutterBottom>
+                                        reff :  {itm.reff}
+                                        </Typography>
                                 </ExpansionPanelDetails>
                             </ExpansionPanel>
                         )

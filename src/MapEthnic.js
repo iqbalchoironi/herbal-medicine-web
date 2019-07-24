@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 // import { GoogleApiWrapper } from 'google-maps-react';
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
-import location from '@material-ui/icons/LocationOn';
 // import InfoWindowEx from '../components/info-window-ex'
 // import ModalPlantEthnic from '../components/modal-plant-ethnic'
 import Axios from 'axios'
@@ -13,11 +12,6 @@ import Spinner from './Spinner'
 
 import SnackBar from './SnackBar'
 import ErorPage from './ErorPage'
-
-const mapStyles = {
-  width: '100%',
-  height: '90%'
-};
 
 const LocationIcons = L.icon({
     iconUrl: locationIcons,

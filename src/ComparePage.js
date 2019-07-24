@@ -4,9 +4,7 @@ import PropTypes from 'prop-types';
 import Select from 'react-select';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
-import MenuItem from '@material-ui/core/MenuItem';
 import { emphasize } from '@material-ui/core/styles/colorManipulator';
 
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
@@ -321,7 +319,7 @@ class ComparePage extends React.Component {
   }
 
   render() {
-    const { classes, theme } = this.props;
+    const { classes } = this.props;
 
     return (
       <div className={classes.root}>
@@ -359,11 +357,9 @@ class ComparePage extends React.Component {
             marginTop:"10px"
           }}>
             {this.state.compare ?
-              <Button style={{
-              }} onClick={this.reset}>Reset</Button>
+              <Button variant="contained" onClick={this.reset}>Reset</Button>
               :
-              <Button style={{
-              }} onClick={this.handleSubmit}>Compare</Button>
+              <Button variant="contained" onClick={this.handleSubmit}>Compare</Button>
             }
           </div>
           

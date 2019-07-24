@@ -1,7 +1,6 @@
 import React, { Component} from 'react'
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Axios from "axios";
 
 import Paper from '@material-ui/core/Paper';
 import SearchIcon from '@material-ui/icons/Search';

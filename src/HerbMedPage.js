@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import Axios from "axios";
 
 import CardHerbMed from './CardHerbMed'
-import SearchInput from './SearchInput'
 import Spinner from './Spinner'
 
 import Typography from '@material-ui/core/Typography';

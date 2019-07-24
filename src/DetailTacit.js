@@ -2,12 +2,8 @@ import React, {Component} from 'react';
 import Axios from 'axios'
 import FileDownload from 'js-file-download'
 
-import Paper from '@material-ui/core/Paper'
-import SaveAlt from '@material-ui/icons/SaveAlt';
-import Person from '@material-ui/icons/Person';
-import CollectionsBookmark from '@material-ui/icons/CollectionsBookmark'
-import DateRange from '@material-ui/icons/DateRange'
-import Button from '@material-ui/core/Button';
+import Paper from '@material-ui/core/Paper';
+import DateRange from '@material-ui/icons/DateRange';
 import Typography from '@material-ui/core/Typography';
 
 import { Editor, EditorState, convertFromRaw } from "draft-js";

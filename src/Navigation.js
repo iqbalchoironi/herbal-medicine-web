@@ -3,16 +3,16 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
 import { Link } from 'react-router-dom'
 
-import logo from './logo-header.png';
-
+import IconButton from '@material-ui/core/IconButton';
+import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu'
+import Menu from '@material-ui/core/Menu';
+
+import logo from './logo-header.svg';
+
 
 const styles = {
   root: {
@@ -50,10 +50,7 @@ class Navigation extends Component {
    
   render() {
     const { classes } = this.props;
-
     const { anchorEl } = this.state;
-    const { anchorAnalize } = this.state;
-
     const open = Boolean(anchorEl);
 
     let user = localStorage.getItem("user")
@@ -66,13 +63,13 @@ class Navigation extends Component {
         variant="dense"
         position="fixed"
         style={{
-          backgroundColor:"#7AC143"
+          backgroundColor:"#89b143"
         }}
         >
           <Toolbar>
           <img style={{
                 height: "40px",
-                marginTop: "5px",
+                marginTop: "-20px",
                 width: "12%"
               }}
               src={logo} alt="Logo" />
@@ -123,25 +120,42 @@ class Navigation extends Component {
               display:"flex",
               flexDirection:"row-reverse"
             }}>
-            {user === null 
-              ? 
-              <Button 
-              style={{
-                textDecoration: "none"
-              }}
-              color="inherit">
-                <Link style={{
-                  textDecoration: "none"
-                }}
-                to={`/login`}>
-                    Login
-                </Link>
-              </Button>
-              : 
-              <Button onClick={this.logout} color="inherit">
-                    Logout
-              </Button>
-              }
+           {user ? (
+              <div style={{
+                display: 'flex'
+              }}>
+                <p>
+                  {user.data.name}
+                </p>
+                <IconButton
+                  aria-owns={open ? 'menu-appbar' : undefined}
+                  aria-haspopup="true"
+                  onClick={this.handleMenu}
+                  color="inherit"
+                >
+                  <AccountCircle />
+                </IconButton>
+                <Menu
+                  id="menu-appbar"
+                  anchorEl={anchorEl}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  open={open}
+                  onClose={this.handleClose}
+                >
+                  <MenuItem onClick={this.handleClose}>Profile</MenuItem>
+                  <MenuItem onClick={this.logout}>Logout</MenuItem>
+                </Menu>
+              </div>
+            ) : <Button style={{
+              backgroundColor:"white"
+            }} component={Link} to="/login">Login</Button>}
               </div>
             
           </Toolbar>

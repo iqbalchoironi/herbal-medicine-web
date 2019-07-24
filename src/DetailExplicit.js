@@ -94,27 +94,36 @@ class DetailExplicit extends Component {
             marginBottom: "10px",
             padding: "30px"
           }}>
-           <Typography variant="headline" gutterBottom>
+           <h2 style={{
+             fontWeight: "500",
+             lineHeight: "1.1",
+             color: "#A5174A"
+           }}> 
               {this.state.show.title}
-          </Typography>
+          </h2>
+          <div style={{
+            marginTop: '10px',
+            marginBottom: '20px'
+          }}>
             <Typography variant="caption" gutterBottom>
              <Person /> {this.state.show.firstName+" "+this.state.show.lastName}
             </Typography >
             <Typography variant="caption" gutterBottom>
              <CollectionsBookmark /> Conference paper <DateRange /> 12-12-2001
             </Typography>
-            <Button data-value={this.state.show.file} onClick={this.getFile} style={{marginTop:"10px",marginBottom:"10px"}} variant="raised" size="large" color="default" gutterBottom>
+          </div>
+            <Button data-value={this.state.show.file} onClick={this.getFile} variant="contained" color="primary">
               <SaveAlt/>Download
             </Button>
-            <Typography variant="title" gutterBottom>
+            <h3>
               Abstrak
-            </Typography>
+            </h3>
             <Typography variant="body1" gutterBottom align="justify">
               {this.state.show.abstract}
             </Typography>
-            <Typography variant="title" gutterBottom>
+            <h3>
               Description
-            </Typography>
+            </h3>
             <Typography variant="body1" gutterBottom align="justify">
               {this.state.show.abstract}
             </Typography>

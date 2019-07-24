@@ -6,7 +6,6 @@ import {
     FormControl,
     InputLabel,
     Input,
-    Button,
   } from "@material-ui/core";
 
   import SnackBar from './SnackBar'

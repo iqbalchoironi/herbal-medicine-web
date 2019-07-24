@@ -4,7 +4,6 @@ import Axios from "axios";
 
 import Spinner from './Spinner'
 import Card from './card'
-import SearchInput from './SearchInput'
 
 import Typography from '@material-ui/core/Typography';
 import Breadcrumbs from '@material-ui/lab/Breadcrumbs';

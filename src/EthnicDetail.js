@@ -7,8 +7,6 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
-import { Link } from 'react-router-dom'
-
 import Spinner from './Spinner'
 import { Paper } from '@material-ui/core';
 
@@ -19,15 +17,13 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import Divider from '@material-ui/core/Divider';
-import InboxIcon from '@material-ui/icons/Inbox';
 import Location from '@material-ui/icons/LocationOn';
 
 import SnackBar from './SnackBar'
 import ErorPage from './ErorPage'
 
 function ListItemLink(props) {
-  return <ListItem button component="a" {...props} />;
+  return <ListItem button component="a" {...props} />
 }
 
 class EthnicDetail extends Component {
@@ -216,7 +212,8 @@ class EthnicDetail extends Component {
                 margin:"auto",
                 marginTop:"10px",
                 width:"90%",
-                padding: "15px"
+                padding: "15px",
+                backgroundColor: "rgba(0, 0, 0, 0.05)"
             }}>
                 <Paper style={{
                     width:"30%",
@@ -257,19 +254,19 @@ class EthnicDetail extends Component {
                             return (
                                 <ExpansionPanel>
                                     <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                                        <Typography>{plantethnic.name_ina}</Typography>
+                                        <Typography>{plantethnic.name_ina} {plantethnic.name_ina ? "|" : null} <i>{plantethnic.species}</i></Typography>
                                     </ExpansionPanelSummary>
                                     <ExpansionPanelDetails style={{
                                         display:"flex",
                                         flexDirection:"column"
                                     }}>
-                                        <Typography variant="caption" gutterBottom>{plantethnic.name_ina}</Typography> 
-                                        <Typography variant="caption" gutterBottom>{plantethnic.disease_ina}</Typography>
-                                        <Typography variant="caption" gutterBottom>{plantethnic.disease_ing}</Typography> 
-                                        <Typography variant="caption" gutterBottom>{plantethnic.species}</Typography>
-                                        <Typography variant="caption" gutterBottom>{plantethnic.family}</Typography>
-                                        <Typography variant="caption" gutterBottom>{plantethnic.section_ina}</Typography>
-                                        <Typography variant="caption" gutterBottom>{plantethnic.section_ing}</Typography>
+                                        <Typography variant="caption" gutterBottom>Name plant (in bahasa) : {plantethnic.name_ina}</Typography>  
+                                        <Typography variant="caption" gutterBottom>Name disease (in bahasa) : {plantethnic.disease_ina}</Typography> 
+                                        <Typography variant="caption" gutterBottom>Name disease (in english) : {plantethnic.disease_ing}</Typography>  
+                                        <Typography variant="caption" gutterBottom>Species of plant : <i>{plantethnic.species}</i></Typography> 
+                                        <Typography variant="caption" gutterBottom>Family of plant : <i>{plantethnic.family}</i></Typography> 
+                                        <Typography variant="caption" gutterBottom>Section that used (in bahasa) : {plantethnic.section_ina}</Typography> 
+                                        <Typography variant="caption" gutterBottom>Section that used (in english) : {plantethnic.section_ing}</Typography> 
                                         
                                         
                                     </ExpansionPanelDetails>

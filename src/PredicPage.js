@@ -22,9 +22,7 @@ import Footer from './Footer'
 
 import {
     FormControl,
-    InputLabel,
-    Input,
-    TextField
+    InputLabel
   } from "@material-ui/core";
 
 import Picklist from './components/pick-list';

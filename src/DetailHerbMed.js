@@ -2,10 +2,7 @@ import React, {Component} from 'react';
 import Axios from 'axios'
 import PropTypes from 'prop-types';
 
-import Paper from '@material-ui/core/Paper'
-import Person from '@material-ui/icons/Person';
-import CollectionsBookmark from '@material-ui/icons/CollectionsBookmark'
-import DateRange from '@material-ui/icons/DateRange'
+import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
 import Tabs from '@material-ui/core/Tabs';
@@ -16,7 +13,7 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
-import CardExample from './card'
+import Card from './card'
 import Spinner from './Spinner'
 
 import SnackBar from './SnackBar'
@@ -74,7 +71,12 @@ class DetailHerbMed extends Component {
 
             let Plant = RefCrude.map(dt => dt.refPlant[0])
             console.log(Plant)
-            Plant = await Promise.all(Array.from(new Set(Plant.filter(dt => dt !== null).map( dt =>{
+            Plant = await Promise.all(Array.from(new Set(Plant.filter(dt => {
+              if (dt !== null || dt !== undefined) {
+                return dt
+              }
+              return 0
+            }).map( dt =>{
                     return dt.idplant
             } )))
                     .map( async id => {
@@ -126,6 +128,8 @@ class DetailHerbMed extends Component {
           }
 
   render(){
+    let { refCompany } = this.state.detailHerbMed
+    let { refDclass } = this.state.detailHerbMed
     return(
         <div>
             {
@@ -140,7 +144,8 @@ class DetailHerbMed extends Component {
                     margin:"auto",
                     marginTop: "80px",
                     marginBottom: "10px",
-                    padding: "30px"
+                    padding: "30px",
+                    backgroundColor: "rgba(0, 0, 0, 0.05)"
                   }}>
                     <Paper style={{
                         width:"90%",
@@ -148,12 +153,19 @@ class DetailHerbMed extends Component {
                         marginTop: "20px",
                         marginBottom: "10px",
                         padding: "30px"
-                    }}>
-                        <Typography variant="headline" gutterBottom>
-                            {this.state.detailHerbMed.name}
-                        </Typography>
-                        <Typography variant="caption" gutterBottom>
-                            {this.state.detailHerbMed.efficacy}
+                    }}> 
+                        <Typography variant="h6" gutterBottom>{this.state.detailHerbMed.name}</Typography>
+                        <Typography variant="caption" display="block" gutterBottom>
+                            {refCompany ? refCompany.cname : null}
+                        </Typography >
+                        <Typography variant="caption" display="block" gutterBottom>
+                            {refCompany ? refCompany.address : null}
+                        </Typography >
+                        <Typography variant="caption" display="block" gutterBottom>
+                          efficacy : {this.state.detailHerbMed.efficacy}
+                        </Typography >
+                        <Typography variant="caption" display="block" align="justify" gutterBottom>
+                          disease class description : {refDclass ? refDclass.description : null}
                         </Typography >
                     </Paper>
                    <Tabs
@@ -179,7 +191,7 @@ class DetailHerbMed extends Component {
                         {this.state.detailHerbMed.refPlant !== undefined &&
                         <div className="for-card">
                         {this.state.detailHerbMed.refPlant.map(item =>
-                                  <CardExample key={item.id} name={item.sname} image={item.refimg} reff={item.refCrude} />
+                                 <Card key={item.id} id={item.idplant} name={item.sname} image={item.refimg} reff={item.refCrude} />
                                 )}
                         </div>
                         }
@@ -192,23 +204,35 @@ class DetailHerbMed extends Component {
                         return(
                             <ExpansionPanel>
                                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                                <Typography >{itm.sname}</Typography>
+                                <Typography > <i>{itm.sname}</i></Typography>
                                 </ExpansionPanelSummary>
                                 <ExpansionPanelDetails style={{
                                         display:"flex",
                                         flexDirection:"column"
                                     }}>
                                     <Typography variant="title" gutterBottom>
-                                        {itm.name_en}
+                                      {itm.name_en}
                                     </Typography>
                                     <Typography variant="caption" gutterBottom>
-                                        {itm.gname}
+                                      name_loc1 : {itm.name_loc1}
                                     </Typography>
                                     <Typography variant="caption" gutterBottom>
-                                        {itm.position}
+                                      name_loc2 : {itm.name_loc2}
                                     </Typography>
                                     <Typography variant="caption" gutterBottom>
-                                        {itm.effect}
+                                      gname : {itm.gname}
+                                    </Typography>
+                                    <Typography variant="caption" gutterBottom>
+                                      position : {itm.position}
+                                    </Typography>
+                                    <Typography variant="caption" gutterBottom>
+                                      effect : {itm.position}
+                                    </Typography>
+                                    <Typography variant="caption" gutterBottom>
+                                      effect_loc :  {itm.effect}
+                                    </Typography>
+                                    <Typography variant="caption" gutterBottom>
+                                      reff :  {itm.reff}
                                     </Typography>
                                 </ExpansionPanelDetails>
                             </ExpansionPanel>

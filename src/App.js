@@ -30,8 +30,8 @@ import DetailPlant from './DetailPlant';
 import {ProtectedRoute} from "./protected.route";
 
 
+// axios.defaults.baseURL = 'http://api.jamumedicine.com';
 axios.defaults.baseURL = 'http://localhost:3003';
-
 class App extends Component {
   
   render() {
