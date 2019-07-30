@@ -44,9 +44,9 @@ const styles = muiBaseTheme => ({
   }
 });
 
-const List = ({ item, modalCrude, id }) => {
-  if (item.sname !== '') {
-    return <li onClick={modalCrude.bind(this, item.idcrude)}>{item.sname}</li>;
+const List = ({ item }) => {
+  if (item !== null) {
+    return <li>{`${item.sname} part ${item.part}`}</li>;
   }
 
   return null;
@@ -71,9 +71,13 @@ function CardPlant(props) {
             variant={'caption'}
           >
             <ul className="reff">
-              {props.reff.map(item => (
-                <List item={item} modalCrude={props.modalCrude} />
-              ))}
+              {props.reff.map(item => {
+                if (item !== null) {
+                  item.part = props.part;
+                }
+
+                return <List item={item} />;
+              })}
             </ul>
           </Typography>
         </CardContent>

@@ -19,6 +19,8 @@ import Login from './Login';
 import Register from './Register';
 import SearchPage from './SearchPage';
 
+import CompoundPage from './CompoundPage';
+
 import DetailHerbMed from './DetailHerbMed';
 
 import NotFound from './404';
@@ -29,8 +31,8 @@ import './App.css';
 import DetailPlant from './DetailPlant';
 import { ProtectedRoute } from './protected.route';
 
-// axios.defaults.baseURL = 'http://api.jamumedicine.com';
-axios.defaults.baseURL = 'http://localhost:3003';
+axios.defaults.baseURL = 'http://api.jamumedicine.com';
+//  axios.defaults.baseURL = "http://localhost:3003";
 class App extends Component {
   render() {
     const path = window.location.pathname;
@@ -69,7 +71,7 @@ class App extends Component {
               path="/herbsmed/:id"
               component={DetailHerbMed}
             />
-            {/* compound */}
+            <ProtectedRoute exact path="/compound" component={CompoundPage} />
 
             <ProtectedRoute exact path="/tacit" component={TacitPage} />
             <ProtectedRoute exact path="/tacit/:id" component={DetailTacit} />

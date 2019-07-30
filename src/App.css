@@ -96,3 +96,7 @@ div.DraftEditor-root {
     'Times New Roman', 'Times', 'serif';
   color: rgba(0, 0, 0, 0.84);
 }
+
+.item-list-basis {
+  margin-top: 20px;
+}

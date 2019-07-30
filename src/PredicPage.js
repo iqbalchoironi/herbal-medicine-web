@@ -56,6 +56,7 @@ class Predict extends Component {
       activeStep: 0,
       skipped: new Set(),
       item: [],
+      itembase: [],
       itembasis: [],
       itemtarget: [],
       type: '',
@@ -74,6 +75,7 @@ class Predict extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.afterUpdate = this.afterUpdate.bind(this);
     this.closeBtn = this.closeBtn.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
   }
 
   async componentDidMount() {
@@ -93,6 +95,7 @@ class Predict extends Component {
       this.afterUpdate(data.success, data.message);
       this.setState({
         itembasis: coba,
+        itembase: coba,
         item: data.data,
         loading: false
       });
@@ -165,6 +168,9 @@ class Predict extends Component {
       itemtarget: [...this.state.itemtarget, e.target.dataset.value],
       itembasis: this.state.itembasis.filter(
         data => data !== e.target.dataset.value
+      ),
+      itembase: this.state.itembase.filter(
+        data => data !== e.target.dataset.value
       )
     });
   }
@@ -172,10 +178,27 @@ class Predict extends Component {
   coba1(e) {
     this.setState({
       itembasis: [...this.state.itembasis, e.target.dataset.value],
+      itembase: [...this.state.itembase, e.target.dataset.value],
       itemtarget: this.state.itemtarget.filter(
         data => data !== e.target.dataset.value
       )
     });
+  }
+
+  async handleSearch(e) {
+    if (e.target.value === '') {
+      this.setState({
+        itembasis: this.state.itembase
+      });
+    } else {
+      const regex = new RegExp(e.target.value, 'ig');
+      let filter = await this.state.itembase.filter(dt => {
+        return dt.match(regex);
+      });
+      this.setState({
+        itembasis: filter
+      });
+    }
   }
 
   handleChange = event => {
@@ -308,6 +331,8 @@ class Predict extends Component {
                         target={this.state.itemtarget}
                         coba1={this.coba1}
                         coba={this.coba}
+                        type={this.state.type}
+                        filterList={this.handleSearch}
                       />
                       <Step3
                         activeStep={this.state.activeStep}
@@ -395,11 +420,15 @@ function Step1(props) {
           name="type"
           onChange={props.handleChange}
         >
-          <FormControlLabel value="crude" control={<Radio />} label="Crude" />
           <FormControlLabel
-            value="molecul"
+            value="crude"
             control={<Radio />}
-            label="Molecul"
+            label="Crude Drug"
+          />
+          <FormControlLabel
+            value="compound"
+            control={<Radio />}
+            label="Compound"
           />
         </RadioGroup>
       </FormControl>
@@ -416,7 +445,7 @@ function Step2(props) {
       style={{
         display: 'flex',
         justifyContent: 'center',
-        width: '50%',
+        width: '70%',
         minHeight: '400px'
       }}
     >
@@ -433,18 +462,40 @@ function Step2(props) {
             }}
           >
             <option value="" />
-            <option value={'svm'}>svm</option>
-            <option value={'som'}>som</option>
+            <option value={'svm'}>suport vector mechine</option>
+            <option value={'sf'}>random forest</option>
+            <option value={'dl'}>deep learning</option>
           </Select>
         </FormControl>
 
+        <FormControl component="fieldset" margin="normal" fullWidth>
+          <FormLabel component="legend">Using optimization :</FormLabel>
+          <RadioGroup
+            aria-label="Using optimization"
+            name="optimization"
+            onChange={props.handleChange}
+          >
+            <FormControlLabel
+              value="with optimization"
+              control={<Radio />}
+              label="yes"
+            />
+            <FormControlLabel
+              value="not use optimization"
+              control={<Radio />}
+              label="no"
+            />
+          </RadioGroup>
+        </FormControl>
+
         <FormControl margin="normal" fullWidth>
-          <label>Select herbal medicine :</label>
+          <label>Select {props.type} :</label>
           <Picklist
             basis={props.basis}
             target={props.target}
             coba1={props.coba1}
             coba={props.coba}
+            filterList={props.filterList}
           />
         </FormControl>
       </form>

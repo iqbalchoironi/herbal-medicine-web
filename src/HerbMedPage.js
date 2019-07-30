@@ -48,6 +48,11 @@ class HerbMeds extends Component {
         open: false,
         success: false,
         message: ''
+      },
+      onSelect: null,
+      modal: {
+        open: false,
+        id: ''
       }
     };
     this.onScroll = this.onScroll.bind(this);

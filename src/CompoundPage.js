@@ -3,7 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Axios from 'axios';
 
 import Spinner from './Spinner';
-import Card from './card';
+import CardCompound from './CardCompound';
 
 import Typography from '@material-ui/core/Typography';
 import Breadcrumbs from '@material-ui/lab/Breadcrumbs';
@@ -16,8 +16,6 @@ import IconButton from '@material-ui/core/IconButton';
 
 import SnackBar from './SnackBar';
 import ErorPage from './ErorPage';
-
-import ModalCrude from './ModalCrude';
 
 const styles = {
   root: {
@@ -35,25 +33,20 @@ const styles = {
   }
 };
 
-class Plant extends Component {
+class Compound extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: true,
       loadData: false,
       inputSearch: '',
-      plans: [],
+      compounds: [],
       onSearch: false,
       currentPage: 1,
       snackbar: {
         open: false,
         success: false,
         message: ''
-      },
-      onSelect: null,
-      modal: {
-        open: false,
-        id: ''
       }
     };
     this.onScroll = this.onScroll.bind(this);
@@ -62,11 +55,10 @@ class Plant extends Component {
     this.afterUpdate = this.afterUpdate.bind(this);
     this.closeBtn = this.closeBtn.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
-    this.modalCrude = this.modalCrude.bind(this);
   }
 
   async componentDidMount() {
-    window.addEventListener('scroll', this.onScroll, false);
+    //window.addEventListener("scroll", this.onScroll, false);
     this.getData();
   }
 
@@ -91,24 +83,37 @@ class Plant extends Component {
     }
   }
 
-  async modalCrude(id) {
-    this.setState({
-      modal: {
-        open: true,
-        id: id
-      }
-    });
-  }
-
   async getData() {
     try {
-      const url = '/jamu/api/plant/pages/' + this.state.currentPage;
+      // const url = "/jamu/api/compound/pages/" + this.state.currentPage;
+      const url = '/jamu/api/generate/new/compound/index';
       const res = await Axios.get(url);
       const { data } = await res;
-      let newData = this.state.plans.concat(data.data);
+
+      let dataNew = await Promise.all(
+        data.data.map(async dt => {
+          let url =
+            'https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/' +
+            dt.cname +
+            '/cids/TXT';
+          try {
+            let res = await Axios.get(url);
+            console.log(res);
+            let data = res.data.split('\n');
+            dt.idPubChem = data[0];
+            return dt;
+          } catch (err) {
+            console.log(err);
+            dt.idPubChem = '';
+            return dt;
+          }
+        })
+      );
+
+      let newData = this.state.compounds.concat(dataNew);
       this.afterUpdate(data.success, data.message);
       this.setState({
-        plans: newData,
+        compounds: newData,
         loading: false
       });
     } catch (err) {
@@ -128,7 +133,7 @@ class Plant extends Component {
         loading: true,
         onSearch: true
       });
-      const url = '/jamu/api/plant/search';
+      const url = '/jamu/api/compound/search';
       let axiosConfig = {
         headers: {
           'Content-Type': 'application/json'
@@ -148,7 +153,7 @@ class Plant extends Component {
       console.log(newData);
       this.afterUpdate(data.success, data.message);
       this.setState({
-        plans: newData,
+        compounds: newData,
         loading: false
       });
     } catch (err) {
@@ -188,9 +193,6 @@ class Plant extends Component {
         open: false,
         success: false,
         message: ''
-      },
-      modal: {
-        open: false
       }
     });
   }
@@ -226,7 +228,7 @@ class Plant extends Component {
                 KMS Jamu
               </Link>
               <Link color="inherit">Explore</Link>
-              <Typography color="textPrimary">Plant</Typography>
+              <Typography color="textPrimary">Compound</Typography>
             </Breadcrumbs>
           </div>
           <div
@@ -261,21 +263,18 @@ class Plant extends Component {
           <Spinner />
         ) : (
           <div className="for-card">
-            {this.state.plans.map(item => (
-              <Card
-                key={item.id}
-                id={item.idplant}
-                name={item.sname}
-                image={item.refimg}
-                reff={item.refCrude}
-                modalCrude={this.modalCrude}
+            {this.state.compounds.map(item => (
+              <CardCompound
+                key={item._id}
+                id={''}
+                part={item.part}
+                name={item.cname}
+                image={`https://pubchem.ncbi.nlm.nih.gov/image/imgsrv.fcgi?cid=${item.idPubChem}`}
+                reff={[item.refPlant]}
               />
             ))}
           </div>
         )}
-        {this.state.modal.open === true ? (
-          <ModalCrude modal={this.state.modal} close={this.closeBtn} />
-        ) : null}
         {this.state.snackbar.open === true ? (
           <SnackBar data={this.state.snackbar} close={this.closeBtn} />
         ) : null}
@@ -284,4 +283,4 @@ class Plant extends Component {
   }
 }
 
-export default withStyles(styles)(Plant);
+export default withStyles(styles)(Compound);
