@@ -178,11 +178,7 @@ export class MapHerb extends Component {
   render() {
     const center = [-2.5489, 120.0149];
     return (
-      <div
-        style={{
-          marginTop: '70px'
-        }}
-      >
+      <div>
         {this.state.onEror ? (
           <ErorPage />
         ) : this.state.loading ? (
@@ -190,7 +186,7 @@ export class MapHerb extends Component {
         ) : (
           <Map
             style={{
-              height: '550px',
+              height: '560px',
               width: '100%'
             }}
             center={center}

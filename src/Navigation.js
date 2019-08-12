@@ -58,8 +58,8 @@ class Navigation extends Component {
     return (
       <div className={classes.root}>
         <AppBar
+          position="static"
           variant="dense"
-          position="fixed"
           style={{
             backgroundColor: '#89b143'
           }}
@@ -91,7 +91,7 @@ class Navigation extends Component {
                 </li>
 
                 <div class="dropdown">
-                  <li>Knowledge Sharing </li>
+                  <li>Knowledges</li>
                   <div class="dropdown-content">
                     <Link to="/tacit">Tacit</Link>
                     <Link to="/explicit">Explicit</Link>
@@ -99,18 +99,18 @@ class Navigation extends Component {
                 </div>
 
                 <div class="dropdown">
-                  <li>Analize</li>
+                  <li>Analysis</li>
                   <div class="dropdown-content">
-                    <Link to="/compare">Comparison</Link>
-                    <Link to="/predict">Prediction</Link>
+                    <Link to="/compare">Compare Formulas</Link>
+                    <Link to="/predict">Prediction of Herbal Medicine</Link>
                   </div>
                 </div>
 
                 <div class="dropdown">
                   <li>Explore</li>
                   <div class="dropdown-content">
-                    <Link to="/herbmeds">Herbal Medicine</Link>
-                    <Link to="/plant">Plant</Link>
+                    <Link to="/herbmeds">Herbal Medicines</Link>
+                    <Link to="/plant">Plants</Link>
                     <Link to="/compound">Compounds</Link>
                   </div>
                 </div>

@@ -33,10 +33,11 @@ export default function ButtonProgress(props) {
       <div className={classes.wrapper}>
         <Button
           style={{
-            width: '100%'
+            width: '100%',
+            backgroundColor: '#89b143',
+            color: 'white'
           }}
           variant="contained"
-          color="#7AC143"
           disabled={props.loading || props.disable}
           onClick={props.handleButtonClick}
         >

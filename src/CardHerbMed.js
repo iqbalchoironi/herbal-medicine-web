@@ -43,12 +43,15 @@ const styles = muiBaseTheme => ({
     '&:not(:first-of-type)': {
       marginLeft: -muiBaseTheme.spacing.unit
     }
+  },
+  efficacy: {
+    height: '60px'
   }
 });
 
-const List = ({ item }) => {
+const List = ({ item, modalCrude, id }) => {
   if (item.sname !== '') {
-    return <li>{item.sname}</li>;
+    return <li onClick={modalCrude.bind(this, item.idcrude)}>{item.sname}</li>;
   }
 
   return null;
@@ -87,10 +90,17 @@ function CardHerbMed(props) {
           <Typography className={classes.heading} gutterBottom>
             {props.name}
           </Typography>
-          <Typography variant={'caption'}>{props.efficacy}</Typography>
+          <p
+            style={{
+              color: 'grey'
+            }}
+            className="block-with-text"
+          >
+            {props.efficacy}
+          </p>
           <ul className="reff">
             {props.reff.map(item => (
-              <List item={item} />
+              <List item={item} modalCrude={props.modalCrude} />
             ))}
           </ul>
         </CardContent>

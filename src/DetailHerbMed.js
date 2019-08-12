@@ -19,6 +19,36 @@ import Spinner from './Spinner';
 import SnackBar from './SnackBar';
 import ErorPage from './ErorPage';
 
+import ModalCrude from './ModalCrude';
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+import Chip from '@material-ui/core/Chip';
+import Avatar from '@material-ui/core/Avatar';
+import HomeIcon from '@material-ui/icons/Home';
+import { withStyles } from '@material-ui/core/styles';
+import { emphasize } from '@material-ui/core/styles/colorManipulator';
+
+const StyledBreadcrumb = withStyles(theme => ({
+  root: {
+    backgroundColor: theme.palette.grey[100],
+    height: 24,
+    color: theme.palette.grey[800],
+    fontWeight: theme.typography.fontWeightRegular,
+    '&:hover, &:focus': {
+      backgroundColor: theme.palette.grey[300]
+    },
+    '&:active': {
+      boxShadow: theme.shadows[1],
+      backgroundColor: emphasize(theme.palette.grey[300], 0.12)
+    }
+  }
+}))(Chip);
+
+const styles = theme => ({
+  avatar: {
+    background: 'none',
+    marginRight: -theme.spacing(1.5)
+  }
+});
 function TabContainer(props) {
   return (
     <Typography component="div" style={{ padding: 8 * 3 }}>
@@ -42,11 +72,17 @@ class DetailHerbMed extends Component {
         open: false,
         success: false,
         message: ''
+      },
+      modal: {
+        open: false,
+        id: ''
       }
     };
     this.handleChange = this.handleChange.bind(this);
     this.afterUpdate = this.afterUpdate.bind(this);
     this.closeBtn = this.closeBtn.bind(this);
+
+    this.modalCrude = this.modalCrude.bind(this);
   }
 
   async componentDidMount() {
@@ -125,17 +161,30 @@ class DetailHerbMed extends Component {
     });
   }
 
+  async modalCrude(id) {
+    this.setState({
+      modal: {
+        open: true,
+        id: id
+      }
+    });
+  }
+
   closeBtn() {
     this.setState({
       snackbar: {
         open: false,
         success: false,
         message: ''
+      },
+      modal: {
+        open: false
       }
     });
   }
 
   render() {
+    const { classes } = this.props;
     let { refCompany } = this.state.detailHerbMed;
     let { refDclass } = this.state.detailHerbMed;
     return (
@@ -150,7 +199,55 @@ class DetailHerbMed extends Component {
               style={{
                 width: '90%',
                 margin: 'auto',
-                marginTop: '80px',
+                marginTop: '15px',
+                marginBottom: '30px',
+                padding: '15px',
+                display: 'flex'
+              }}
+              elevation={1}
+            >
+              <div
+                style={{
+                  width: '50%'
+                }}
+              >
+                <Typography>Detail {this.state.detailHerbMed.name}</Typography>
+              </div>
+              <div
+                style={{
+                  width: '50%',
+                  display: 'flex',
+                  flexDirection: 'row-reverse'
+                }}
+              >
+                <Breadcrumbs aria-label="breadcrumb">
+                  <StyledBreadcrumb
+                    component="a"
+                    href="/"
+                    label="KMS Jamu"
+                    avatar={
+                      <Avatar className={classes.avatar}>
+                        <HomeIcon />
+                      </Avatar>
+                    }
+                  />
+                  <StyledBreadcrumb
+                    component="a"
+                    href="#"
+                    label="Herbal Medicine"
+                  />
+                  <StyledBreadcrumb
+                    label={this.state.detailHerbMed.name}
+                    deleteIcon={<ExpandMoreIcon />}
+                  />
+                </Breadcrumbs>
+              </div>
+            </Paper>
+            <Paper
+              style={{
+                width: '85%',
+                margin: 'auto',
+                marginTop: '30px',
                 marginBottom: '10px',
                 padding: '30px',
                 backgroundColor: 'rgba(0, 0, 0, 0.05)'
@@ -196,7 +293,7 @@ class DetailHerbMed extends Component {
               >
                 <Tab label="Plant" />
                 <Tab label="Crude Drug" />
-                <Tab label="Compound" />
+                {/* <Tab label="Compound" /> */}
               </Tabs>
               <Paper
                 style={{
@@ -218,6 +315,7 @@ class DetailHerbMed extends Component {
                             name={item.sname}
                             image={item.refimg}
                             reff={item.refCrude}
+                            modalCrude={this.modalCrude}
                           />
                         ))}
                       </div>
@@ -274,7 +372,7 @@ class DetailHerbMed extends Component {
                       })}
                   </TabContainer>
                 )}
-                {this.state.value === 2 && (
+                {/* {this.state.value === 2 && (
                   <TabContainer>
                     <ExpansionPanel>
                       <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
@@ -301,11 +399,14 @@ class DetailHerbMed extends Component {
                       </ExpansionPanelDetails>
                     </ExpansionPanel>
                   </TabContainer>
-                )}
+                )} */}
               </Paper>
             </Paper>
           </div>
         )}
+        {this.state.modal.open === true ? (
+          <ModalCrude modal={this.state.modal} close={this.closeBtn} />
+        ) : null}
         {this.state.snackbar.open === true ? (
           <SnackBar data={this.state.snackbar} close={this.closeBtn} />
         ) : null}
@@ -314,4 +415,4 @@ class DetailHerbMed extends Component {
   }
 }
 
-export default DetailHerbMed;
+export default withStyles(styles, { withTheme: true })(DetailHerbMed);

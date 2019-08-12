@@ -2,7 +2,6 @@ import React, { Component, Fragment } from 'react';
 import Axios from 'axios';
 
 import Typography from '@material-ui/core/Typography';
-import Breadcrumbs from '@material-ui/lab/Breadcrumbs';
 import Link2 from '@material-ui/core/Link';
 import Spinner from './Spinner';
 
@@ -31,12 +30,20 @@ import FormLabel from '@material-ui/core/FormLabel';
 
 import Icon from '@material-ui/core/Icon';
 
+import { emphasize, makeStyles } from '@material-ui/core/styles';
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+import Chip from '@material-ui/core/Chip';
+import Avatar from '@material-ui/core/Avatar';
+import HomeIcon from '@material-ui/icons/Home';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+
 const styles = {
   root: {
     padding: '2px 4px',
     display: 'flex',
-    alignItems: 'center',
-    width: 400
+    alignItems: 'center'
   },
   input: {
     marginLeft: 8,
@@ -52,6 +59,22 @@ const styles = {
     margin: 8
   }
 };
+
+const StyledBreadcrumb = withStyles(theme => ({
+  root: {
+    backgroundColor: theme.palette.grey[100],
+    height: 24,
+    color: theme.palette.grey[800],
+    fontWeight: theme.typography.fontWeightRegular,
+    '&:hover, &:focus': {
+      backgroundColor: theme.palette.grey[300]
+    },
+    '&:active': {
+      boxShadow: theme.shadows[1],
+      backgroundColor: emphasize(theme.palette.grey[300], 0.12)
+    }
+  }
+}))(Chip);
 
 function ListExplicit(props) {
   return (
@@ -118,10 +141,27 @@ class ExplicitPage extends Component {
     this.getDataSearch = this.getDataSearch.bind(this);
     this.changeFilter = this.changeFilter.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
+    this.ok = this.ok.bind(this);
+  }
+
+  topFunction() {
+    window.scrollTo(0, 0);
+  }
+
+  async ok() {
+    if (window.scrollY >= 100) {
+      await this.setState({
+        top: true
+      });
+    } else {
+      await this.setState({
+        top: false
+      });
+    }
   }
 
   async componentDidMount() {
-    // window.addEventListener('scroll', this.onScroll);
+    window.addEventListener('scroll', this.ok, false);
     this.getData();
   }
 
@@ -277,10 +317,92 @@ class ExplicitPage extends Component {
           display: 'flex',
           flexDirection: 'column',
           margin: 'auto',
-          marginTop: '100px',
+          marginTop: '30px',
           width: '100%'
         }}
       >
+        {this.state.top ? (
+          <AppBar
+            variant="dense"
+            style={{
+              backgroundColor: '#89b143'
+            }}
+          >
+            <Toolbar>
+              <div
+                style={{
+                  width: '90%',
+                  display: 'flex',
+                  flexDirection: 'row',
+                  margin: 'auto'
+                }}
+              >
+                <div
+                  style={{
+                    width: '50%',
+                    display: 'flex',
+                    flexDirection: 'row'
+                  }}
+                >
+                  <Paper className={classes.root} elevation={1}>
+                    <Breadcrumbs aria-label="breadcrumb">
+                      <StyledBreadcrumb
+                        component="a"
+                        href="/"
+                        label="KMS Jamu"
+                        avatar={
+                          <Avatar className={classes.avatar}>
+                            <HomeIcon />
+                          </Avatar>
+                        }
+                      />
+                      <StyledBreadcrumb
+                        component="a"
+                        href="#"
+                        label="Knowledge"
+                      />
+                      <StyledBreadcrumb
+                        label="Explicit Knowledge"
+                        deleteIcon={<ExpandMoreIcon />}
+                      />
+                    </Breadcrumbs>
+                  </Paper>
+                </div>
+                <div
+                  style={{
+                    width: '50%',
+                    display: 'flex',
+                    flexDirection: 'row-reverse'
+                  }}
+                >
+                  <Paper
+                    className={classes.root}
+                    style={{
+                      width: '400px'
+                    }}
+                    elevation={1}
+                  >
+                    <InputBase
+                      className={classes.input}
+                      name="inputSearch"
+                      value={this.state.inputSearch}
+                      onChange={this.handleInputChange}
+                      onKeyDown={this.handleKeyDown}
+                      placeholder="Search based on title"
+                    />
+                    <IconButton
+                      className={classes.iconButton}
+                      onClick={this.getDataSearch}
+                      aria-label="Search"
+                    >
+                      <SearchIcon />
+                    </IconButton>
+                  </Paper>
+                </div>
+              </div>
+            </Toolbar>
+          </AppBar>
+        ) : null}
         <div
           style={{
             width: '95%',
@@ -296,13 +418,25 @@ class ExplicitPage extends Component {
               flexDirection: 'row'
             }}
           >
-            <Breadcrumbs aria-label="Breadcrumb">
-              <Link2 color="inherit" href="/">
-                KMS Jamu
-              </Link2>
-              <Link2 color="inherit">Explore</Link2>
-              <Typography color="textPrimary">Explicit Knowledge</Typography>
-            </Breadcrumbs>
+            <Paper className={classes.root} elevation={1}>
+              <Breadcrumbs aria-label="breadcrumb">
+                <StyledBreadcrumb
+                  component="a"
+                  href="/"
+                  label="KMS Jamu"
+                  avatar={
+                    <Avatar className={classes.avatar}>
+                      <HomeIcon />
+                    </Avatar>
+                  }
+                />
+                <StyledBreadcrumb component="a" href="#" label="Knowledge" />
+                <StyledBreadcrumb
+                  label="Explicit Knowledge"
+                  deleteIcon={<ExpandMoreIcon />}
+                />
+              </Breadcrumbs>
+            </Paper>
           </div>
           <div
             style={{
@@ -311,14 +445,20 @@ class ExplicitPage extends Component {
               flexDirection: 'row-reverse'
             }}
           >
-            <Paper className={classes.root} elevation={1}>
+            <Paper
+              className={classes.root}
+              style={{
+                width: '400px'
+              }}
+              elevation={1}
+            >
               <InputBase
                 className={classes.input}
                 name="inputSearch"
                 value={this.state.inputSearch}
                 onChange={this.handleInputChange}
                 onKeyDown={this.handleKeyDown}
-                placeholder="Search here..."
+                placeholder="Search based on title"
               />
               <IconButton
                 className={classes.iconButton}
@@ -356,17 +496,17 @@ class ExplicitPage extends Component {
               >
                 <div
                   style={{
-                    width: '20%',
-                    position: 'fixed'
+                    width: '20%'
+                    //position: "fixed"
                   }}
                 >
-                  <h1
+                  <h3
                     style={{
                       margin: '0'
                     }}
                   >
-                    FILTER :
-                  </h1>
+                    FILTER:
+                  </h3>
                   <FormControl
                     component="fieldset"
                     className={classes.formControl}

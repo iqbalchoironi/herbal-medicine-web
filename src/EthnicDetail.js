@@ -7,6 +7,9 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
+import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
+import Button from '@material-ui/core/Button';
+
 import Spinner from './Spinner';
 import { Paper } from '@material-ui/core';
 
@@ -69,12 +72,13 @@ class EthnicDetail extends Component {
     await this.getDataPlantEthnic();
   }
 
-  async componentWillReceiveProps() {
-    this.setState({
-      loading: true
-    });
-    await this.getDataPlantEthnic();
-  }
+  // async componentWillReceiveProps(nextProps) {
+  //   // this.setState({
+  //   //   loading: true
+  //   // });
+  //   // await this.getDataPlantEthnic();
+  //   console.log(nextProps);
+  // }
 
   async getDataPlantEthnic() {
     try {
@@ -178,7 +182,7 @@ class EthnicDetail extends Component {
             style={{
               display: 'flex',
               flexDirection: 'column',
-              paddingTop: '90px'
+              paddingTop: '20px'
             }}
           >
             <div
@@ -322,6 +326,11 @@ class EthnicDetail extends Component {
                                     {plantethnic.section_ing}
                                   </Typography>
                                 </ExpansionPanelDetails>
+                                <ExpansionPanelActions>
+                                  <Button size="small" color="primary">
+                                    Read More
+                                  </Button>
+                                </ExpansionPanelActions>
                               </ExpansionPanel>
                             );
                           })}

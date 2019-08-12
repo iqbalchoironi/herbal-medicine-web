@@ -18,18 +18,23 @@ import Select from '@material-ui/core/Select';
 import SnackBar from './SnackBar';
 import ErorPage from './ErorPage';
 
-import Footer from './Footer';
-
 import { FormControl, InputLabel } from '@material-ui/core';
 
 import Picklist from './components/pick-list';
 import Spinner from './Spinner';
 
+import { emphasize, makeStyles } from '@material-ui/core/styles';
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+import Chip from '@material-ui/core/Chip';
+import Avatar from '@material-ui/core/Avatar';
+import HomeIcon from '@material-ui/icons/Home';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+
 const styles = theme => ({
   root: {
     width: '70%',
     margin: 'auto',
-    marginTop: '100px',
+    marginTop: '30px',
     marginBottom: '40px',
     padding: '10px'
   },
@@ -42,6 +47,22 @@ const styles = theme => ({
   }
 });
 
+const StyledBreadcrumb = withStyles(theme => ({
+  root: {
+    backgroundColor: theme.palette.grey[100],
+    height: 24,
+    color: theme.palette.grey[800],
+    fontWeight: theme.typography.fontWeightRegular,
+    '&:hover, &:focus': {
+      backgroundColor: theme.palette.grey[300]
+    },
+    '&:active': {
+      boxShadow: theme.shadows[1],
+      backgroundColor: emphasize(theme.palette.grey[300], 0.12)
+    }
+  }
+}))(Chip);
+
 class Predict extends Component {
   static propTypes = {
     classes: PropTypes.object
@@ -52,7 +73,7 @@ class Predict extends Component {
     // change code below this line
     this.state = {
       loading: true,
-      onPredic: true,
+      onPredic: false,
       activeStep: 0,
       skipped: new Set(),
       item: [],
@@ -66,7 +87,9 @@ class Predict extends Component {
         open: false,
         success: false,
         message: ''
-      }
+      },
+      resultPredic: {},
+      predictLoad: false
     };
     // change code above this line
     this.coba = this.coba.bind(this);
@@ -92,11 +115,21 @@ class Predict extends Component {
       data.data.forEach(plant => {
         coba.push(plant.sname);
       });
+
+      const urlCompound = '/jamu/api/compound/getlist';
+      const resCompound = await Axios.get(urlCompound);
+      const dataCompound = await resCompound.data;
+      let compound = [];
+      dataCompound.data.forEach(dt => {
+        compound.push(dt.cname);
+      });
+
       this.afterUpdate(data.success, data.message);
       this.setState({
-        itembasis: coba,
-        itembase: coba,
-        item: data.data,
+        basisPlant: coba,
+        basisCompound: compound,
+        itemPlant: data.data,
+        itemCompound: dataCompound.data,
         loading: false
       });
     } catch (err) {
@@ -203,6 +236,23 @@ class Predict extends Component {
 
   handleChange = event => {
     const { name, value } = event.target;
+    if (name === 'type') {
+      if (value === 'crude') {
+        this.setState({
+          itembasis: this.state.basisPlant,
+          itembase: this.state.basisPlant,
+          item: this.state.itemPlant,
+          loading: false
+        });
+      } else if (value === 'compound') {
+        this.setState({
+          itembasis: this.state.basisCompound,
+          itembase: this.state.basisCompound,
+          item: this.state.itemCompound,
+          loading: false
+        });
+      }
+    }
     this.setState({
       [name]: value
     });
@@ -212,11 +262,39 @@ class Predict extends Component {
 
   async handleSubmit(event) {
     this.setState({
-      onPredic: true
+      onPredic: true,
+      predictLoad: true
     });
+    console.log(this.state);
+    let id = this.state.target.map(dt => dt.idplant);
+    console.log(id);
+    const url = '/jamu/api/user/secret';
+    let axiosConfig = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+    const res = await Axios.get(
+      url,
+      {
+        params: {
+          type: this.state.type,
+          optimization: this.state.optimization,
+          model: this.state.model,
+          id: id
+        }
+      },
+      axiosConfig
+    );
+    const { data } = await res;
+
+    this.setState({
+      resultPredic: data.data
+    });
+
     this.handleNext();
     this.setState({
-      onPredic: false
+      predictLoad: false
     });
 
     event.preventDefault();
@@ -258,139 +336,221 @@ class Predict extends Component {
         ) : this.state.loading ? (
           <Spinner />
         ) : (
-          <Paper className={classes.root} elevation={4}>
-            <div>
-              <Stepper activeStep={activeStep}>
-                {steps.map((label, index) => {
-                  const props = {};
-                  const labelProps = {};
-                  if (this.isStepSkipped(index)) {
-                    props.completed = false;
-                  }
-                  return (
-                    <Step key={label} {...props}>
-                      <StepLabel {...labelProps}>{label}</StepLabel>
-                    </Step>
-                  );
-                })}
-              </Stepper>
+          <div
+            style={{
+              width: '100%'
+            }}
+          >
+            <Paper
+              style={{
+                width: '90%',
+                margin: 'auto',
+                marginTop: '15px',
+                marginBottom: '30px',
+                padding: '10px',
+                display: 'flex'
+              }}
+              elevation={1}
+            >
+              <div
+                style={{
+                  width: '50%'
+                }}
+              >
+                <Typography>Predict Efficacy Herbal Medicine</Typography>
+              </div>
+              <div
+                style={{
+                  width: '50%',
+                  display: 'flex',
+                  flexDirection: 'row-reverse'
+                }}
+              >
+                <Breadcrumbs aria-label="breadcrumb">
+                  <StyledBreadcrumb
+                    component="a"
+                    href="/"
+                    label="KMS Jamu"
+                    avatar={
+                      <Avatar className={classes.avatar}>
+                        <HomeIcon />
+                      </Avatar>
+                    }
+                  />
+                  <StyledBreadcrumb component="a" href="#" label="Analisys" />
+                  <StyledBreadcrumb
+                    label="Prediction of herbal medicine efficacy"
+                    deleteIcon={<ExpandMoreIcon />}
+                  />
+                </Breadcrumbs>
+              </div>
+            </Paper>
+            <Paper className={classes.root} elevation={4}>
               <div>
-                {activeStep === steps.length ? (
-                  <div>
-                    <div
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'center'
-                      }}
-                    >
-                      <Paper
+                <Stepper activeStep={activeStep}>
+                  {steps.map((label, index) => {
+                    const props = {};
+                    const labelProps = {};
+                    if (this.isStepSkipped(index)) {
+                      props.completed = false;
+                    }
+                    return (
+                      <Step key={label} {...props}>
+                        <StepLabel {...labelProps}>{label}</StepLabel>
+                      </Step>
+                    );
+                  })}
+                </Stepper>
+                <div>
+                  {activeStep === steps.length ? (
+                    <div>
+                      <div
                         style={{
                           display: 'flex',
-                          justifyContent: 'center',
-                          width: '50%',
-                          minHeight: '400px'
+                          justifyContent: 'center'
                         }}
                       >
-                        {this.state.onPredic ? (
-                          <Spinner />
-                        ) : (
-                          <Typography className={classes.instructions}>
-                            All steps completed - you&quot;re finished
+                        <Paper
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            width: '60%',
+                            minHeight: '400px',
+                            padding: '10px'
+                          }}
+                        >
+                          <Typography variant="h6" gutterBottom>
+                            The predict is {this.state.resultPredic.class}
                           </Typography>
-                        )}
-                      </Paper>
+                          <Typography
+                            variant="overline"
+                            display="block"
+                            align="justify"
+                            gutterBottom
+                          >
+                            Description :
+                          </Typography>
+                          <Typography
+                            variant="caption"
+                            display="block"
+                            align="justify"
+                            gutterBottom
+                          >
+                            {this.state.resultPredic.description}
+                          </Typography>
+                          <Typography
+                            variant="overline"
+                            display="block"
+                            align="justify"
+                            gutterBottom
+                          >
+                            Desease :
+                          </Typography>
+                          <Typography
+                            variant="caption"
+                            display="block"
+                            align="justify"
+                            gutterBottom
+                          >
+                            {this.state.resultPredic.diseases}
+                          </Typography>
+                        </Paper>
+                      </div>
+                      <div>
+                        <Button
+                          onClick={this.handleReset}
+                          className={classes.button}
+                        >
+                          Reset
+                        </Button>
+                      </div>
                     </div>
+                  ) : (
                     <div>
-                      <Button
-                        onClick={this.handleReset}
-                        className={classes.button}
+                      <div
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'center'
+                        }}
                       >
-                        Reset
-                      </Button>
-                    </div>
-                  </div>
-                ) : (
-                  <div>
-                    <div
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'center'
-                      }}
-                    >
-                      <Step1
-                        type={this.state.type}
-                        activeStep={this.state.activeStep}
-                        handleChange={this.handleChange}
-                      />
-                      <Step2
-                        activeStep={this.state.activeStep}
-                        handleChange={this.handleChange}
-                        model={this.state.model}
-                        options={this.optionsArray}
-                        basis={this.state.itembasis}
-                        target={this.state.itemtarget}
-                        coba1={this.coba1}
-                        coba={this.coba}
-                        type={this.state.type}
-                        filterList={this.handleSearch}
-                      />
-                      <Step3
-                        activeStep={this.state.activeStep}
-                        type={this.state.type}
-                        model={this.state.model}
-                        target={this.state.target}
-                        onSubmit={this.onSubmit}
-                      />
-                    </div>
-                    <div
-                      style={{
-                        marginTop: '10px'
-                      }}
-                    >
-                      <Button
-                        disabled={activeStep === 0}
-                        onClick={this.handleBack}
-                        className={classes.button}
+                        <Step1
+                          type={this.state.type}
+                          activeStep={this.state.activeStep}
+                          handleChange={this.handleChange}
+                        />
+                        <Step2
+                          activeStep={this.state.activeStep}
+                          handleChange={this.handleChange}
+                          model={this.state.model}
+                          options={this.optionsArray}
+                          basis={this.state.itembasis}
+                          target={this.state.itemtarget}
+                          coba1={this.coba1}
+                          coba={this.coba}
+                          type={this.state.type}
+                          filterList={this.handleSearch}
+                        />
+                        <Step3
+                          activeStep={this.state.activeStep}
+                          type={this.state.type}
+                          model={this.state.model}
+                          target={this.state.target}
+                          onSubmit={this.onSubmit}
+                          loadPredict={this.state.predictLoad}
+                        />
+                      </div>
+                      <div
+                        style={{
+                          marginTop: '10px',
+                          display: 'flex',
+                          flexDirection: 'row-reverse'
+                        }}
                       >
-                        Back
-                      </Button>
-
-                      {activeStep === 1 ? (
+                        {activeStep === 1 ? (
+                          <Button
+                            variant="raised"
+                            color="primary"
+                            onClick={this.handleNext}
+                            className={classes.button}
+                          >
+                            {activeStep === steps.length - 1
+                              ? 'Finish'
+                              : 'Next'}
+                          </Button>
+                        ) : activeStep === steps.length - 1 ? (
+                          <Button
+                            variant="raised"
+                            color="primary"
+                            onClick={this.handleSubmit}
+                            className={classes.button}
+                          >
+                            Submit
+                          </Button>
+                        ) : (
+                          <Button
+                            variant="raised"
+                            color="primary"
+                            onClick={this.handleNext}
+                            className={classes.button}
+                          >
+                            Next
+                          </Button>
+                        )}
                         <Button
-                          variant="raised"
-                          color="primary"
-                          onClick={this.handleNext}
+                          disabled={activeStep === 0}
+                          onClick={this.handleBack}
                           className={classes.button}
                         >
-                          {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                          Back
                         </Button>
-                      ) : activeStep === steps.length - 1 ? (
-                        <Button
-                          variant="raised"
-                          color="primary"
-                          onClick={this.handleSubmit}
-                          className={classes.button}
-                        >
-                          Submit
-                        </Button>
-                      ) : (
-                        <Button
-                          variant="raised"
-                          color="primary"
-                          onClick={this.handleNext}
-                          className={classes.button}
-                        >
-                          Next
-                        </Button>
-                      )}
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
-            </div>
-          </Paper>
+            </Paper>
+          </div>
         )}
-        {this.state.loading ? null : <Footer />}
         {this.state.snackbar.open === true ? (
           <SnackBar data={this.state.snackbar} close={this.closeBtn} />
         ) : null}
@@ -410,7 +570,8 @@ function Step1(props) {
         justifyContent: 'center',
         alignItems: 'center',
         width: '50%',
-        minHeight: '400px'
+        minHeight: '400px',
+        backgroundColor: '#f8f8f8'
       }}
     >
       <FormControl component="fieldset">
@@ -446,7 +607,8 @@ function Step2(props) {
         display: 'flex',
         justifyContent: 'center',
         width: '70%',
-        minHeight: '400px'
+        minHeight: '400px',
+        backgroundColor: '#f8f8f8'
       }}
     >
       <form style={{ width: '90%' }}>
@@ -463,7 +625,7 @@ function Step2(props) {
           >
             <option value="" />
             <option value={'svm'}>suport vector mechine</option>
-            <option value={'sf'}>random forest</option>
+            <option value={'rf'}>random forest</option>
             <option value={'dl'}>deep learning</option>
           </Select>
         </FormControl>
@@ -475,16 +637,8 @@ function Step2(props) {
             name="optimization"
             onChange={props.handleChange}
           >
-            <FormControlLabel
-              value="with optimization"
-              control={<Radio />}
-              label="yes"
-            />
-            <FormControlLabel
-              value="not use optimization"
-              control={<Radio />}
-              label="no"
-            />
+            <FormControlLabel value="1" control={<Radio />} label="yes" />
+            <FormControlLabel value="0" control={<Radio />} label="no" />
           </RadioGroup>
         </FormControl>
 
@@ -508,35 +662,53 @@ function Step3(props) {
     return null;
   }
   return (
-    <Paper
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'column',
-        width: '50%',
-        minHeight: '400px'
-      }}
-    >
-      <div
-        style={{
-          width: '80%'
-        }}
-      >
-        <h3> Sumarry :</h3>
-      </div>
+    <React.Fragment>
+      {props.loadPredict ? (
+        <Paper
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexDirection: 'column',
+            width: '50%',
+            minHeight: '400px',
+            backgroundColor: '#f8f8f8'
+          }}
+        >
+          <Typography>loading...</Typography>
+        </Paper>
+      ) : (
+        <Paper
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexDirection: 'column',
+            width: '50%',
+            minHeight: '400px'
+          }}
+        >
+          <div
+            style={{
+              width: '80%'
+            }}
+          >
+            <h3> Sumarry :</h3>
+          </div>
 
-      <label>Type of Prediction :</label>
-      <span>{props.type}</span>
-      <label>Type of Method :</label>
-      <span>{props.model}</span>
-      <label>{`Selected ${props.type} :`}</label>
-      <ul>
-        {props.target.map(dt => (
-          <li>{dt.sname}</li>
-        ))}
-      </ul>
-    </Paper>
+          <label>Type of Prediction :</label>
+          <span>{props.type}</span>
+          <label>Type of Method :</label>
+          <span>{props.model}</span>
+          <label>{`Selected ${props.type} :`}</label>
+          <ul>
+            {props.target.map(dt => (
+              <li>{dt.sname}</li>
+            ))}
+          </ul>
+        </Paper>
+      )}
+    </React.Fragment>
   );
 }
 

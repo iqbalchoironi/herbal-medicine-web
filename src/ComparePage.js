@@ -2,6 +2,8 @@ import React from 'react';
 import Axios from 'axios';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
+//import Select from "react-virtualized-select";
+
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
@@ -20,7 +22,28 @@ import { Button } from '@material-ui/core';
 import SnackBar from './SnackBar';
 import ErorPage from './ErorPage';
 
-import Footer from './Footer';
+import createFilterOptions from 'react-select-fast-filter-options';
+
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+import Chip from '@material-ui/core/Chip';
+import Avatar from '@material-ui/core/Avatar';
+import HomeIcon from '@material-ui/icons/Home';
+
+const StyledBreadcrumb = withStyles(theme => ({
+  root: {
+    backgroundColor: theme.palette.grey[100],
+    height: 24,
+    color: theme.palette.grey[800],
+    fontWeight: theme.typography.fontWeightRegular,
+    '&:hover, &:focus': {
+      backgroundColor: theme.palette.grey[300]
+    },
+    '&:active': {
+      boxShadow: theme.shadows[1],
+      backgroundColor: emphasize(theme.palette.grey[300], 0.12)
+    }
+  }
+}))(Chip);
 
 const styles = theme => ({
   root: {
@@ -108,7 +131,6 @@ class ComparePage extends React.Component {
     this.getDataHerbmed2 = this.getDataHerbmed2.bind(this);
     this.getSame = this.getSame.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.reset = this.reset.bind(this);
     this.afterUpdate = this.afterUpdate.bind(this);
     this.closeBtn = this.closeBtn.bind(this);
   }
@@ -304,12 +326,6 @@ class ComparePage extends React.Component {
     });
   }
 
-  reset() {
-    this.setState({
-      compare: false
-    });
-  }
-
   async afterUpdate(success, message) {
     this.setState({
       snackbar: {
@@ -332,6 +348,10 @@ class ComparePage extends React.Component {
 
   render() {
     const { classes } = this.props;
+    const { refHerbMed } = this.state;
+    const filterOptions = createFilterOptions({
+      refHerbMed
+    });
 
     return (
       <div className={classes.root}>
@@ -340,114 +360,298 @@ class ComparePage extends React.Component {
         ) : this.state.loading ? (
           <Spinner />
         ) : (
-          <Paper
+          <div
             style={{
-              width: '70%',
-              margin: 'auto',
-              marginTop: '90px',
-              marginBottom: '30px',
-              padding: '10px',
-              minHeight: '350px',
-              backgroundColor: '#f8f8f8'
+              width: '100%'
             }}
           >
-            <Select
-              options={this.state.refHerbMed}
-              value={this.state.forLabelherbmed1}
-              onChange={this.handleChange('forLabelherbmed1')}
-            />
-            <div className={classes.divider} />
-            <Select
-              options={this.state.refHerbMed}
-              value={this.state.forLabelherbmed2}
-              onChange={this.handleChange('forLabelherbmed2')}
-            />
-            <div
+            <Paper
               style={{
-                width: '100%',
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'flex-end',
-                marginTop: '10px'
+                width: '90%',
+                margin: 'auto',
+                marginTop: '15px',
+                marginBottom: '30px',
+                padding: '10px',
+                display: 'flex'
               }}
+              elevation={1}
             >
-              {this.state.compare ? (
-                <Button variant="contained" onClick={this.reset}>
-                  Reset
-                </Button>
-              ) : (
-                <Button variant="contained" onClick={this.handleSubmit}>
-                  Compare
-                </Button>
-              )}
-            </div>
-
-            {this.state.loadCompare ? (
               <div
                 style={{
-                  height: '400px',
-                  border: 'hsl(0,0%,80%) 1px solid',
-                  marginTop: '15px',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center'
+                  width: '50%'
                 }}
               >
-                <LinearProgress />
+                <Typography>Compare Herbal Medicine</Typography>
               </div>
-            ) : this.state.compare ? (
-              <div>
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'space-around'
-                  }}
+              <div
+                style={{
+                  width: '50%',
+                  display: 'flex',
+                  flexDirection: 'row-reverse'
+                }}
+              >
+                <Breadcrumbs aria-label="breadcrumb">
+                  <StyledBreadcrumb
+                    component="a"
+                    href="/"
+                    label="KMS Jamu"
+                    avatar={
+                      <Avatar className={classes.avatar}>
+                        <HomeIcon />
+                      </Avatar>
+                    }
+                  />
+                  <StyledBreadcrumb component="a" href="#" label="Analysis" />
+                  <StyledBreadcrumb
+                    label="Compare Formulas"
+                    deleteIcon={<ExpandMoreIcon />}
+                  />
+                </Breadcrumbs>
+              </div>
+            </Paper>
+            <Paper
+              style={{
+                width: '70%',
+                margin: 'auto',
+                marginTop: '30px',
+                marginBottom: '30px',
+                padding: '10px',
+                minHeight: '350px',
+                backgroundColor: '#f8f8f8'
+              }}
+            >
+              <Select
+                filterOptions={filterOptions}
+                options={this.state.refHerbMed}
+                value={this.state.forLabelherbmed1}
+                onChange={this.handleChange('forLabelherbmed1')}
+              />
+              <div className={classes.divider} />
+              <Select
+                filterOptions={filterOptions}
+                options={this.state.refHerbMed}
+                value={this.state.forLabelherbmed2}
+                onChange={this.handleChange('forLabelherbmed2')}
+              />
+              <div
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'flex-end',
+                  marginTop: '10px'
+                }}
+              >
+                <Button
+                  variant="contained"
+                  disabled={
+                    this.state.forLabelherbmed1 === null &&
+                    this.state.forLabelherbmed2 === null
+                  }
+                  onClick={this.handleSubmit}
                 >
-                  <Paper
-                    style={{
-                      width: '45%',
-                      padding: '10px',
-                      marginTop: '10px'
-                    }}
-                  >
-                    <Typography variant="h5" component="h3">
-                      {this.state.herbmed1.name}
-                    </Typography>
-                    <Typography component="p">
-                      {this.state.herbmed1.efficacy}
-                    </Typography>
-                  </Paper>
-                  <Paper
-                    style={{
-                      width: '45%',
-                      padding: '10px',
-                      marginTop: '10px'
-                    }}
-                  >
-                    <Typography variant="h5" component="h3">
-                      {this.state.herbmed2.name}
-                    </Typography>
-                    <Typography component="p">
-                      {this.state.herbmed2.efficacy}
-                    </Typography>
-                  </Paper>
-                </div>
+                  Compare
+                </Button>
+              </div>
 
+              {this.state.loadCompare ? (
                 <div
                   style={{
+                    height: '400px',
+                    border: 'hsl(0,0%,80%) 1px solid',
+                    marginTop: '15px',
                     display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'space-around',
-                    marginTop: '15px'
+                    justifyContent: 'center',
+                    alignItems: 'center'
                   }}
                 >
+                  <LinearProgress />
+                </div>
+              ) : this.state.compare ? (
+                <div>
                   <div
                     style={{
-                      width: '46%'
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'space-around'
                     }}
                   >
-                    {this.state.refCrude1.map(item => {
+                    <Paper
+                      style={{
+                        width: '45%',
+                        padding: '10px',
+                        marginTop: '10px'
+                      }}
+                    >
+                      <Typography variant="h5" component="h3">
+                        {this.state.herbmed1.name}
+                      </Typography>
+                      <Typography component="p">
+                        {this.state.herbmed1.efficacy}
+                      </Typography>
+                    </Paper>
+                    <Paper
+                      style={{
+                        width: '45%',
+                        padding: '10px',
+                        marginTop: '10px'
+                      }}
+                    >
+                      <Typography variant="h5" component="h3">
+                        {this.state.herbmed2.name}
+                      </Typography>
+                      <Typography component="p">
+                        {this.state.herbmed2.efficacy}
+                      </Typography>
+                    </Paper>
+                  </div>
+
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'space-around',
+                      marginTop: '15px'
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: '46%'
+                      }}
+                    >
+                      <label
+                        style={{
+                          fontSize: '24px',
+                          display: 'block',
+                          marginBottom: '20px'
+                        }}
+                      >
+                        Only formulas 1:
+                      </label>
+                      {this.state.refCrude1.map(item => {
+                        return (
+                          <ExpansionPanel>
+                            <ExpansionPanelSummary
+                              expandIcon={<ExpandMoreIcon />}
+                            >
+                              <Typography className={classes.heading}>
+                                {item.sname}
+                              </Typography>
+                            </ExpansionPanelSummary>
+                            <ExpansionPanelDetails
+                              style={{
+                                display: 'flex',
+                                flexDirection: 'column'
+                              }}
+                            >
+                              <Typography variant="title" gutterBottom>
+                                {item.name_en}
+                              </Typography>
+                              <Typography variant="caption" gutterBottom>
+                                name_loc1 : {item.name_loc1}
+                              </Typography>
+                              <Typography variant="caption" gutterBottom>
+                                name_loc2 : {item.name_loc2}
+                              </Typography>
+                              <Typography variant="caption" gutterBottom>
+                                gname : {item.gname}
+                              </Typography>
+                              <Typography variant="caption" gutterBottom>
+                                position : {item.position}
+                              </Typography>
+                              <Typography variant="caption" gutterBottom>
+                                effect : {item.position}
+                              </Typography>
+                              <Typography variant="caption" gutterBottom>
+                                effect_loc : {item.effect}
+                              </Typography>
+                              <Typography variant="caption" gutterBottom>
+                                reff : {item.reff}
+                              </Typography>
+                            </ExpansionPanelDetails>
+                          </ExpansionPanel>
+                        );
+                      })}
+                    </div>
+
+                    <div
+                      style={{
+                        width: '46%'
+                      }}
+                    >
+                      <label
+                        style={{
+                          fontSize: '24px',
+                          display: 'block',
+                          marginBottom: '20px'
+                        }}
+                      >
+                        Only formulas 2:
+                      </label>
+                      {this.state.refCrude2.map(item => {
+                        return (
+                          <ExpansionPanel>
+                            <ExpansionPanelSummary
+                              expandIcon={<ExpandMoreIcon />}
+                            >
+                              <Typography className={classes.heading}>
+                                {item.gname}
+                              </Typography>
+                            </ExpansionPanelSummary>
+                            <ExpansionPanelDetails
+                              style={{
+                                display: 'flex',
+                                flexDirection: 'column'
+                              }}
+                            >
+                              <Typography variant="title" gutterBottom>
+                                {item.name_en}
+                              </Typography>
+                              <Typography variant="caption" gutterBottom>
+                                name_loc1 : {item.name_loc1}
+                              </Typography>
+                              <Typography variant="caption" gutterBottom>
+                                name_loc2 : {item.name_loc2}
+                              </Typography>
+                              <Typography variant="caption" gutterBottom>
+                                gname : {item.gname}
+                              </Typography>
+                              <Typography variant="caption" gutterBottom>
+                                position : {item.position}
+                              </Typography>
+                              <Typography variant="caption" gutterBottom>
+                                effect : {item.position}
+                              </Typography>
+                              <Typography variant="caption" gutterBottom>
+                                effect_loc : {item.effect}
+                              </Typography>
+                              <Typography variant="caption" gutterBottom>
+                                reff : {item.reff}
+                              </Typography>
+                            </ExpansionPanelDetails>
+                          </ExpansionPanel>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  <div
+                    style={{
+                      width: '55%',
+                      margin: 'auto',
+                      marginTop: '15px'
+                    }}
+                  >
+                    <label
+                      style={{
+                        fontSize: '24px',
+                        display: 'block',
+                        marginBottom: '20px'
+                      }}
+                    >
+                      Both formulas :
+                    </label>
+                    {this.state.sama.map(item => {
                       return (
                         <ExpansionPanel>
                           <ExpansionPanelSummary
@@ -457,40 +661,35 @@ class ComparePage extends React.Component {
                               {item.sname}
                             </Typography>
                           </ExpansionPanelSummary>
-                          <ExpansionPanelDetails>
-                            <Typography>
-                              {item.idcrude}
-                              <br></br>
-                              {item.effect}
-                              <br></br>
-                              {item.position}
-                            </Typography>
-                          </ExpansionPanelDetails>
-                        </ExpansionPanel>
-                      );
-                    })}
-                  </div>
-
-                  <div
-                    style={{
-                      width: '46%'
-                    }}
-                  >
-                    {this.state.refCrude2.map(item => {
-                      return (
-                        <ExpansionPanel>
-                          <ExpansionPanelSummary
-                            expandIcon={<ExpandMoreIcon />}
+                          <ExpansionPanelDetails
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'column'
+                            }}
                           >
-                            <Typography className={classes.heading}>
-                              {item.gname}
+                            <Typography variant="title" gutterBottom>
+                              {item.name_en}
                             </Typography>
-                          </ExpansionPanelSummary>
-                          <ExpansionPanelDetails>
-                            <Typography>
-                              {item.idcrude}
-                              {item.name_loc1}
-                              {item.position}
+                            <Typography variant="caption" gutterBottom>
+                              name_loc1 : {item.name_loc1}
+                            </Typography>
+                            <Typography variant="caption" gutterBottom>
+                              name_loc2 : {item.name_loc2}
+                            </Typography>
+                            <Typography variant="caption" gutterBottom>
+                              gname : {item.gname}
+                            </Typography>
+                            <Typography variant="caption" gutterBottom>
+                              position : {item.position}
+                            </Typography>
+                            <Typography variant="caption" gutterBottom>
+                              effect : {item.position}
+                            </Typography>
+                            <Typography variant="caption" gutterBottom>
+                              effect_loc : {item.effect}
+                            </Typography>
+                            <Typography variant="caption" gutterBottom>
+                              reff : {item.reff}
                             </Typography>
                           </ExpansionPanelDetails>
                         </ExpansionPanel>
@@ -498,60 +697,36 @@ class ComparePage extends React.Component {
                     })}
                   </div>
                 </div>
-
+              ) : (
                 <div
                   style={{
-                    width: '55%',
-                    margin: 'auto',
-                    marginTop: '15px'
+                    height: '400px',
+                    border: 'hsl(0,0%,80%) 1px solid',
+                    marginTop: '15px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: 'white'
                   }}
                 >
-                  {this.state.sama.map(item => {
-                    return (
-                      <ExpansionPanel>
-                        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                          <Typography className={classes.heading}>
-                            {item.sname}
-                          </Typography>
-                        </ExpansionPanelSummary>
-                        <ExpansionPanelDetails>
-                          <Typography>{item.idcrude}</Typography>
-                        </ExpansionPanelDetails>
-                      </ExpansionPanel>
-                    );
-                  })}
+                  <img
+                    style={{
+                      width: '250px',
+                      height: '250px'
+                    }}
+                    src={'/asset/comparision.jpeg'}
+                    alt="Logo"
+                  />
+                  <Typography component="h2" variant="display1" gutterBottom>
+                    Select the two herbs above !, then the comparison will
+                    appear here
+                  </Typography>
                 </div>
-              </div>
-            ) : (
-              <div
-                style={{
-                  height: '400px',
-                  border: 'hsl(0,0%,80%) 1px solid',
-                  marginTop: '15px',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  backgroundColor: 'white'
-                }}
-              >
-                <img
-                  style={{
-                    width: '250px',
-                    height: '250px'
-                  }}
-                  src={'/asset/comparision.jpeg'}
-                  alt="Logo"
-                />
-                <Typography component="h2" variant="display1" gutterBottom>
-                  Select the two herbs above !, then the comparison will appear
-                  here
-                </Typography>
-              </div>
-            )}
-          </Paper>
+              )}
+            </Paper>
+          </div>
         )}
-        {this.state.loading ? null : <Footer />}
         {this.state.snackbar.open === true ? (
           <SnackBar data={this.state.snackbar} close={this.closeBtn} />
         ) : null}

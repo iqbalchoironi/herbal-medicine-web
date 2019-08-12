@@ -6,7 +6,6 @@ import Spinner from './Spinner';
 import CardCompound from './CardCompound';
 
 import Typography from '@material-ui/core/Typography';
-import Breadcrumbs from '@material-ui/lab/Breadcrumbs';
 import Link from '@material-ui/core/Link';
 
 import Paper from '@material-ui/core/Paper';
@@ -17,12 +16,20 @@ import IconButton from '@material-ui/core/IconButton';
 import SnackBar from './SnackBar';
 import ErorPage from './ErorPage';
 
+import { emphasize, makeStyles } from '@material-ui/core/styles';
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+import Chip from '@material-ui/core/Chip';
+import Avatar from '@material-ui/core/Avatar';
+import HomeIcon from '@material-ui/icons/Home';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+
 const styles = {
   root: {
     padding: '2px 4px',
     display: 'flex',
-    alignItems: 'center',
-    width: 400
+    alignItems: 'center'
   },
   input: {
     marginLeft: 8,
@@ -32,6 +39,22 @@ const styles = {
     padding: 10
   }
 };
+
+const StyledBreadcrumb = withStyles(theme => ({
+  root: {
+    backgroundColor: theme.palette.grey[100],
+    height: 24,
+    color: theme.palette.grey[800],
+    fontWeight: theme.typography.fontWeightRegular,
+    '&:hover, &:focus': {
+      backgroundColor: theme.palette.grey[300]
+    },
+    '&:active': {
+      boxShadow: theme.shadows[1],
+      backgroundColor: emphasize(theme.palette.grey[300], 0.12)
+    }
+  }
+}))(Chip);
 
 class Compound extends Component {
   constructor(props) {
@@ -55,10 +78,28 @@ class Compound extends Component {
     this.afterUpdate = this.afterUpdate.bind(this);
     this.closeBtn = this.closeBtn.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
+    this.ok = this.ok.bind(this);
+  }
+
+  topFunction() {
+    window.scrollTo(0, 0);
+  }
+
+  async ok() {
+    if (window.scrollY >= 100) {
+      await this.setState({
+        top: true
+      });
+    } else {
+      await this.setState({
+        top: false
+      });
+    }
   }
 
   async componentDidMount() {
-    //window.addEventListener("scroll", this.onScroll, false);
+    window.addEventListener('scroll', this.onScroll, false);
+    window.addEventListener('scroll', this.ok, false);
     this.getData();
   }
 
@@ -85,8 +126,8 @@ class Compound extends Component {
 
   async getData() {
     try {
-      // const url = "/jamu/api/compound/pages/" + this.state.currentPage;
-      const url = '/jamu/api/generate/new/compound/index';
+      const url = '/jamu/api/compound/pages/' + this.state.currentPage;
+      //const url = '/jamu/api/generate/new/compound/index';
       const res = await Axios.get(url);
       const { data } = await res;
 
@@ -205,9 +246,91 @@ class Compound extends Component {
         style={{
           display: 'flex',
           flexDirection: 'column',
-          paddingTop: '90px'
+          paddingTop: '30px'
         }}
       >
+        {this.state.top ? (
+          <AppBar
+            variant="dense"
+            style={{
+              backgroundColor: '#89b143'
+            }}
+          >
+            <Toolbar>
+              <div
+                style={{
+                  width: '90%',
+                  display: 'flex',
+                  flexDirection: 'row',
+                  margin: 'auto'
+                }}
+              >
+                <div
+                  style={{
+                    width: '50%',
+                    display: 'flex',
+                    flexDirection: 'row'
+                  }}
+                >
+                  <Paper className={classes.root} elevation={1}>
+                    <Breadcrumbs aria-label="breadcrumb">
+                      <StyledBreadcrumb
+                        component="a"
+                        href="/"
+                        label="KMS Jamu"
+                        avatar={
+                          <Avatar className={classes.avatar}>
+                            <HomeIcon />
+                          </Avatar>
+                        }
+                      />
+                      <StyledBreadcrumb
+                        component="a"
+                        href="#"
+                        label="Explore"
+                      />
+                      <StyledBreadcrumb
+                        label="Compound"
+                        deleteIcon={<ExpandMoreIcon />}
+                      />
+                    </Breadcrumbs>
+                  </Paper>
+                </div>
+                <div
+                  style={{
+                    width: '50%',
+                    display: 'flex',
+                    flexDirection: 'row-reverse'
+                  }}
+                >
+                  <Paper
+                    className={classes.root}
+                    style={{
+                      width: '400px'
+                    }}
+                    elevation={1}
+                  >
+                    <InputBase
+                      className={classes.input}
+                      name="inputSearch"
+                      value={this.state.inputSearch}
+                      onChange={this.handleInputChange}
+                      onKeyDown={this.handleKeyDown}
+                      placeholder="Search base on compound name"
+                    />
+                    <IconButton
+                      className={classes.iconButton}
+                      onClick={this.getDataSearch}
+                      aria-label="Search"
+                    >
+                      <SearchIcon />
+                    </IconButton>
+                  </Paper>
+                </div>
+              </div>
+            </Toolbar>
+          </AppBar>
+        ) : null}
         <div
           style={{
             width: '90%',
@@ -223,13 +346,25 @@ class Compound extends Component {
               flexDirection: 'row'
             }}
           >
-            <Breadcrumbs aria-label="Breadcrumb">
-              <Link color="inherit" href="/">
-                KMS Jamu
-              </Link>
-              <Link color="inherit">Explore</Link>
-              <Typography color="textPrimary">Compound</Typography>
-            </Breadcrumbs>
+            <Paper className={classes.root} elevation={1}>
+              <Breadcrumbs aria-label="breadcrumb">
+                <StyledBreadcrumb
+                  component="a"
+                  href="/"
+                  label="KMS Jamu"
+                  avatar={
+                    <Avatar className={classes.avatar}>
+                      <HomeIcon />
+                    </Avatar>
+                  }
+                />
+                <StyledBreadcrumb component="a" href="#" label="Explore" />
+                <StyledBreadcrumb
+                  label="Compound"
+                  deleteIcon={<ExpandMoreIcon />}
+                />
+              </Breadcrumbs>
+            </Paper>
           </div>
           <div
             style={{
@@ -238,14 +373,20 @@ class Compound extends Component {
               flexDirection: 'row-reverse'
             }}
           >
-            <Paper className={classes.root} elevation={1}>
+            <Paper
+              className={classes.root}
+              style={{
+                width: '400px'
+              }}
+              elevation={1}
+            >
               <InputBase
                 className={classes.input}
                 name="inputSearch"
                 value={this.state.inputSearch}
                 onChange={this.handleInputChange}
                 onKeyDown={this.handleKeyDown}
-                placeholder="Search here..."
+                placeholder="Search base on compound name"
               />
               <IconButton
                 className={classes.iconButton}

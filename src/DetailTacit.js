@@ -100,7 +100,7 @@ class DetailTacit extends Component {
             style={{
               width: '70%',
               margin: 'auto',
-              marginTop: '100px',
+              marginTop: '30px',
               marginBottom: '10px',
               padding: '30px',
               backgroundColor: 'rgba(255, 255, 255, 1)'

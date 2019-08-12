@@ -8,7 +8,7 @@ import Button from '@material-ui/core/Button';
 
 import Icon from '@material-ui/core/Icon';
 import Typography from '@material-ui/core/Typography';
-
+import imgNotFound from './img-not-found.png';
 const styles = muiBaseTheme => ({
   card: {
     maxWidth: 300,

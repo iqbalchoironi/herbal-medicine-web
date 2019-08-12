@@ -18,6 +18,35 @@ import Spinner from './Spinner';
 import SnackBar from './SnackBar';
 import ErorPage from './ErorPage';
 
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+import Chip from '@material-ui/core/Chip';
+import Avatar from '@material-ui/core/Avatar';
+import HomeIcon from '@material-ui/icons/Home';
+import { withStyles } from '@material-ui/core/styles';
+import { emphasize } from '@material-ui/core/styles/colorManipulator';
+
+const StyledBreadcrumb = withStyles(theme => ({
+  root: {
+    backgroundColor: theme.palette.grey[100],
+    height: 24,
+    color: theme.palette.grey[800],
+    fontWeight: theme.typography.fontWeightRegular,
+    '&:hover, &:focus': {
+      backgroundColor: theme.palette.grey[300]
+    },
+    '&:active': {
+      boxShadow: theme.shadows[1],
+      backgroundColor: emphasize(theme.palette.grey[300], 0.12)
+    }
+  }
+}))(Chip);
+
+const styles = theme => ({
+  avatar: {
+    background: 'none',
+    marginRight: -theme.spacing(1.5)
+  }
+});
 function TabContainer(props) {
   return (
     <Typography component="div" style={{ padding: 8 * 3 }}>
@@ -116,6 +145,7 @@ class DetailPlant extends Component {
   }
 
   render() {
+    const { classes } = this.props;
     return (
       <div>
         {this.state.onEror ? (
@@ -128,9 +158,56 @@ class DetailPlant extends Component {
               style={{
                 width: '90%',
                 margin: 'auto',
-                marginTop: '80px',
-                marginBottom: '10px',
-                padding: '30px'
+                marginTop: '15px',
+                marginBottom: '30px',
+                padding: '15px',
+                display: 'flex'
+              }}
+              elevation={1}
+            >
+              <div
+                style={{
+                  width: '50%'
+                }}
+              >
+                <Typography>
+                  Detail Plant {this.state.detailPlant.sname}
+                </Typography>
+              </div>
+              <div
+                style={{
+                  width: '50%',
+                  display: 'flex',
+                  flexDirection: 'row-reverse'
+                }}
+              >
+                <Breadcrumbs aria-label="breadcrumb">
+                  <StyledBreadcrumb
+                    component="a"
+                    href="/"
+                    label="KMS Jamu"
+                    avatar={
+                      <Avatar className={classes.avatar}>
+                        <HomeIcon />
+                      </Avatar>
+                    }
+                  />
+                  <StyledBreadcrumb component="a" href="#" label="Plant" />
+                  <StyledBreadcrumb
+                    label={this.state.detailPlant.sname}
+                    deleteIcon={<ExpandMoreIcon />}
+                  />
+                </Breadcrumbs>
+              </div>
+            </Paper>
+            <Paper
+              style={{
+                width: '80%',
+                margin: 'auto',
+                marginTop: '30px',
+                marginBottom: '30px',
+                padding: '30px',
+                backgroundColor: '#f8f8f8'
               }}
             >
               <Paper
@@ -186,13 +263,16 @@ class DetailPlant extends Component {
                 textColor="primary"
                 centered
               >
-                {/* <Tab label="Plant" /> */}
                 <Tab label="Crude Drug" />
-                {/* <Tab label="Compound" /> */}
+                <Tab label="Compound" />
+                <Tab label="Crude Use by Ethnic" />
               </Tabs>
               <Paper
                 style={{
                   width: '90%',
+                  minHeight: '300px',
+                  maxHeight: '400px',
+                  overflow: 'auto',
                   margin: 'auto',
                   marginTop: '20px',
                   marginBottom: '10px',
@@ -260,38 +340,102 @@ class DetailPlant extends Component {
                       })}
                   </TabContainer>
                 )}
-                {/* {this.state.value === 2 && <TabContainer>
-                        <ExpansionPanel>
-                            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                            <Typography >Name</Typography>
+                {this.state.value === 1 && (
+                  <TabContainer>
+                    {this.state.detailPlant.refCompound !== undefined &&
+                      this.state.detailPlant.refCompound.map(itm => {
+                        return (
+                          <ExpansionPanel>
+                            <ExpansionPanelSummary
+                              expandIcon={<ExpandMoreIcon />}
+                            >
+                              <Typography>
+                                {' '}
+                                <i>{itm.cname}</i>
+                              </Typography>
                             </ExpansionPanelSummary>
-                            <ExpansionPanelDetails>
-                            <Typography>
-                                item
-                            </Typography>
+                            <ExpansionPanelDetails
+                              style={{
+                                display: 'flex',
+                                flexDirection: 'column'
+                              }}
+                            >
+                              <Typography variant="caption" gutterBottom>
+                                part_plant : {itm.part_plant}
+                              </Typography>
+                              <Typography variant="caption" gutterBottom>
+                                part : {itm.part}
+                              </Typography>
+                              <Typography variant="caption" gutterBottom>
+                                effect_plant : {itm.effect_plant}
+                              </Typography>
+                              <Typography variant="caption" gutterBottom>
+                                effect_part : {itm.effect_part}
+                              </Typography>
+                              <Typography variant="caption" gutterBottom>
+                                effect_compound : {itm.effect_compound}
+                              </Typography>
+                              <Typography variant="caption" gutterBottom>
+                                reff_metabolites : {itm.reff_metabolites}
+                              </Typography>
+                              <Typography variant="caption" gutterBottom>
+                                reff_addtional : {itm.reff_addtional}
+                              </Typography>
                             </ExpansionPanelDetails>
-                        </ExpansionPanel>
-                        <ExpansionPanel>
-                            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                            <Typography >Name</Typography>
+                          </ExpansionPanel>
+                        );
+                      })}
+                  </TabContainer>
+                )}
+                {this.state.value === 2 && (
+                  <TabContainer>
+                    {this.state.detailPlant.refEthnic !== undefined &&
+                      this.state.detailPlant.refEthnic.map(itm => {
+                        return (
+                          <ExpansionPanel>
+                            <ExpansionPanelSummary
+                              expandIcon={<ExpandMoreIcon />}
+                            >
+                              <Typography>
+                                {' '}
+                                <i>
+                                  {itm.ethnic} | {itm.disease_ing}
+                                </i>
+                              </Typography>
                             </ExpansionPanelSummary>
-                            <ExpansionPanelDetails>
-                            <Typography>
-                                item
-                            </Typography>
+                            <ExpansionPanelDetails
+                              style={{
+                                display: 'flex',
+                                flexDirection: 'column'
+                              }}
+                            >
+                              <Typography variant="caption" gutterBottom>
+                                disease_ina : {itm.disease_ina}
+                              </Typography>
+                              <Typography variant="caption" gutterBottom>
+                                disease_ing : {itm.disease_ing}
+                              </Typography>
+                              <Typography variant="caption" gutterBottom>
+                                name_ina : {itm.name_ina}
+                              </Typography>
+                              <Typography variant="caption" gutterBottom>
+                                species : {itm.species}
+                              </Typography>
+                              <Typography variant="caption" gutterBottom>
+                                family : {itm.family}
+                              </Typography>
+                              <Typography variant="caption" gutterBottom>
+                                section_ina : {itm.section_ina}
+                              </Typography>
+                              <Typography variant="caption" gutterBottom>
+                                section_ing : {itm.section_ing}
+                              </Typography>
                             </ExpansionPanelDetails>
-                        </ExpansionPanel>
-                        <ExpansionPanel>
-                            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                            <Typography >Name</Typography>
-                            </ExpansionPanelSummary>
-                            <ExpansionPanelDetails>
-                            <Typography>
-                                item
-                            </Typography>
-                            </ExpansionPanelDetails>
-                        </ExpansionPanel>
-                    </TabContainer>} */}
+                          </ExpansionPanel>
+                        );
+                      })}
+                  </TabContainer>
+                )}
               </Paper>
             </Paper>
           </div>
@@ -304,4 +448,4 @@ class DetailPlant extends Component {
   }
 }
 
-export default DetailPlant;
+export default withStyles(styles, { withTheme: true })(DetailPlant);
