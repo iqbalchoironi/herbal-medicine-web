@@ -46,7 +46,7 @@ const styles = muiBaseTheme => ({
 
 const List = ({ item }) => {
   if (item !== null) {
-    return <li>{`${item.sname} part ${item.part}`}</li>;
+    return <li>{item.sname}</li>;
   }
 
   return null;
@@ -72,10 +72,6 @@ function CardPlant(props) {
           >
             <ul className="reff">
               {props.reff.map(item => {
-                if (item !== null) {
-                  item.part = props.part;
-                }
-
                 return <List item={item} />;
               })}
             </ul>

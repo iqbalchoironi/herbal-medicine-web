@@ -408,10 +408,10 @@ class Compound extends Component {
               <CardCompound
                 key={item._id}
                 id={''}
-                part={item.part}
+                part={item.refPlant}
                 name={item.cname}
                 image={`https://pubchem.ncbi.nlm.nih.gov/image/imgsrv.fcgi?cid=${item.idPubChem}`}
-                reff={[item.refPlant]}
+                reff={item.refPlant}
               />
             ))}
           </div>
