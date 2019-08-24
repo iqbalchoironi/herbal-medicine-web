@@ -4,9 +4,11 @@ import Axios from 'axios';
 import Typography from '@material-ui/core/Typography';
 import { Paper } from '@material-ui/core';
 
-import ModalCrude from './ModalCrude';
-
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Chip from '@material-ui/core/Chip';
 import Avatar from '@material-ui/core/Avatar';
@@ -47,15 +49,12 @@ class DetailCompound extends Component {
   }
 
   async componentDidMount() {
-    // const { id } = this.props.match.params;
-    const idCompound = '5d3ac7c51e6c5f6fda0a0b22';
-    const url = '/jamu/api/compound/get/' + idCompound;
+    const { id } = this.props.match.params;
+    const url = '/jamu/api/compound/get/' + id;
     const res = await Axios.get(url);
     const { data } = await res;
-    const id = '22179';
     this.setState({
-      compound: data.data,
-      id: id
+      compound: data.data
     });
   }
 
@@ -130,91 +129,171 @@ class DetailCompound extends Component {
               }}
             >
               <Typography variant="caption" display="block" gutterBottom>
+                Compond Id : {this.state.compound.compound_id}
+              </Typography>
+              <Typography variant="caption" display="block" gutterBottom>
                 Name compound : {this.state.compound.cname}
               </Typography>
-              <Typography variant="caption" display="block" gutterBottom>
-                Effect compound: {this.state.compound.effect_compound}
-              </Typography>
-              <Typography variant="caption" display="block" gutterBottom>
-                Effect part : {this.state.compound.effect_part}
-              </Typography>
-              <Typography variant="caption" display="block" gutterBottom>
-                Effect plant: {this.state.compound.effect_plant}
-              </Typography>
-              <Typography variant="caption" display="block" gutterBottom>
-                Plant Species : <i>{this.state.compound.plant_species}</i>
-              </Typography>
-              <Typography variant="caption" display="block" gutterBottom>
-                Part : {this.state.compound.part}
-              </Typography>
-              <Typography variant="caption" display="block" gutterBottom>
-                Part plant : {this.state.compound.part_plant}
-              </Typography>
-              <Typography variant="caption" display="block" gutterBottom>
-                Reference : {this.state.compound.reff_metabolites}
-              </Typography>
+              <label
+                style={{
+                  color: 'grey',
+                  fontWeight: 'lighter',
+                  fontSize: '13px',
+                  display: 'block',
+                  marginTop: '10px',
+                  marginBottom: '5px'
+                }}
+              >
+                Reference Plant :
+              </label>
+              {this.state.compound.refPlant !== undefined &&
+                this.state.compound.refPlant.map(itm => {
+                  return (
+                    <ExpansionPanel>
+                      <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                        <Typography>
+                          {' '}
+                          <i>{itm.sname}</i>
+                        </Typography>
+                      </ExpansionPanelSummary>
+                      <ExpansionPanelDetails
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'column'
+                        }}
+                      >
+                        <img
+                          style={{
+                            verticalAlign: 'middle',
+                            borderStyle: 'none',
+                            maxHeight: '250px',
+                            width: '250px'
+                          }}
+                          alt=""
+                          className="img-card"
+                          src={itm.refimg}
+                        ></img>
+                        <Typography variant="caption" gutterBottom>
+                          ID Plant : <i>{itm.idplant}</i>
+                        </Typography>
+                        <Typography variant="caption" gutterBottom>
+                          saintifict name : <i>{itm.sname}</i>
+                        </Typography>
+                      </ExpansionPanelDetails>
+                    </ExpansionPanel>
+                  );
+                })}
+
+              <label
+                style={{
+                  color: 'grey',
+                  fontWeight: 'lighter',
+                  fontSize: '13px',
+                  display: 'block',
+                  marginTop: '10px',
+                  marginBottom: '5px'
+                }}
+              >
+                Reference Crude :
+              </label>
+
+              {this.state.compound.refCrudeCompound !== undefined &&
+                this.state.compound.refCrudeCompound.map(itm => {
+                  return (
+                    <ExpansionPanel>
+                      <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                        <Typography>
+                          {' '}
+                          <i>{itm.plant_species}</i>
+                        </Typography>
+                      </ExpansionPanelSummary>
+
+                      <ExpansionPanelDetails
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'column'
+                        }}
+                      >
+                        <Typography variant="caption" gutterBottom>
+                          plant_species : {itm.plant_species}
+                        </Typography>
+                        <Typography variant="caption" gutterBottom>
+                          part : {itm.part}
+                        </Typography>
+                        <Typography variant="caption" gutterBottom>
+                          part_of_plant : {itm.part_of_plant}
+                        </Typography>
+                        <Typography variant="caption" gutterBottom>
+                          effect_plant : {itm.effect_plant}
+                        </Typography>
+                        <Typography variant="caption" gutterBottom>
+                          effect_part : {itm.effect_part}
+                        </Typography>
+                        <Typography variant="caption" gutterBottom>
+                          ref_metabolites : {itm.ref_metabolites}
+                        </Typography>
+                      </ExpansionPanelDetails>
+                    </ExpansionPanel>
+                  );
+                })}
             </Paper>
           </div>
 
-          <div
-            style={{
-              padding: '30px',
-              display: 'flex',
-              flexDirection: 'column',
-              width: '80%'
-            }}
-          >
-            <Paper
+          {this.state.compound.pubchem_ID !== null ? (
+            <div
               style={{
-                marginBottom: '20px'
+                padding: '30px',
+                display: 'flex',
+                flexDirection: 'column',
+                width: '80%'
               }}
             >
-              <iframe
-                src={
-                  'https://pubchem.ncbi.nlm.nih.gov/compound/22179#section=3D-Conformer&embed=true&hide_title=true'
-                }
+              <Paper
                 style={{
-                  border: '0',
-                  height: '525px',
-                  width: '100%'
+                  marginBottom: '20px'
                 }}
-              ></iframe>
-            </Paper>
+              >
+                <iframe
+                  src={`https://pubchem.ncbi.nlm.nih.gov/compound/${this.state.compound.pubchem_ID}#section=3D-Conformer&embed=true&hide_title=true`}
+                  style={{
+                    border: '0',
+                    height: '525px',
+                    width: '100%'
+                  }}
+                ></iframe>
+              </Paper>
 
-            <Paper
-              style={{
-                marginBottom: '20px'
-              }}
-            >
-              <iframe
-                src={
-                  'https://pubchem.ncbi.nlm.nih.gov/compound/22179#section=2D-Structure&embed=true&hide_title=true'
-                }
+              <Paper
                 style={{
-                  border: '0',
-                  height: '525px',
-                  width: '100%'
+                  marginBottom: '20px'
                 }}
-              ></iframe>
-            </Paper>
+              >
+                <iframe
+                  src={`https://pubchem.ncbi.nlm.nih.gov/compound/${this.state.compound.pubchem_ID}#section=2D-Structure&embed=true&hide_title=true`}
+                  style={{
+                    border: '0',
+                    height: '525px',
+                    width: '100%'
+                  }}
+                ></iframe>
+              </Paper>
 
-            <Paper
-              style={{
-                marginBottom: '20px'
-              }}
-            >
-              <iframe
-                src={
-                  'https://pubchem.ncbi.nlm.nih.gov/compound/22179#section=Chemical-and-Physical-Properties&embed=true&hide_title=true'
-                }
+              <Paper
                 style={{
-                  border: '0',
-                  height: '920px',
-                  width: '100%'
+                  marginBottom: '20px'
                 }}
-              ></iframe>
-            </Paper>
-          </div>
+              >
+                <iframe
+                  src={`https://pubchem.ncbi.nlm.nih.gov/compound/${this.state.compound.pubchem_ID}#section=Chemical-and-Physical-Properties&embed=true&hide_title=true`}
+                  style={{
+                    border: '0',
+                    height: '920px',
+                    width: '100%'
+                  }}
+                ></iframe>
+              </Paper>
+            </div>
+          ) : null}
         </div>
       </div>
     );

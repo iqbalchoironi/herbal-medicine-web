@@ -131,27 +131,27 @@ class Compound extends Component {
       const res = await Axios.get(url);
       const { data } = await res;
 
-      let dataNew = await Promise.all(
-        data.data.map(async dt => {
-          let url =
-            'https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/' +
-            dt.cname +
-            '/cids/TXT';
-          try {
-            let res = await Axios.get(url);
-            console.log(res);
-            let data = res.data.split('\n');
-            dt.idPubChem = data[0];
-            return dt;
-          } catch (err) {
-            console.log(err);
-            dt.idPubChem = '';
-            return dt;
-          }
-        })
-      );
+      // let dataNew = await Promise.all(
+      //   data.data.map(async dt => {
+      //     let url =
+      //       'https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/' +
+      //       dt.cname +
+      //       '/cids/TXT';
+      //     try {
+      //       let res = await Axios.get(url);
+      //       console.log(res);
+      //       let data = res.data.split('\n');
+      //       dt.idPubChem = data[0];
+      //       return dt;
+      //     } catch (err) {
+      //       console.log(err);
+      //       dt.idPubChem = '';
+      //       return dt;
+      //     }
+      //   })
+      // );
 
-      let newData = this.state.compounds.concat(dataNew);
+      let newData = this.state.compounds.concat(data.data);
       this.afterUpdate(data.success, data.message);
       this.setState({
         compounds: newData,
@@ -407,10 +407,10 @@ class Compound extends Component {
             {this.state.compounds.map(item => (
               <CardCompound
                 key={item._id}
-                id={''}
+                id={item._id}
                 part={item.refPlant}
                 name={item.cname}
-                image={`https://pubchem.ncbi.nlm.nih.gov/image/imgsrv.fcgi?cid=${item.idPubChem}`}
+                image={`https://pubchem.ncbi.nlm.nih.gov/image/imgsrv.fcgi?cid=${item.pubchem_ID}`}
                 reff={item.refPlant}
               />
             ))}

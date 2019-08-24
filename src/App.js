@@ -34,8 +34,10 @@ import DetailPlant from './DetailPlant';
 import { ProtectedRoute } from './protected.route';
 import Footer from './Footer';
 
-// axios.defaults.baseURL = 'http://api.jamumedicine.com';
-axios.defaults.baseURL = 'http://localhost:3003';
+axios.defaults.baseURL = 'https://api.jamumedicine.com';
+// axios.defaults.baseURL = "http://localhost:3003";
+//axios.defaults.baseURL = "http://117.53.45.222:3003";
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -103,7 +105,7 @@ class App extends Component {
               <ProtectedRoute exact path="/compound" component={CompoundPage} />
               <ProtectedRoute
                 exact
-                path="/detail/compound"
+                path="/detail/compound/:id"
                 component={DetailCompound}
               />
 

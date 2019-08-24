@@ -78,7 +78,7 @@ function CardPlant(props) {
           </Typography>
         </CardContent>
         <CardActions>
-          <Button href={`/plant/${props.id}`}>
+          <Button href={`/detail/compound/${props.id}`}>
             Read More <Icon>chevron_right_rounded</Icon>
           </Button>
         </CardActions>
