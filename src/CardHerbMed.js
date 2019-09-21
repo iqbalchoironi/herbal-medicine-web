@@ -10,7 +10,7 @@ import Icon from '@material-ui/core/Icon';
 
 const styles = muiBaseTheme => ({
   card: {
-    maxWidth: 300,
+    width: 280,
     minHeight: 320,
     margin: 'auto',
     transition: '0.3s',
@@ -87,17 +87,45 @@ function CardHerbMed(props) {
           >
             What happened in Thailand?
           </Typography> */}
-          <Typography className={classes.heading} gutterBottom>
-            {props.name}
-          </Typography>
+          <h1 className="header-card">{props.name}</h1>
+          <h6
+            style={{
+              margin: '0',
+              color: 'grey'
+            }}
+          >
+            Company :
+          </h6>
+          <label className="company-card">{props.company}</label>
+          <h6
+            style={{
+              margin: '0',
+              color: 'grey',
+              marginTop: '9px'
+            }}
+          >
+            Efficacy :
+          </h6>
           <p
             style={{
-              color: 'grey'
+              color: 'grey',
+              margin: 0,
+              marginLeft: '10px',
+              marginTop: '4px',
+              marginBottom: '10px'
             }}
             className="block-with-text"
           >
             {props.efficacy}
           </p>
+          <h6
+            style={{
+              margin: '0',
+              color: 'grey'
+            }}
+          >
+            Crude drugs :
+          </h6>
           <ul className="reff">
             {props.reff.map(item => (
               <List item={item} modalCrude={props.modalCrude} />

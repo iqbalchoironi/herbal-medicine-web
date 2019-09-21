@@ -420,14 +420,34 @@ class ComparePage extends React.Component {
                 backgroundColor: '#f8f8f8'
               }}
             >
+              <h6
+                style={{
+                  margin: '0',
+                  color: 'grey',
+                  marginBottom: '10px'
+                }}
+              >
+                Name of herbal medicine 1 :
+              </h6>
               <Select
+                placeholder="Select herbal medicine to be compared"
                 filterOptions={filterOptions}
                 options={this.state.refHerbMed}
                 value={this.state.forLabelherbmed1}
                 onChange={this.handleChange('forLabelherbmed1')}
               />
               <div className={classes.divider} />
+              <h6
+                style={{
+                  margin: '0',
+                  color: 'grey',
+                  marginBottom: '10px'
+                }}
+              >
+                Name of herbal medicine 2 :
+              </h6>
               <Select
+                placeholder="Select herbal medicine to be compared"
                 filterOptions={filterOptions}
                 options={this.state.refHerbMed}
                 value={this.state.forLabelherbmed2}
@@ -469,54 +489,186 @@ class ComparePage extends React.Component {
                 </div>
               ) : this.state.compare ? (
                 <div>
-                  <div
+                  <Typography variant="h4" component="h3">
+                    {'Comparison Results :'}
+                  </Typography>
+                  <Paper
                     style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      justifyContent: 'space-around'
-                    }}
-                  >
-                    <Paper
-                      style={{
-                        width: '45%',
-                        padding: '10px',
-                        marginTop: '10px'
-                      }}
-                    >
-                      <Typography variant="h5" component="h3">
-                        {this.state.herbmed1.name}
-                      </Typography>
-                      <Typography component="p">
-                        {this.state.herbmed1.efficacy}
-                      </Typography>
-                    </Paper>
-                    <Paper
-                      style={{
-                        width: '45%',
-                        padding: '10px',
-                        marginTop: '10px'
-                      }}
-                    >
-                      <Typography variant="h5" component="h3">
-                        {this.state.herbmed2.name}
-                      </Typography>
-                      <Typography component="p">
-                        {this.state.herbmed2.efficacy}
-                      </Typography>
-                    </Paper>
-                  </div>
-
-                  <div
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      justifyContent: 'space-around',
+                      padding: '10px',
                       marginTop: '15px'
                     }}
                   >
                     <div
                       style={{
-                        width: '46%'
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'space-around'
+                      }}
+                    >
+                      <Paper
+                        style={{
+                          width: '45%',
+                          padding: '10px',
+                          marginTop: '10px'
+                        }}
+                      >
+                        <Typography variant="h5" component="h3">
+                          {this.state.herbmed1.name}
+                        </Typography>
+                        <Typography component="p">
+                          {this.state.herbmed1.efficacy}
+                        </Typography>
+                      </Paper>
+                      <Paper
+                        style={{
+                          width: '45%',
+                          padding: '10px',
+                          marginTop: '10px'
+                        }}
+                      >
+                        <Typography variant="h5" component="h3">
+                          {this.state.herbmed2.name}
+                        </Typography>
+                        <Typography component="p">
+                          {this.state.herbmed2.efficacy}
+                        </Typography>
+                      </Paper>
+                    </div>
+
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'space-around',
+                        marginTop: '15px'
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: '46%'
+                        }}
+                      >
+                        <label
+                          style={{
+                            fontSize: '24px',
+                            display: 'block',
+                            marginBottom: '20px'
+                          }}
+                        >
+                          Only formulas 1:
+                        </label>
+                        {this.state.refCrude1.map(item => {
+                          return (
+                            <ExpansionPanel>
+                              <ExpansionPanelSummary
+                                expandIcon={<ExpandMoreIcon />}
+                              >
+                                <Typography className={classes.heading}>
+                                  {item.sname}
+                                </Typography>
+                              </ExpansionPanelSummary>
+                              <ExpansionPanelDetails
+                                style={{
+                                  display: 'flex',
+                                  flexDirection: 'column'
+                                }}
+                              >
+                                <Typography variant="title" gutterBottom>
+                                  {item.name_en}
+                                </Typography>
+                                <Typography variant="caption" gutterBottom>
+                                  name_loc1 : {item.name_loc1}
+                                </Typography>
+                                <Typography variant="caption" gutterBottom>
+                                  name_loc2 : {item.name_loc2}
+                                </Typography>
+                                <Typography variant="caption" gutterBottom>
+                                  gname : {item.gname}
+                                </Typography>
+                                <Typography variant="caption" gutterBottom>
+                                  position : {item.position}
+                                </Typography>
+                                <Typography variant="caption" gutterBottom>
+                                  effect : {item.position}
+                                </Typography>
+                                <Typography variant="caption" gutterBottom>
+                                  effect_loc : {item.effect}
+                                </Typography>
+                                <Typography variant="caption" gutterBottom>
+                                  reff : {item.reff}
+                                </Typography>
+                              </ExpansionPanelDetails>
+                            </ExpansionPanel>
+                          );
+                        })}
+                      </div>
+
+                      <div
+                        style={{
+                          width: '46%'
+                        }}
+                      >
+                        <label
+                          style={{
+                            fontSize: '24px',
+                            display: 'block',
+                            marginBottom: '20px'
+                          }}
+                        >
+                          Only formulas 2:
+                        </label>
+                        {this.state.refCrude2.map(item => {
+                          return (
+                            <ExpansionPanel>
+                              <ExpansionPanelSummary
+                                expandIcon={<ExpandMoreIcon />}
+                              >
+                                <Typography className={classes.heading}>
+                                  {item.gname}
+                                </Typography>
+                              </ExpansionPanelSummary>
+                              <ExpansionPanelDetails
+                                style={{
+                                  display: 'flex',
+                                  flexDirection: 'column'
+                                }}
+                              >
+                                <Typography variant="title" gutterBottom>
+                                  {item.name_en}
+                                </Typography>
+                                <Typography variant="caption" gutterBottom>
+                                  name_loc1 : {item.name_loc1}
+                                </Typography>
+                                <Typography variant="caption" gutterBottom>
+                                  name_loc2 : {item.name_loc2}
+                                </Typography>
+                                <Typography variant="caption" gutterBottom>
+                                  gname : {item.gname}
+                                </Typography>
+                                <Typography variant="caption" gutterBottom>
+                                  position : {item.position}
+                                </Typography>
+                                <Typography variant="caption" gutterBottom>
+                                  effect : {item.position}
+                                </Typography>
+                                <Typography variant="caption" gutterBottom>
+                                  effect_loc : {item.effect}
+                                </Typography>
+                                <Typography variant="caption" gutterBottom>
+                                  reff : {item.reff}
+                                </Typography>
+                              </ExpansionPanelDetails>
+                            </ExpansionPanel>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    <div
+                      style={{
+                        width: '55%',
+                        margin: 'auto',
+                        marginTop: '15px'
                       }}
                     >
                       <label
@@ -526,9 +678,9 @@ class ComparePage extends React.Component {
                           marginBottom: '20px'
                         }}
                       >
-                        Only formulas 1:
+                        Both formulas :
                       </label>
-                      {this.state.refCrude1.map(item => {
+                      {this.state.sama.map(item => {
                         return (
                           <ExpansionPanel>
                             <ExpansionPanelSummary
@@ -573,129 +725,7 @@ class ComparePage extends React.Component {
                         );
                       })}
                     </div>
-
-                    <div
-                      style={{
-                        width: '46%'
-                      }}
-                    >
-                      <label
-                        style={{
-                          fontSize: '24px',
-                          display: 'block',
-                          marginBottom: '20px'
-                        }}
-                      >
-                        Only formulas 2:
-                      </label>
-                      {this.state.refCrude2.map(item => {
-                        return (
-                          <ExpansionPanel>
-                            <ExpansionPanelSummary
-                              expandIcon={<ExpandMoreIcon />}
-                            >
-                              <Typography className={classes.heading}>
-                                {item.gname}
-                              </Typography>
-                            </ExpansionPanelSummary>
-                            <ExpansionPanelDetails
-                              style={{
-                                display: 'flex',
-                                flexDirection: 'column'
-                              }}
-                            >
-                              <Typography variant="title" gutterBottom>
-                                {item.name_en}
-                              </Typography>
-                              <Typography variant="caption" gutterBottom>
-                                name_loc1 : {item.name_loc1}
-                              </Typography>
-                              <Typography variant="caption" gutterBottom>
-                                name_loc2 : {item.name_loc2}
-                              </Typography>
-                              <Typography variant="caption" gutterBottom>
-                                gname : {item.gname}
-                              </Typography>
-                              <Typography variant="caption" gutterBottom>
-                                position : {item.position}
-                              </Typography>
-                              <Typography variant="caption" gutterBottom>
-                                effect : {item.position}
-                              </Typography>
-                              <Typography variant="caption" gutterBottom>
-                                effect_loc : {item.effect}
-                              </Typography>
-                              <Typography variant="caption" gutterBottom>
-                                reff : {item.reff}
-                              </Typography>
-                            </ExpansionPanelDetails>
-                          </ExpansionPanel>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  <div
-                    style={{
-                      width: '55%',
-                      margin: 'auto',
-                      marginTop: '15px'
-                    }}
-                  >
-                    <label
-                      style={{
-                        fontSize: '24px',
-                        display: 'block',
-                        marginBottom: '20px'
-                      }}
-                    >
-                      Both formulas :
-                    </label>
-                    {this.state.sama.map(item => {
-                      return (
-                        <ExpansionPanel>
-                          <ExpansionPanelSummary
-                            expandIcon={<ExpandMoreIcon />}
-                          >
-                            <Typography className={classes.heading}>
-                              {item.sname}
-                            </Typography>
-                          </ExpansionPanelSummary>
-                          <ExpansionPanelDetails
-                            style={{
-                              display: 'flex',
-                              flexDirection: 'column'
-                            }}
-                          >
-                            <Typography variant="title" gutterBottom>
-                              {item.name_en}
-                            </Typography>
-                            <Typography variant="caption" gutterBottom>
-                              name_loc1 : {item.name_loc1}
-                            </Typography>
-                            <Typography variant="caption" gutterBottom>
-                              name_loc2 : {item.name_loc2}
-                            </Typography>
-                            <Typography variant="caption" gutterBottom>
-                              gname : {item.gname}
-                            </Typography>
-                            <Typography variant="caption" gutterBottom>
-                              position : {item.position}
-                            </Typography>
-                            <Typography variant="caption" gutterBottom>
-                              effect : {item.position}
-                            </Typography>
-                            <Typography variant="caption" gutterBottom>
-                              effect_loc : {item.effect}
-                            </Typography>
-                            <Typography variant="caption" gutterBottom>
-                              reff : {item.reff}
-                            </Typography>
-                          </ExpansionPanelDetails>
-                        </ExpansionPanel>
-                      );
-                    })}
-                  </div>
+                  </Paper>
                 </div>
               ) : (
                 <div

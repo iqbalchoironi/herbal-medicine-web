@@ -78,7 +78,7 @@ class DetailCompound extends Component {
               width: '50%'
             }}
           >
-            <Typography>Detail Name Compound</Typography>
+            <Typography>Detail {this.state.compound.cname}</Typography>
           </div>
           <div
             style={{
@@ -100,7 +100,7 @@ class DetailCompound extends Component {
               />
               <StyledBreadcrumb component="a" href="#" label="Compound  " />
               <StyledBreadcrumb
-                label="Name Compound"
+                label={this.state.compound.cname}
                 deleteIcon={<ExpandMoreIcon />}
               />
             </Breadcrumbs>
@@ -174,10 +174,10 @@ class DetailCompound extends Component {
                           src={itm.refimg}
                         ></img>
                         <Typography variant="caption" gutterBottom>
-                          ID Plant : <i>{itm.idplant}</i>
+                          ID plant : <i>{itm.idplant}</i>
                         </Typography>
                         <Typography variant="caption" gutterBottom>
-                          saintifict name : <i>{itm.sname}</i>
+                          Saintifict name : <i>{itm.sname}</i>
                         </Typography>
                       </ExpansionPanelDetails>
                     </ExpansionPanel>
@@ -215,22 +215,27 @@ class DetailCompound extends Component {
                         }}
                       >
                         <Typography variant="caption" gutterBottom>
-                          plant_species : {itm.plant_species}
+                          Plant pecies :{' '}
+                          {itm.plant_species ? itm.plant_species : '-'}
                         </Typography>
                         <Typography variant="caption" gutterBottom>
-                          part : {itm.part}
+                          Part : {itm.part ? itm.part : '-'}
                         </Typography>
                         <Typography variant="caption" gutterBottom>
-                          part_of_plant : {itm.part_of_plant}
+                          Part of plant :{' '}
+                          {itm.part_of_plant ? itm.part_of_plant : '-'}
                         </Typography>
                         <Typography variant="caption" gutterBottom>
-                          effect_plant : {itm.effect_plant}
+                          Effect plant :{' '}
+                          {itm.effect_plant ? itm.effect_plant : '-'}
                         </Typography>
                         <Typography variant="caption" gutterBottom>
-                          effect_part : {itm.effect_part}
+                          Effect part :{' '}
+                          {itm.effect_part ? itm.effect_part : '-'}
                         </Typography>
                         <Typography variant="caption" gutterBottom>
-                          ref_metabolites : {itm.ref_metabolites}
+                          Referece metabolites :{' '}
+                          {itm.ref_metabolites ? itm.ref_metabolites : '-'}
                         </Typography>
                       </ExpansionPanelDetails>
                     </ExpansionPanel>

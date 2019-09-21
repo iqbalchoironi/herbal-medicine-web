@@ -25,6 +25,9 @@ import HomeIcon from '@material-ui/icons/Home';
 import { withStyles } from '@material-ui/core/styles';
 import { emphasize } from '@material-ui/core/styles/colorManipulator';
 
+import CardHerbMed from './CardHerbMed';
+import ModalCrude from './ModalCrude';
+
 const StyledBreadcrumb = withStyles(theme => ({
   root: {
     backgroundColor: theme.palette.grey[100],
@@ -48,11 +51,7 @@ const styles = theme => ({
   }
 });
 function TabContainer(props) {
-  return (
-    <Typography component="div" style={{ padding: 8 * 3 }}>
-      {props.children}
-    </Typography>
-  );
+  return <Typography component="div">{props.children}</Typography>;
 }
 
 TabContainer.propTypes = {
@@ -70,11 +69,16 @@ class DetailPlant extends Component {
         open: false,
         success: false,
         message: ''
+      },
+      modal: {
+        open: false,
+        id: ''
       }
     };
     this.handleChange = this.handleChange.bind(this);
     this.afterUpdate = this.afterUpdate.bind(this);
     this.closeBtn = this.closeBtn.bind(this);
+    this.modalCrude = this.modalCrude.bind(this);
   }
 
   async componentDidMount() {
@@ -93,18 +97,70 @@ class DetailPlant extends Component {
       // const urlDesc = 'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&titles='+ data.data.sname;
       // const resDesc = await Axios.get(urlDesc,{ headers: {'Access-Control-Allow-Origin': "*"} });
       // console.log(resDesc)
+      let HerbMed = [];
+      let efficacy = [];
+      let name_en = [];
+      let name_loc1 = [];
+      let name_loc2 = [];
+      let ref = [];
       let RefCrude = await Promise.all(
         data.data.refCrude.map(async dt => {
           let urlCrude = '/jamu/api/crudedrug/get/' + dt.idcrude;
+          let resCrude = await Axios.get(urlCrude);
+          let { data } = await resCrude;
+          data.data.refHerbsMed.forEach(dt => {
+            if (!HerbMed.includes(dt.idherbsmed)) {
+              HerbMed.push(dt.idherbsmed);
+            }
+          });
+          if (!efficacy.includes(data.data.effect)) {
+            efficacy.push(data.data.effect);
+          } else if (data.data.effect_loc !== '') {
+            if (!efficacy.includes(data.data.effect_loc)) {
+              efficacy.push(data.data.effect_loc);
+            }
+          }
+
+          if (!name_en.includes(data.data.name_en)) {
+            name_en.push(data.data.name_en);
+          }
+
+          if (!name_loc1.includes(data.data.name_loc1)) {
+            name_loc1.push(data.data.name_loc1);
+          }
+
+          if (!name_loc2.includes(data.data.name_loc2)) {
+            name_loc2.push(data.data.name_loc2);
+          }
+          if (!ref.includes(data.data.ref)) {
+            ref.push(data.data.ref);
+          }
+
+          return data.data;
+        })
+      );
+
+      console.log(efficacy);
+
+      let RefHerbsMed = await Promise.all(
+        HerbMed.map(async dt => {
+          let urlCrude = '/jamu/api/herbsmed/get/' + dt;
           let resCrude = await Axios.get(urlCrude);
           let { data } = await resCrude;
           return data.data;
         })
       );
 
+      console.log(RefHerbsMed);
+
       let detailPlant = data.data;
       detailPlant.refCrude = RefCrude;
-      console.log(detailPlant);
+      detailPlant.refHerbsMed = RefHerbsMed;
+      detailPlant.efficacy = efficacy;
+      detailPlant.name_en = name_en;
+      detailPlant.name_loc1 = name_loc1;
+      detailPlant.name_loc2 = name_loc2;
+      detailPlant.ref = ref;
       this.afterUpdate(data.success, data.message);
       this.setState({
         detailPlant: detailPlant,
@@ -140,6 +196,18 @@ class DetailPlant extends Component {
         open: false,
         success: false,
         message: ''
+      },
+      modal: {
+        open: false
+      }
+    });
+  }
+
+  async modalCrude(id) {
+    this.setState({
+      modal: {
+        open: true,
+        id: id
       }
     });
   }
@@ -249,10 +317,133 @@ class DetailPlant extends Component {
                         fontSize: '30px'
                       }}
                       variant="headline"
+                      display="block"
                       gutterBottom
                     >
                       <i>{this.state.detailPlant.sname}</i>
                     </Typography>
+                    <h6
+                      style={{
+                        margin: '0',
+                        color: 'grey'
+                      }}
+                    >
+                      Efficacy :
+                    </h6>
+                    {this.state.detailPlant.efficacy &&
+                      this.state.detailPlant.efficacy.map(dt => (
+                        <Typography
+                          style={{
+                            color: 'grey',
+                            marginLeft: '10px',
+                            fontSize: '12px'
+                          }}
+                          variant="headline"
+                          display="block"
+                          gutterBottom
+                        >
+                          {dt}
+                        </Typography>
+                      ))}
+                    <h6
+                      style={{
+                        margin: '0',
+                        color: 'grey'
+                      }}
+                    >
+                      Name :
+                    </h6>
+                    {this.state.detailPlant.name_en &&
+                      this.state.detailPlant.name_en.map(dt => (
+                        <Typography
+                          style={{
+                            color: 'grey',
+                            marginLeft: '10px',
+                            fontSize: '12px'
+                          }}
+                          variant="headline"
+                          display="block"
+                          gutterBottom
+                        >
+                          {dt + ' (en)'}
+                        </Typography>
+                      ))}
+                    {this.state.detailPlant.name_loc1 &&
+                      this.state.detailPlant.name_loc1.map(dt => (
+                        <Typography
+                          style={{
+                            color: 'grey',
+                            marginLeft: '10px',
+                            fontSize: '12px'
+                          }}
+                          variant="headline"
+                          display="block"
+                          gutterBottom
+                        >
+                          {dt + ' (loc1)'}
+                        </Typography>
+                      ))}
+                    {this.state.detailPlant.loc2 &&
+                      this.state.detailPlant.loc2.map(dt => (
+                        <Typography
+                          style={{
+                            color: 'grey',
+                            marginLeft: '10px',
+                            fontSize: '12px'
+                          }}
+                          variant="headline"
+                          display="block"
+                          gutterBottom
+                        >
+                          {dt + ' (loc2)'}
+                        </Typography>
+                      ))}
+                    <h6
+                      style={{
+                        margin: '0',
+                        color: 'grey'
+                      }}
+                    >
+                      Potition :
+                    </h6>
+                    {this.state.detailPlant.refCrude &&
+                      this.state.detailPlant.refCrude.map(dt => (
+                        <Typography
+                          style={{
+                            color: 'grey',
+                            marginLeft: '10px',
+                            fontSize: '12px'
+                          }}
+                          variant="headline"
+                          display="block"
+                          gutterBottom
+                        >
+                          {dt.position + ` (${dt.sname})`}
+                        </Typography>
+                      ))}
+                    <h6
+                      style={{
+                        margin: '0',
+                        color: 'grey'
+                      }}
+                    >
+                      Reference :
+                    </h6>
+                    {this.state.detailPlant.ref &&
+                      this.state.detailPlant.ref.map(dt => (
+                        <Typography
+                          style={{
+                            color: 'grey',
+                            marginLeft: '10px',
+                            fontSize: '12px'
+                          }}
+                          variant="headline"
+                          display="block"
+                          gutterBottom
+                        >
+                          {dt}
+                        </Typography>
+                      ))}
                   </div>
                 </div>
               </Paper>
@@ -263,6 +454,7 @@ class DetailPlant extends Component {
                 textColor="primary"
                 centered
               >
+                <Tab label="Herbal medicine use this plant" />
                 <Tab label="Crude Drug" />
                 <Tab label="Compound" />
                 <Tab label="Crude Use by Ethnic" />
@@ -271,7 +463,6 @@ class DetailPlant extends Component {
                 style={{
                   width: '90%',
                   minHeight: '300px',
-                  maxHeight: '400px',
                   overflow: 'auto',
                   margin: 'auto',
                   marginTop: '20px',
@@ -292,6 +483,25 @@ class DetailPlant extends Component {
                     </TabContainer>} */}
                 {this.state.value === 0 && (
                   <TabContainer>
+                    {this.state.detailPlant.refHerbsMed && (
+                      <div className="for-card">
+                        {this.state.detailPlant.refHerbsMed.map(item => (
+                          <CardHerbMed
+                            key={item.idherbsmed}
+                            id={item.idherbsmed}
+                            name={item.name}
+                            efficacy={item.efficacy}
+                            reff={item.refCrude}
+                            modalCrude={this.modalCrude}
+                            company={item.refCompany && item.refCompany.cname}
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </TabContainer>
+                )}
+                {this.state.value === 1 && (
+                  <TabContainer>
                     {this.state.detailPlant.refCrude !== undefined &&
                       this.state.detailPlant.refCrude.map(itm => {
                         return (
@@ -310,29 +520,61 @@ class DetailPlant extends Component {
                                 flexDirection: 'column'
                               }}
                             >
-                              <Typography variant="title" gutterBottom>
-                                {itm.name_en}
+                              <Typography
+                                variant="caption"
+                                display="block"
+                                gutterBottom
+                              >
+                                Saintifict Name : {itm.sname}
                               </Typography>
-                              <Typography variant="caption" gutterBottom>
-                                name_loc1 : {itm.name_loc1}
+                              <Typography
+                                variant="caption"
+                                display="block"
+                                gutterBottom
+                              >
+                                Name (in english) : {itm.name_en}
                               </Typography>
-                              <Typography variant="caption" gutterBottom>
-                                name_loc2 : {itm.name_loc2}
+                              <Typography
+                                variant="caption"
+                                display="block"
+                                gutterBottom
+                              >
+                                Local name I : {itm.name_loc1}
                               </Typography>
-                              <Typography variant="caption" gutterBottom>
-                                gname : {itm.gname}
+                              <Typography
+                                variant="caption"
+                                display="block"
+                                gutterBottom
+                              >
+                                Local name II : <i>{itm.name_loc2}</i>
                               </Typography>
-                              <Typography variant="caption" gutterBottom>
-                                position : {itm.position}
+                              <Typography
+                                variant="caption"
+                                display="block"
+                                gutterBottom
+                              >
+                                Global Name : <i>{itm.gname}</i>
                               </Typography>
-                              <Typography variant="caption" gutterBottom>
-                                effect : {itm.position}
+                              <Typography
+                                variant="caption"
+                                display="block"
+                                gutterBottom
+                              >
+                                Effect : {itm.effect}
                               </Typography>
-                              <Typography variant="caption" gutterBottom>
-                                effect_loc : {itm.effect}
+                              <Typography
+                                variant="caption"
+                                display="block"
+                                gutterBottom
+                              >
+                                Location Effect : {itm.effect_loc}
                               </Typography>
-                              <Typography variant="caption" gutterBottom>
-                                reff : {itm.reff}
+                              <Typography
+                                variant="caption"
+                                display="block"
+                                gutterBottom
+                              >
+                                Refrence : {itm.ref}
                               </Typography>
                             </ExpansionPanelDetails>
                           </ExpansionPanel>
@@ -340,7 +582,7 @@ class DetailPlant extends Component {
                       })}
                   </TabContainer>
                 )}
-                {this.state.value === 1 && (
+                {this.state.value === 2 && (
                   <TabContainer>
                     {this.state.detailPlant.refCompound !== undefined &&
                       this.state.detailPlant.refCompound.map(itm => {
@@ -354,10 +596,10 @@ class DetailPlant extends Component {
                                 <i>{itm.cname}</i>
                               </Typography>
                             </ExpansionPanelSummary>
-                            <ExpansionPanelDetails
+                            {/* <ExpansionPanelDetails
                               style={{
-                                display: 'flex',
-                                flexDirection: 'column'
+                                display: "flex",
+                                flexDirection: "column"
                               }}
                             >
                               <Typography variant="caption" gutterBottom>
@@ -381,13 +623,14 @@ class DetailPlant extends Component {
                               <Typography variant="caption" gutterBottom>
                                 reff_addtional : {itm.reff_addtional}
                               </Typography>
-                            </ExpansionPanelDetails>
+                            </ExpansionPanelDetails> */}
                           </ExpansionPanel>
                         );
                       })}
                   </TabContainer>
                 )}
-                {this.state.value === 2 && (
+
+                {this.state.value === 3 && (
                   <TabContainer>
                     {this.state.detailPlant.refEthnic !== undefined &&
                       this.state.detailPlant.refEthnic.map(itm => {
@@ -410,25 +653,28 @@ class DetailPlant extends Component {
                               }}
                             >
                               <Typography variant="caption" gutterBottom>
-                                disease_ina : {itm.disease_ina}
+                                Name plant (in bahasa) : {itm.name_ina}
                               </Typography>
                               <Typography variant="caption" gutterBottom>
-                                disease_ing : {itm.disease_ing}
+                                Efficacy (in bahasa) : {itm.disease_ina}
                               </Typography>
                               <Typography variant="caption" gutterBottom>
-                                name_ina : {itm.name_ina}
+                                Efficacy (in english) : {itm.disease_ing}
+                              </Typography>
+                              {/* <Typography variant="caption" gutterBottom>
+                                    Species of plant :{" "}
+                                    <i>{itm.species}</i>
+                                  </Typography> */}
+                              <Typography variant="caption" gutterBottom>
+                                Family of plant : <i>{itm.family}</i>
                               </Typography>
                               <Typography variant="caption" gutterBottom>
-                                species : {itm.species}
+                                Part of plant used in therapeutic usage (in
+                                bahasa) : {itm.section_ina}
                               </Typography>
                               <Typography variant="caption" gutterBottom>
-                                family : {itm.family}
-                              </Typography>
-                              <Typography variant="caption" gutterBottom>
-                                section_ina : {itm.section_ina}
-                              </Typography>
-                              <Typography variant="caption" gutterBottom>
-                                section_ing : {itm.section_ing}
+                                Part of plant used in therapeutic usage (in
+                                english) : {itm.section_ing}
                               </Typography>
                             </ExpansionPanelDetails>
                           </ExpansionPanel>
@@ -440,6 +686,9 @@ class DetailPlant extends Component {
             </Paper>
           </div>
         )}
+        {this.state.modal.open === true ? (
+          <ModalCrude modal={this.state.modal} close={this.closeBtn} />
+        ) : null}
         {this.state.snackbar.open === true ? (
           <SnackBar data={this.state.snackbar} close={this.closeBtn} />
         ) : null}

@@ -75,7 +75,7 @@ class Landing extends Component {
       },
       {
         url: '/asset/comparision.jpeg',
-        title: 'Comparision',
+        title: 'Comparison',
         directory: '/compare'
       },
       {
@@ -83,19 +83,19 @@ class Landing extends Component {
         title: 'Prediction',
         directory: '/predict'
       },
-      {
-        url: '/asset/tacit.jpeg',
-        title: 'Tacit Knowledge',
-        directory: '/tacit'
-      },
+      // {
+      //   url: "/asset/tacit.jpeg",
+      //   title: "Tacit Knowledge",
+      //   directory: "/tacit"
+      // },
       {
         url: '/asset/explicit.jpeg',
-        title: 'Explicit Knowledge',
+        title: 'Knowledge',
         directory: '/explicit'
       },
       {
         url: '/asset/plant_ethnic.jpeg',
-        title: 'Plant Used Ethnic',
+        title: 'Map Ethnic',
         directory: '/map/ethnic'
       }
     ];

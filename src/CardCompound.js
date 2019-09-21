@@ -11,7 +11,7 @@ import Typography from '@material-ui/core/Typography';
 
 const styles = muiBaseTheme => ({
   card: {
-    maxWidth: 300,
+    width: 280,
     margin: 'auto',
     transition: '0.3s',
     boxShadow: '0 8px 40px -12px rgba(0,0,0,0.3)',
@@ -59,23 +59,20 @@ function CardPlant(props) {
       <Card className={classes.card}>
         <CardMedia className={classes.media} image={props.image} />
         <CardContent className={classes.content}>
-          <Typography
-            className={'MuiTypography--heading'}
-            variant={'h6'}
-            gutterBottom
+          <h1 className="header-card">{props.name}</h1>
+          <h6
+            style={{
+              margin: '0',
+              color: 'grey'
+            }}
           >
-            {props.name}
-          </Typography>
-          <Typography
-            className={'MuiTypography--subheading'}
-            variant={'caption'}
-          >
-            <ul className="reff">
-              {props.reff.map(item => {
-                return <List item={item} />;
-              })}
-            </ul>
-          </Typography>
+            Crude drugs :
+          </h6>
+          <ul className="reff">
+            {props.reff.map(item => {
+              return <List item={item} />;
+            })}
+          </ul>
         </CardContent>
         <CardActions>
           <Button href={`/detail/compound/${props.id}`}>

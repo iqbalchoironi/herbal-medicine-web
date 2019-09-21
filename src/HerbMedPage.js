@@ -404,6 +404,7 @@ class HerbMeds extends Component {
                 efficacy={item.efficacy}
                 reff={item.refCrude}
                 modalCrude={this.modalCrude}
+                company={item.refCompany && item.refCompany.cname}
               />
             ))}
           </div>

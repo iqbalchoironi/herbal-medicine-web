@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
-// import { GoogleApiWrapper } from 'google-maps-react';
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
-// import InfoWindowEx from '../components/info-window-ex'
-// import ModalPlantEthnic from '../components/modal-plant-ethnic'
 import Axios from 'axios';
 import { Link } from 'react-router-dom';
 import L from 'leaflet';
 import locationIcons from './placeholder.svg';
 
-import Spinner from './Spinner';
+import Chip from '@material-ui/core/Chip';
 
+import Spinner from './Spinner';
 import SnackBar from './SnackBar';
 import ErorPage from './ErorPage';
 
@@ -42,6 +40,10 @@ export class MapHerb extends Component {
     this.afterUpdate = this.afterUpdate.bind(this);
     this.closeBtn = this.closeBtn.bind(this);
   }
+
+  chipFilter = item => {
+    window.location.href = `/ethnic/${item}`;
+  };
 
   async componentDidMount() {
     this.setState({
@@ -209,9 +211,13 @@ export class MapHerb extends Component {
                   </p>
                   {item.ethnic.map(ethnic => {
                     return (
-                      <button key={ethnic._id}>
-                        <Link to={`/ethnic/${ethnic._id}`}>{ethnic.name}</Link>
-                      </button>
+                      <Chip
+                        key={ethnic._id}
+                        label={ethnic.name}
+                        variant="outlined"
+                        clickable
+                        onClick={() => this.chipFilter(ethnic._id)}
+                      ></Chip>
                     );
                   })}
                 </Popup>

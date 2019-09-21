@@ -265,23 +265,89 @@ class DetailHerbMed extends Component {
                 <Typography variant="h6" gutterBottom>
                   {this.state.detailHerbMed.name}
                 </Typography>
-                <Typography variant="caption" display="block" gutterBottom>
+                <h6
+                  style={{
+                    margin: '0',
+                    color: 'grey'
+                  }}
+                >
+                  Company :
+                </h6>
+                <Typography
+                  style={{ marginLeft: '10px' }}
+                  variant="caption"
+                  display="block"
+                  gutterBottom
+                >
                   {refCompany ? refCompany.cname : null}
                 </Typography>
-                <Typography variant="caption" display="block" gutterBottom>
+                <h6
+                  style={{
+                    margin: '0',
+                    color: 'grey'
+                  }}
+                >
+                  Address company :
+                </h6>
+                <Typography
+                  style={{ marginLeft: '10px' }}
+                  variant="caption"
+                  display="block"
+                  gutterBottom
+                >
                   {refCompany ? refCompany.address : null}
                 </Typography>
-                <Typography variant="caption" display="block" gutterBottom>
-                  efficacy : {this.state.detailHerbMed.efficacy}
-                </Typography>
+                <h6
+                  style={{
+                    margin: '0',
+                    color: 'grey'
+                  }}
+                >
+                  Efficacy :
+                </h6>
                 <Typography
+                  style={{ marginLeft: '10px' }}
+                  variant="caption"
+                  display="block"
+                  gutterBottom
+                >
+                  {this.state.detailHerbMed.efficacy}
+                </Typography>
+                <h6
+                  style={{
+                    margin: '0',
+                    color: 'grey'
+                  }}
+                >
+                  Disease class description :
+                </h6>
+                <Typography
+                  style={{ marginLeft: '10px' }}
                   variant="caption"
                   display="block"
                   align="justify"
                   gutterBottom
                 >
-                  disease class description :{' '}
                   {refDclass ? refDclass.description : null}
+                </Typography>
+                <h6
+                  style={{
+                    margin: '0',
+                    color: 'grey'
+                  }}
+                >
+                  Reference :
+                </h6>
+                <Typography
+                  style={{ marginLeft: '10px' }}
+                  variant="caption"
+                  display="block"
+                  align="justify"
+                  gutterBottom
+                >
+                  {this.state.detailHerbMed.ref
+                    ? this.state.detailHerbMed.ref
+                    : null}
                 </Typography>
               </Paper>
               <Tabs
@@ -291,8 +357,9 @@ class DetailHerbMed extends Component {
                 textColor="primary"
                 centered
               >
+                <Tab label="Crude in this formula" />
                 <Tab label="Plant" />
-                <Tab label="Crude Drug" />
+
                 {/* <Tab label="Compound" /> */}
               </Tabs>
               <Paper
@@ -304,7 +371,7 @@ class DetailHerbMed extends Component {
                   padding: '30px'
                 }}
               >
-                {this.state.value === 0 && (
+                {this.state.value === 1 && (
                   <TabContainer>
                     {this.state.detailHerbMed.refPlant !== undefined && (
                       <div className="for-card">
@@ -322,7 +389,7 @@ class DetailHerbMed extends Component {
                     )}
                   </TabContainer>
                 )}
-                {this.state.value === 1 && (
+                {this.state.value === 0 && (
                   <TabContainer>
                     {this.state.detailHerbMed.refCrude !== undefined &&
                       this.state.detailHerbMed.refCrude.map(itm => {
@@ -342,29 +409,61 @@ class DetailHerbMed extends Component {
                                 flexDirection: 'column'
                               }}
                             >
-                              <Typography variant="title" gutterBottom>
-                                {itm.name_en}
+                              <Typography
+                                variant="caption"
+                                display="block"
+                                gutterBottom
+                              >
+                                Saintifict Name : <i>{itm.sname}</i>
                               </Typography>
-                              <Typography variant="caption" gutterBottom>
-                                name_loc1 : {itm.name_loc1}
+                              <Typography
+                                variant="caption"
+                                display="block"
+                                gutterBottom
+                              >
+                                Name (in english) : {itm.name_en}
                               </Typography>
-                              <Typography variant="caption" gutterBottom>
-                                name_loc2 : {itm.name_loc2}
+                              <Typography
+                                variant="caption"
+                                display="block"
+                                gutterBottom
+                              >
+                                Local name I : {itm.name_loc1}
                               </Typography>
-                              <Typography variant="caption" gutterBottom>
-                                gname : {itm.gname}
+                              <Typography
+                                variant="caption"
+                                display="block"
+                                gutterBottom
+                              >
+                                Local name II : <i>{itm.name_loc2}</i>
                               </Typography>
-                              <Typography variant="caption" gutterBottom>
-                                position : {itm.position}
+                              <Typography
+                                variant="caption"
+                                display="block"
+                                gutterBottom
+                              >
+                                Global Name : <i>{itm.gname}</i>
                               </Typography>
-                              <Typography variant="caption" gutterBottom>
-                                effect : {itm.position}
+                              <Typography
+                                variant="caption"
+                                display="block"
+                                gutterBottom
+                              >
+                                Effect : {itm.effect}
                               </Typography>
-                              <Typography variant="caption" gutterBottom>
-                                effect_loc : {itm.effect}
+                              <Typography
+                                variant="caption"
+                                display="block"
+                                gutterBottom
+                              >
+                                Location Effect : {itm.effect_loc}
                               </Typography>
-                              <Typography variant="caption" gutterBottom>
-                                reff : {itm.reff}
+                              <Typography
+                                variant="caption"
+                                display="block"
+                                gutterBottom
+                              >
+                                Refrence : {itm.ref}
                               </Typography>
                             </ExpansionPanelDetails>
                           </ExpansionPanel>

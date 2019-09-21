@@ -12,11 +12,11 @@ body {
 /* styles for '...' */
 .block-with-text {
   /* hide text if it more than N lines  */
-  overflow: hidden;
+  overflow: auto;
   /* for set '...' in absolute position */
   position: relative;
   /* use this value to count block height */
-  line-height: 1.5;
+  line-height: 1.2;
   /* max-height = line-height (1.2) * lines max number (3) */
   /* max-height: 3.6em;  */
   /* fix problem when last visible word doesn't adjoin right side  */
@@ -25,6 +25,36 @@ body {
   margin-right: -1em;
   padding-right: 1em;
   color: rgb(33, 33, 33);
-  font-size: 16px;
-  height: 70px;
+  font-size: 14px;
+  height: 85px;
+  text-align: left;
+}
+
+.header-card {
+  overflow: hidden;
+  position: relative;
+  line-height: 1.5;
+  text-align: justify;
+  margin-right: -1em;
+  padding-right: 1em;
+  color: grey;
+  font-size: 18px;
+  height: 30px;
+  margin: 0;
+}
+
+.company-card {
+  overflow: hidden;
+  position: relative;
+  line-height: 1;
+  text-align: justify;
+  margin-right: -1em;
+  padding-right: 1em;
+  color: grey;
+  font-size: 14px;
+  height: 17px;
+  margin: 0;
+  margin-top: 4px;
+  margin-left: 10px;
+  display: block;
 }

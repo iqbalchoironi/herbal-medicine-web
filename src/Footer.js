@@ -3,144 +3,146 @@ import { height } from '@material-ui/system';
 
 function Footer(props) {
   return (
-    <div
-      style={{
-        width: '100%',
+    <footer>
+      <div
+        style={{
+          width: '100%',
 
-        backgroundColor: 'grey',
-        //height: '300px',
-        //backgroundImage: `url(/asset/footer.png)`,
-        //backgroundSize: 'cover',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        color: 'rgba(255, 255, 255, 0.75)'
-      }}
-    >
-      <div
-        style={{
-          width: '90%',
-          display: 'flex'
+          backgroundColor: 'grey',
+          //height: '300px',
+          //backgroundImage: `url(/asset/footer.png)`,
+          //backgroundSize: 'cover',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          color: 'rgba(255, 255, 255, 0.75)'
         }}
       >
-        <div
+        {/* <div
           style={{
-            width: '70%',
-            height: '200px'
+            width: "90%",
+            display: "flex"
           }}
         >
-          <h4
+          <div
             style={{
-              marginBottom: '20px',
-              fontWeight: '300',
-              lineHeight: '30px',
-              letterSpacing: '1px',
-              textTransform: 'uppercase',
-              fontFamily: 'Work Sans',
-              fontSize: '12px'
+              width: "70%",
+              height: "200px"
             }}
           >
-            Address and Website
-          </h4>
-          <p
+            <h4
+              style={{
+                marginBottom: "20px",
+                fontWeight: "300",
+                lineHeight: "30px",
+                letterSpacing: "1px",
+                textTransform: "uppercase",
+                fontFamily: "Work Sans",
+                fontSize: "12px"
+              }}
+            >
+              Address and Website
+            </h4>
+            <p
+              style={{
+                fontSize: "12px"
+              }}
+            >
+              Departemen Ilmu Komputer Jl Meranti Wing 20 Level 5 Kampus IPB
+              Darmaga 16680
+            </p>
+            <p
+              style={{
+                fontSize: "12px"
+              }}
+            >
+              0251-8625584
+            </p>
+            <p
+              style={{
+                fontSize: "12px"
+              }}
+            >
+              0251-8625584
+            </p>
+            <p
+              style={{
+                fontSize: "12px"
+              }}
+            >
+              ilkom@apps.ipb.ac.id
+            </p>
+          </div>
+          <div
             style={{
-              fontSize: '12px'
+              width: "30%",
+              height: "200px"
             }}
           >
-            Departemen Ilmu Komputer Jl Meranti Wing 20 Level 5 Kampus IPB
-            Darmaga 16680
-          </p>
-          <p
-            style={{
-              fontSize: '12px'
-            }}
-          >
-            0251-8625584
-          </p>
-          <p
-            style={{
-              fontSize: '12px'
-            }}
-          >
-            0251-8625584
-          </p>
-          <p
-            style={{
-              fontSize: '12px'
-            }}
-          >
-            ilkom@apps.ipb.ac.id
-          </p>
-        </div>
+            <h4
+              style={{
+                marginBottom: "20px",
+                fontWeight: "300",
+                lineHeight: "30px",
+                letterSpacing: "1px",
+                textTransform: "uppercase",
+                fontFamily: "Work Sans",
+                fontSize: "12px"
+              }}
+            >
+              Follow KMSJamu in :
+            </h4>
+            <p
+              style={{
+                fontSize: "12px"
+              }}
+            >
+              Departemen Ilmu Komputer Jl Meranti Wing 20 Level 5 Kampus IPB
+              Darmaga 16680
+            </p>
+            <p
+              style={{
+                fontSize: "12px"
+              }}
+            >
+              0251-8625584
+            </p>
+            <p
+              style={{
+                fontSize: "12px"
+              }}
+            >
+              0251-8625584
+            </p>
+            <p
+              style={{
+                fontSize: "12px"
+              }}
+            >
+              ilkom@apps.ipb.ac.id
+            </p>
+          </div>
+        </div> */}
         <div
           style={{
-            width: '30%',
-            height: '200px'
+            margin: 'auto',
+            width: '100%'
           }}
         >
-          <h4
-            style={{
-              marginBottom: '20px',
-              fontWeight: '300',
-              lineHeight: '30px',
-              letterSpacing: '1px',
-              textTransform: 'uppercase',
-              fontFamily: 'Work Sans',
-              fontSize: '12px'
-            }}
-          >
-            Follow KMSJamu in :
-          </h4>
+          {/* <hr /> */}
           <p
             style={{
-              fontSize: '12px'
+              fontSize: '12px',
+              textAlign: 'center'
             }}
           >
-            Departemen Ilmu Komputer Jl Meranti Wing 20 Level 5 Kampus IPB
-            Darmaga 16680
-          </p>
-          <p
-            style={{
-              fontSize: '12px'
-            }}
-          >
-            0251-8625584
-          </p>
-          <p
-            style={{
-              fontSize: '12px'
-            }}
-          >
-            0251-8625584
-          </p>
-          <p
-            style={{
-              fontSize: '12px'
-            }}
-          >
-            ilkom@apps.ipb.ac.id
+            © 2019 KMSJamu <br />
+            Knowledge Management System Jamu
           </p>
         </div>
       </div>
-      <div
-        style={{
-          margin: 'auto',
-          width: '100%'
-        }}
-      >
-        <hr />
-        <p
-          style={{
-            fontSize: '12px',
-            textAlign: 'center'
-          }}
-        >
-          © 2019 KMSJamu <br />
-          Knowledge Manajement Sistem Jamu
-        </p>
-      </div>
-    </div>
+    </footer>
   );
 }
 

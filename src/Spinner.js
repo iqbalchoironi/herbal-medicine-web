@@ -26,7 +26,7 @@ function Spinner(props) {
       }}
     >
       {/* <CircularProgress className={classes.progress} /> */}
-      <img src={loading} alt="Logo" />;
+      <img src={loading} alt="Logo" />
     </div>
   );
 }

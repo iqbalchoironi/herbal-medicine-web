@@ -23,7 +23,7 @@ import { FormControl, InputLabel } from '@material-ui/core';
 import Picklist from './components/pick-list';
 import Spinner from './Spinner';
 
-import { emphasize, makeStyles } from '@material-ui/core/styles';
+import { emphasize } from '@material-ui/core/styles';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Chip from '@material-ui/core/Chip';
 import Avatar from '@material-ui/core/Avatar';
@@ -83,6 +83,7 @@ class Predict extends Component {
       type: '',
       model: '',
       target: [],
+      optimization: '',
       snackbar: {
         open: false,
         success: false,
@@ -420,7 +421,8 @@ class Predict extends Component {
                           }}
                         >
                           <Typography variant="h6" gutterBottom>
-                            The predict is {this.state.resultPredic.class}
+                            The Prediction results is{' '}
+                            {this.state.resultPredic.class}
                           </Typography>
                           <Typography
                             variant="overline"
@@ -444,7 +446,7 @@ class Predict extends Component {
                             align="justify"
                             gutterBottom
                           >
-                            Desease :
+                            Disease :
                           </Typography>
                           <Typography
                             variant="caption"
@@ -506,18 +508,31 @@ class Predict extends Component {
                           flexDirection: 'row-reverse'
                         }}
                       >
-                        {activeStep === 1 ? (
+                        {activeStep === 0 ? (
                           <Button
+                            disabled={this.state.type === ''}
                             variant="raised"
                             color="primary"
                             onClick={this.handleNext}
                             className={classes.button}
                           >
-                            {activeStep === steps.length - 1
-                              ? 'Finish'
-                              : 'Next'}
+                            Next
                           </Button>
-                        ) : activeStep === steps.length - 1 ? (
+                        ) : activeStep === 1 ? (
+                          <Button
+                            disabled={
+                              this.state.model === '' ||
+                              this.state.optimization === '' ||
+                              this.state.itemtarget.length === 0
+                            }
+                            variant="raised"
+                            color="primary"
+                            onClick={this.handleNext}
+                            className={classes.button}
+                          >
+                            Next
+                          </Button>
+                        ) : (
                           <Button
                             variant="raised"
                             color="primary"
@@ -525,15 +540,6 @@ class Predict extends Component {
                             className={classes.button}
                           >
                             Submit
-                          </Button>
-                        ) : (
-                          <Button
-                            variant="raised"
-                            color="primary"
-                            onClick={this.handleNext}
-                            className={classes.button}
-                          >
-                            Next
                           </Button>
                         )}
                         <Button
@@ -681,16 +687,72 @@ function Step3(props) {
         <Paper
           style={{
             display: 'flex',
-            justifyContent: 'center',
+            //justifyContent: "center",
             alignItems: 'center',
             flexDirection: 'column',
             width: '50%',
             minHeight: '400px'
           }}
         >
-          <div
+          <h3>Summary</h3>
+          <Paper
             style={{
-              width: '80%'
+              padding: '20px',
+              backgroundColor: '#f8f8f8'
+            }}
+          >
+            <table>
+              <tr>
+                <td>Type of Prediction</td>
+                <td>:</td>
+                <td>
+                  <span>{props.type}</span>
+                </td>
+              </tr>
+              <tr>
+                <td>Type of Method</td>
+                <td>:</td>
+                <td>
+                  <span>{props.model}</span>
+                </td>
+              </tr>
+              <tr>
+                <td
+                  style={{
+                    verticalAlign: 'top'
+                  }}
+                >{`Selected ${props.type}`}</td>
+                <td
+                  style={{
+                    verticalAlign: 'top'
+                  }}
+                >
+                  :
+                </td>
+                <td
+                  style={{
+                    verticalAlign: 'top'
+                  }}
+                >
+                  <ul
+                    style={{
+                      margin: 0,
+                      marginLeft: 5,
+                      padding: 0,
+                      paddingLeft: 12
+                    }}
+                  >
+                    {props.target.map(dt => (
+                      <li>{dt.sname}</li>
+                    ))}
+                  </ul>
+                </td>
+              </tr>
+            </table>
+          </Paper>
+          {/* <div
+            style={{
+              width: "80%"
             }}
           >
             <h3> Sumarry :</h3>
@@ -705,7 +767,7 @@ function Step3(props) {
             {props.target.map(dt => (
               <li>{dt.sname}</li>
             ))}
-          </ul>
+          </ul> */}
         </Paper>
       )}
     </React.Fragment>

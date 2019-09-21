@@ -258,7 +258,7 @@ class EthnicDetail extends Component {
                               style={{
                                 padding: '5px'
                               }}
-                              primary={`ethnic ${itm.name}`}
+                              primary={`Ethnic ${itm.name}`}
                             />
                           </ListItemLink>
                         );
@@ -302,28 +302,28 @@ class EthnicDetail extends Component {
                                     {plantethnic.name_ina}
                                   </Typography>
                                   <Typography variant="caption" gutterBottom>
-                                    Name disease (in bahasa) :{' '}
+                                    Efficacy (in bahasa) :{' '}
                                     {plantethnic.disease_ina}
                                   </Typography>
                                   <Typography variant="caption" gutterBottom>
-                                    Name disease (in english) :{' '}
+                                    Efficacy (in english) :{' '}
                                     {plantethnic.disease_ing}
                                   </Typography>
-                                  <Typography variant="caption" gutterBottom>
-                                    Species of plant :{' '}
+                                  {/* <Typography variant="caption" gutterBottom>
+                                    Species of plant :{" "}
                                     <i>{plantethnic.species}</i>
-                                  </Typography>
+                                  </Typography> */}
                                   <Typography variant="caption" gutterBottom>
                                     Family of plant :{' '}
                                     <i>{plantethnic.family}</i>
                                   </Typography>
                                   <Typography variant="caption" gutterBottom>
-                                    Section that used (in bahasa) :{' '}
-                                    {plantethnic.section_ina}
+                                    Part of plant used in therapeutic usage (in
+                                    bahasa) : {plantethnic.section_ina}
                                   </Typography>
                                   <Typography variant="caption" gutterBottom>
-                                    Section that used (in english) :{' '}
-                                    {plantethnic.section_ing}
+                                    Part of plant used in therapeutic usage (in
+                                    english) : {plantethnic.section_ing}
                                   </Typography>
                                 </ExpansionPanelDetails>
                                 <ExpansionPanelActions>

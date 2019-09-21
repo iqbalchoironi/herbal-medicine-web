@@ -91,9 +91,9 @@ class Navigation extends Component {
                 </li>
 
                 <div class="dropdown">
-                  <li>Knowledges</li>
+                  <li>Knowledge</li>
                   <div class="dropdown-content">
-                    <Link to="/tacit">Tacit</Link>
+                    {/* <Link to="/tacit">Tacit</Link> */}
                     <Link to="/explicit">Explicit</Link>
                   </div>
                 </div>
@@ -102,7 +102,7 @@ class Navigation extends Component {
                   <li>Analysis</li>
                   <div class="dropdown-content">
                     <Link to="/compare">Compare Formulas</Link>
-                    <Link to="/predict">Prediction of Herbal Medicine</Link>
+                    <Link to="/predict">Prediction of Therapeutic Usage</Link>
                   </div>
                 </div>
 
