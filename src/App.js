@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
-import ButtonAppBar from './Navigation';
+import Navigation from './components/navigation/Navigation';
 
 import Landing from './pages/LandingPage/Landing';
 import ExplicitPage from './pages/KnowledgePage/ExplicitPage';
@@ -16,7 +16,7 @@ import MapHerb from './pages/MapethnicPage/MapEthnic';
 import HerbMeds from './pages/HerbmedPage/HerbMedPage';
 import EthnicDetail from './pages/EthnicDetail/EthnicDetail';
 import Login from './pages/LoginPage/Login';
-import Register from './Register';
+import Register from './pages/RegisterPage/Register';
 import SearchPage from './pages/SearchPage/SearchPage';
 
 import CompoundPage from './pages/CompoundPage/CompoundPage';
@@ -26,7 +26,7 @@ import DetailCompound from './pages/CompoundDetail/DetailCompound';
 
 import NotFound from './pages/NotfoundPage/404';
 
-import TopButton from './TopButton';
+import TopButton from './components/top-button/TopButton';
 import axios from 'axios';
 
 import './App.css';
@@ -34,8 +34,8 @@ import DetailPlant from './pages/PlantDetail/DetailPlant';
 import { ProtectedRoute } from './protected.route';
 import Footer from './components/footer/Footer';
 
-// axios.defaults.baseURL = "https://api.jamumedicine.com";
-axios.defaults.baseURL = 'http://localhost:3003';
+axios.defaults.baseURL = 'https://api.jamumedicine.com';
+// axios.defaults.baseURL = 'http://localhost:3003';
 //axios.defaults.baseURL = "http://117.53.45.222:3003";
 
 class App extends Component {
@@ -65,7 +65,7 @@ class App extends Component {
     if (path !== '/login' && path !== '/register') {
       return (
         <div>
-          <ButtonAppBar />
+          <Navigation />
           <div
             style={{
               minHeight: '600px'

@@ -1,32 +1,32 @@
-import React, { Component } from "react";
-import Axios from "axios";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import Axios from 'axios';
+import PropTypes from 'prop-types';
 
-import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
 
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
-import Spinner from "../../Spinner";
+import Spinner from '../../components/Spinner/Spinner';
 
-import SnackBar from "../../SnackBar";
-import ErorPage from "../ErrorPage/ErorPage";
+import SnackBar from '../../components/snackbar/SnackBar';
+import ErorPage from '../ErrorPage/ErorPage';
 
-import Breadcrumbs from "@material-ui/core/Breadcrumbs";
-import Chip from "@material-ui/core/Chip";
-import Avatar from "@material-ui/core/Avatar";
-import HomeIcon from "@material-ui/icons/Home";
-import { withStyles } from "@material-ui/core/styles";
-import { emphasize } from "@material-ui/core/styles/colorManipulator";
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+import Chip from '@material-ui/core/Chip';
+import Avatar from '@material-ui/core/Avatar';
+import HomeIcon from '@material-ui/icons/Home';
+import { withStyles } from '@material-ui/core/styles';
+import { emphasize } from '@material-ui/core/styles/colorManipulator';
 
-import CardHerbMed from "../../components/card-herbmed/CardHerbMed";
-import ModalCrude from "../../ModalCrude";
+import CardHerbMed from '../../components/card-herbmed/CardHerbMed';
+import ModalCrude from '../../components/modal-crude/ModalCrude';
 
 const StyledBreadcrumb = withStyles(theme => ({
   root: {
@@ -34,10 +34,10 @@ const StyledBreadcrumb = withStyles(theme => ({
     height: 24,
     color: theme.palette.grey[800],
     fontWeight: theme.typography.fontWeightRegular,
-    "&:hover, &:focus": {
+    '&:hover, &:focus': {
       backgroundColor: theme.palette.grey[300]
     },
-    "&:active": {
+    '&:active': {
       boxShadow: theme.shadows[1],
       backgroundColor: emphasize(theme.palette.grey[300], 0.12)
     }
@@ -46,7 +46,7 @@ const StyledBreadcrumb = withStyles(theme => ({
 
 const styles = theme => ({
   avatar: {
-    background: "none",
+    background: 'none',
     marginRight: -theme.spacing(1.5)
   }
 });
@@ -68,11 +68,11 @@ class DetailPlant extends Component {
       snackbar: {
         open: false,
         success: false,
-        message: ""
+        message: ''
       },
       modal: {
         open: false,
-        id: ""
+        id: ''
       }
     };
     this.handleChange = this.handleChange.bind(this);
@@ -91,7 +91,7 @@ class DetailPlant extends Component {
   async getData() {
     try {
       const { id } = this.props.match.params;
-      const url = "/jamu/api/plant/get/" + id;
+      const url = '/jamu/api/plant/get/' + id;
       const res = await Axios.get(url);
       const { data } = await res;
       // const urlDesc = 'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&titles='+ data.data.sname;
@@ -105,7 +105,7 @@ class DetailPlant extends Component {
       let ref = [];
       let RefCrude = await Promise.all(
         data.data.refCrude.map(async dt => {
-          let urlCrude = "/jamu/api/crudedrug/get/" + dt.idcrude;
+          let urlCrude = '/jamu/api/crudedrug/get/' + dt.idcrude;
           let resCrude = await Axios.get(urlCrude);
           let { data } = await resCrude;
           data.data.refHerbsMed.forEach(dt => {
@@ -115,7 +115,7 @@ class DetailPlant extends Component {
           });
           if (!efficacy.includes(data.data.effect)) {
             efficacy.push(data.data.effect);
-          } else if (data.data.effect_loc !== "") {
+          } else if (data.data.effect_loc !== '') {
             if (!efficacy.includes(data.data.effect_loc)) {
               efficacy.push(data.data.effect_loc);
             }
@@ -144,7 +144,7 @@ class DetailPlant extends Component {
 
       let RefHerbsMed = await Promise.all(
         HerbMed.map(async dt => {
-          let urlCrude = "/jamu/api/herbsmed/get/" + dt;
+          let urlCrude = '/jamu/api/herbsmed/get/' + dt;
           let resCrude = await Axios.get(urlCrude);
           let { data } = await resCrude;
           return data.data;
@@ -195,7 +195,7 @@ class DetailPlant extends Component {
       snackbar: {
         open: false,
         success: false,
-        message: ""
+        message: ''
       },
       modal: {
         open: false
@@ -224,18 +224,18 @@ class DetailPlant extends Component {
           <div>
             <Paper
               style={{
-                width: "90%",
-                margin: "auto",
-                marginTop: "15px",
-                marginBottom: "30px",
-                padding: "15px",
-                display: "flex"
+                width: '90%',
+                margin: 'auto',
+                marginTop: '15px',
+                marginBottom: '30px',
+                padding: '15px',
+                display: 'flex'
               }}
               elevation={1}
             >
               <div
                 style={{
-                  width: "50%"
+                  width: '50%'
                 }}
               >
                 <Typography>
@@ -244,9 +244,9 @@ class DetailPlant extends Component {
               </div>
               <div
                 style={{
-                  width: "50%",
-                  display: "flex",
-                  flexDirection: "row-reverse"
+                  width: '50%',
+                  display: 'flex',
+                  flexDirection: 'row-reverse'
                 }}
               >
                 <Breadcrumbs aria-label="breadcrumb">
@@ -270,40 +270,40 @@ class DetailPlant extends Component {
             </Paper>
             <Paper
               style={{
-                width: "80%",
-                margin: "auto",
-                marginTop: "30px",
-                marginBottom: "30px",
-                padding: "30px",
-                backgroundColor: "#f8f8f8"
+                width: '80%',
+                margin: 'auto',
+                marginTop: '30px',
+                marginBottom: '30px',
+                padding: '30px',
+                backgroundColor: '#f8f8f8'
               }}
             >
               <Paper
                 style={{
-                  width: "90%",
-                  margin: "auto",
-                  marginTop: "20px",
-                  marginBottom: "10px",
-                  padding: "30px"
+                  width: '90%',
+                  margin: 'auto',
+                  marginTop: '20px',
+                  marginBottom: '10px',
+                  padding: '30px'
                 }}
               >
                 <div
                   style={{
-                    display: "flex",
-                    flexDirection: "row"
+                    display: 'flex',
+                    flexDirection: 'row'
                   }}
                 >
                   <div
                     style={{
-                      marginRight: "20px"
+                      marginRight: '20px'
                     }}
                   >
                     <img
                       style={{
-                        verticalAlign: "middle",
-                        borderStyle: "none",
-                        maxHeight: "250px",
-                        width: "250px"
+                        verticalAlign: 'middle',
+                        borderStyle: 'none',
+                        maxHeight: '250px',
+                        width: '250px'
                       }}
                       alt=""
                       className="img-card"
@@ -313,8 +313,8 @@ class DetailPlant extends Component {
                   <div>
                     <Typography
                       style={{
-                        color: "grey",
-                        fontSize: "30px"
+                        color: 'grey',
+                        fontSize: '30px'
                       }}
                       variant="headline"
                       display="block"
@@ -324,8 +324,8 @@ class DetailPlant extends Component {
                     </Typography>
                     <h6
                       style={{
-                        margin: "0",
-                        color: "grey"
+                        margin: '0',
+                        color: 'grey'
                       }}
                     >
                       Efficacy :
@@ -334,9 +334,9 @@ class DetailPlant extends Component {
                       this.state.detailPlant.efficacy.map(dt => (
                         <Typography
                           style={{
-                            color: "grey",
-                            marginLeft: "10px",
-                            fontSize: "12px"
+                            color: 'grey',
+                            marginLeft: '10px',
+                            fontSize: '12px'
                           }}
                           variant="headline"
                           display="block"
@@ -347,8 +347,8 @@ class DetailPlant extends Component {
                       ))}
                     <h6
                       style={{
-                        margin: "0",
-                        color: "grey"
+                        margin: '0',
+                        color: 'grey'
                       }}
                     >
                       Name :
@@ -357,51 +357,51 @@ class DetailPlant extends Component {
                       this.state.detailPlant.name_en.map(dt => (
                         <Typography
                           style={{
-                            color: "grey",
-                            marginLeft: "10px",
-                            fontSize: "12px"
+                            color: 'grey',
+                            marginLeft: '10px',
+                            fontSize: '12px'
                           }}
                           variant="headline"
                           display="block"
                           gutterBottom
                         >
-                          {dt + " (en)"}
+                          {dt + ' (en)'}
                         </Typography>
                       ))}
                     {this.state.detailPlant.name_loc1 &&
                       this.state.detailPlant.name_loc1.map(dt => (
                         <Typography
                           style={{
-                            color: "grey",
-                            marginLeft: "10px",
-                            fontSize: "12px"
+                            color: 'grey',
+                            marginLeft: '10px',
+                            fontSize: '12px'
                           }}
                           variant="headline"
                           display="block"
                           gutterBottom
                         >
-                          {dt + " (loc1)"}
+                          {dt + ' (loc1)'}
                         </Typography>
                       ))}
                     {this.state.detailPlant.loc2 &&
                       this.state.detailPlant.loc2.map(dt => (
                         <Typography
                           style={{
-                            color: "grey",
-                            marginLeft: "10px",
-                            fontSize: "12px"
+                            color: 'grey',
+                            marginLeft: '10px',
+                            fontSize: '12px'
                           }}
                           variant="headline"
                           display="block"
                           gutterBottom
                         >
-                          {dt + " (loc2)"}
+                          {dt + ' (loc2)'}
                         </Typography>
                       ))}
                     <h6
                       style={{
-                        margin: "0",
-                        color: "grey"
+                        margin: '0',
+                        color: 'grey'
                       }}
                     >
                       Potition :
@@ -410,9 +410,9 @@ class DetailPlant extends Component {
                       this.state.detailPlant.refCrude.map(dt => (
                         <Typography
                           style={{
-                            color: "grey",
-                            marginLeft: "10px",
-                            fontSize: "12px"
+                            color: 'grey',
+                            marginLeft: '10px',
+                            fontSize: '12px'
                           }}
                           variant="headline"
                           display="block"
@@ -423,8 +423,8 @@ class DetailPlant extends Component {
                       ))}
                     <h6
                       style={{
-                        margin: "0",
-                        color: "grey"
+                        margin: '0',
+                        color: 'grey'
                       }}
                     >
                       Reference :
@@ -433,9 +433,9 @@ class DetailPlant extends Component {
                       this.state.detailPlant.ref.map(dt => (
                         <Typography
                           style={{
-                            color: "grey",
-                            marginLeft: "10px",
-                            fontSize: "12px"
+                            color: 'grey',
+                            marginLeft: '10px',
+                            fontSize: '12px'
                           }}
                           variant="headline"
                           display="block"
@@ -461,13 +461,13 @@ class DetailPlant extends Component {
               </Tabs>
               <Paper
                 style={{
-                  width: "90%",
-                  minHeight: "300px",
-                  overflow: "auto",
-                  margin: "auto",
-                  marginTop: "20px",
-                  marginBottom: "10px",
-                  padding: "30px"
+                  width: '90%',
+                  minHeight: '300px',
+                  overflow: 'auto',
+                  margin: 'auto',
+                  marginTop: '20px',
+                  marginBottom: '10px',
+                  padding: '30px'
                 }}
               >
                 {/* {this.state.value === 0 && 
@@ -510,14 +510,14 @@ class DetailPlant extends Component {
                               expandIcon={<ExpandMoreIcon />}
                             >
                               <Typography>
-                                {" "}
+                                {' '}
                                 <i>{itm.sname}</i>
                               </Typography>
                             </ExpansionPanelSummary>
                             <ExpansionPanelDetails
                               style={{
-                                display: "flex",
-                                flexDirection: "column"
+                                display: 'flex',
+                                flexDirection: 'column'
                               }}
                             >
                               <Typography
@@ -592,7 +592,7 @@ class DetailPlant extends Component {
                               expandIcon={<ExpandMoreIcon />}
                             >
                               <Typography>
-                                {" "}
+                                {' '}
                                 <i>{itm.cname}</i>
                               </Typography>
                             </ExpansionPanelSummary>
@@ -640,7 +640,7 @@ class DetailPlant extends Component {
                               expandIcon={<ExpandMoreIcon />}
                             >
                               <Typography>
-                                {" "}
+                                {' '}
                                 <i>
                                   {itm.ethnic} | {itm.disease_ing}
                                 </i>
@@ -648,8 +648,8 @@ class DetailPlant extends Component {
                             </ExpansionPanelSummary>
                             <ExpansionPanelDetails
                               style={{
-                                display: "flex",
-                                flexDirection: "column"
+                                display: 'flex',
+                                flexDirection: 'column'
                               }}
                             >
                               <Typography variant="caption" gutterBottom>

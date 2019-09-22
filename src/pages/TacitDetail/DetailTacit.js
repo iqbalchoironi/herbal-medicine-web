@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
-import Axios from 'axios';
-import FileDownload from 'js-file-download';
+import React, { Component } from "react";
+import Axios from "axios";
+import FileDownload from "js-file-download";
 
-import Paper from '@material-ui/core/Paper';
-import DateRange from '@material-ui/icons/DateRange';
-import Typography from '@material-ui/core/Typography';
+import Paper from "@material-ui/core/Paper";
+import DateRange from "@material-ui/icons/DateRange";
+import Typography from "@material-ui/core/Typography";
 
-import { Editor, EditorState, convertFromRaw } from 'draft-js';
-import Spinner from './Spinner';
+import { Editor, EditorState, convertFromRaw } from "draft-js";
+import Spinner from "../../components/Spinner/Spinner";
 
-import SnackBar from './SnackBar';
-import ErorPage from './pages/ErrorPage/ErorPage';
+import SnackBar from "../../components/snackbar/SnackBar";
+import ErorPage from "../ErrorPage/ErorPage";
 
 class DetailTacit extends Component {
   constructor(props) {
@@ -24,7 +24,7 @@ class DetailTacit extends Component {
       snackbar: {
         open: false,
         success: false,
-        message: ''
+        message: ""
       }
     };
     this.afterUpdate = this.afterUpdate.bind(this);
@@ -34,7 +34,7 @@ class DetailTacit extends Component {
   async componentDidMount() {
     try {
       const { id } = this.props.match.params;
-      const url = '/jamu/api/tacit/get/' + id;
+      const url = "/jamu/api/tacit/get/" + id;
       const res = await Axios.get(url);
       let data = await res.data.data;
       let content = await JSON.parse(data.content);
@@ -83,7 +83,7 @@ class DetailTacit extends Component {
       snackbar: {
         open: false,
         success: false,
-        message: ''
+        message: ""
       }
     });
   }
@@ -98,17 +98,17 @@ class DetailTacit extends Component {
         ) : (
           <Paper
             style={{
-              width: '70%',
-              margin: 'auto',
-              marginTop: '30px',
-              marginBottom: '10px',
-              padding: '30px',
-              backgroundColor: 'rgba(255, 255, 255, 1)'
+              width: "70%",
+              margin: "auto",
+              marginTop: "30px",
+              marginBottom: "10px",
+              padding: "30px",
+              backgroundColor: "rgba(255, 255, 255, 1)"
             }}
           >
             <h1
               style={{
-                textAlign: 'center'
+                textAlign: "center"
               }}
             >
               {this.state.title}

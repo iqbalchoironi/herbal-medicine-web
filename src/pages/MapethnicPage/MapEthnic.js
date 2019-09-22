@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import { Map, TileLayer, Marker, Popup } from "react-leaflet";
-import Axios from "axios";
-import L from "leaflet";
-import locationIcons from "../../placeholder.svg";
+import React, { Component } from 'react';
+import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
+import Axios from 'axios';
+import L from 'leaflet';
+import locationIcons from './placeholder.svg';
 
-import Chip from "@material-ui/core/Chip";
+import Chip from '@material-ui/core/Chip';
 
-import Spinner from "../../Spinner";
-import SnackBar from "../../SnackBar";
-import ErorPage from "../ErrorPage/ErorPage";
+import Spinner from '../../components/Spinner/Spinner';
+import SnackBar from '../../components/snackbar/SnackBar';
+import ErorPage from '../ErrorPage/ErorPage';
 
 const LocationIcons = L.icon({
   iconUrl: locationIcons,
@@ -21,7 +21,7 @@ export class MapHerb extends Component {
     this.state = {
       loading: false,
       showingInfoWindow: false,
-      modalOpen: "",
+      modalOpen: '',
       onSelect: [],
       activeMarker: {},
       selectedPlace: {},
@@ -31,7 +31,7 @@ export class MapHerb extends Component {
       snackbar: {
         open: false,
         success: false,
-        message: ""
+        message: ''
       }
     };
     // this.onEthnicClick = this.onEthnicClick.bind(this);
@@ -57,7 +57,7 @@ export class MapHerb extends Component {
 
   async getDataProvince() {
     try {
-      const url = "/jamu/api/province/";
+      const url = '/jamu/api/province/';
       const res = await Axios.get(url);
       const { data } = await res;
       let province = data.data;
@@ -88,7 +88,7 @@ export class MapHerb extends Component {
 
   async getData() {
     try {
-      const url = "/jamu/api/ethnic";
+      const url = '/jamu/api/ethnic';
       const res = await Axios.get(url);
       const { data } = await res;
       this.afterUpdate(data.success, data.message);
@@ -171,7 +171,7 @@ export class MapHerb extends Component {
       snackbar: {
         open: false,
         success: false,
-        message: ""
+        message: ''
       }
     });
   }
@@ -187,8 +187,8 @@ export class MapHerb extends Component {
         ) : (
           <Map
             style={{
-              height: "560px",
-              width: "100%"
+              height: '560px',
+              width: '100%'
             }}
             center={center}
             zoom={5.4}

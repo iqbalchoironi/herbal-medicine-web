@@ -1,36 +1,36 @@
-import React, { Component } from "react";
-import { withStyles } from "@material-ui/core/styles";
-import Axios from "axios";
+import React, { Component } from 'react';
+import { withStyles } from '@material-ui/core/styles';
+import Axios from 'axios';
 
-import Spinner from "../../Spinner";
-import Card from "../../components/card-plant/card";
+import Spinner from '../../components/Spinner/Spinner';
+import Card from '../../components/card-plant/card';
 
-import Paper from "@material-ui/core/Paper";
-import SearchIcon from "@material-ui/icons/Search";
-import InputBase from "@material-ui/core/InputBase";
-import IconButton from "@material-ui/core/IconButton";
+import Paper from '@material-ui/core/Paper';
+import SearchIcon from '@material-ui/icons/Search';
+import InputBase from '@material-ui/core/InputBase';
+import IconButton from '@material-ui/core/IconButton';
 
-import SnackBar from "../../SnackBar";
-import ErorPage from "../ErrorPage/ErorPage";
+import SnackBar from '../../components/snackbar/SnackBar';
+import ErorPage from '../ErrorPage/ErorPage';
 
-import ModalCrude from "../../ModalCrude";
+import ModalCrude from '../../components/modal-crude/ModalCrude';
 
-import Breadcrumbs from "@material-ui/core/Breadcrumbs";
-import Chip from "@material-ui/core/Chip";
-import Avatar from "@material-ui/core/Avatar";
-import HomeIcon from "@material-ui/icons/Home";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+import Chip from '@material-ui/core/Chip';
+import Avatar from '@material-ui/core/Avatar';
+import HomeIcon from '@material-ui/icons/Home';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
 
-import { emphasize } from "@material-ui/core/styles";
+import { emphasize } from '@material-ui/core/styles';
 
 const styles = {
   root: {
-    padding: "2px 4px",
-    display: "flex",
-    alignItems: "center"
+    padding: '2px 4px',
+    display: 'flex',
+    alignItems: 'center'
   },
   input: {
     marginLeft: 8,
@@ -47,10 +47,10 @@ const StyledBreadcrumb = withStyles(theme => ({
     height: 24,
     color: theme.palette.grey[800],
     fontWeight: theme.typography.fontWeightRegular,
-    "&:hover, &:focus": {
+    '&:hover, &:focus': {
       backgroundColor: theme.palette.grey[300]
     },
-    "&:active": {
+    '&:active': {
       boxShadow: theme.shadows[1],
       backgroundColor: emphasize(theme.palette.grey[300], 0.12)
     }
@@ -63,19 +63,19 @@ class Plant extends Component {
     this.state = {
       loading: true,
       loadData: false,
-      inputSearch: "",
+      inputSearch: '',
       plans: [],
       onSearch: false,
       currentPage: 1,
       snackbar: {
         open: false,
         success: false,
-        message: ""
+        message: ''
       },
       onSelect: null,
       modal: {
         open: false,
-        id: ""
+        id: ''
       }
     };
     this.onScroll = this.onScroll.bind(this);
@@ -89,8 +89,8 @@ class Plant extends Component {
   }
 
   async componentDidMount() {
-    window.addEventListener("scroll", this.ok, false);
-    window.addEventListener("scroll", this.onScroll, false);
+    window.addEventListener('scroll', this.ok, false);
+    window.addEventListener('scroll', this.onScroll, false);
 
     this.getData();
   }
@@ -100,7 +100,7 @@ class Plant extends Component {
   }
 
   handleKeyDown(event) {
-    if (event.key === "Enter") {
+    if (event.key === 'Enter') {
       this.getDataSearch(event);
     }
   }
@@ -143,7 +143,7 @@ class Plant extends Component {
 
   async getData() {
     try {
-      const url = "/jamu/api/plant/pages/" + this.state.currentPage;
+      const url = '/jamu/api/plant/pages/' + this.state.currentPage;
       const res = await Axios.get(url);
       const { data } = await res;
       let newData = this.state.plans.concat(data.data);
@@ -169,10 +169,10 @@ class Plant extends Component {
         loading: true,
         onSearch: true
       });
-      const url = "/jamu/api/plant/search";
+      const url = '/jamu/api/plant/search';
       let axiosConfig = {
         headers: {
-          "Content-Type": "application/json"
+          'Content-Type': 'application/json'
         }
       };
       const res = await Axios.get(
@@ -205,7 +205,7 @@ class Plant extends Component {
 
   handleInputChange(event) {
     const target = event.target;
-    const value = target.type === "checkbox" ? target.checked : target.value;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
 
     this.setState({
@@ -228,7 +228,7 @@ class Plant extends Component {
       snackbar: {
         open: false,
         success: false,
-        message: ""
+        message: ''
       },
       modal: {
         open: false
@@ -242,32 +242,32 @@ class Plant extends Component {
     return (
       <div
         style={{
-          display: "flex",
-          flexDirection: "column",
-          paddingTop: "30px"
+          display: 'flex',
+          flexDirection: 'column',
+          paddingTop: '30px'
         }}
       >
         {this.state.top ? (
           <AppBar
             variant="dense"
             style={{
-              backgroundColor: "#89b143"
+              backgroundColor: '#89b143'
             }}
           >
             <Toolbar>
               <div
                 style={{
-                  width: "90%",
-                  display: "flex",
-                  flexDirection: "row",
-                  margin: "auto"
+                  width: '90%',
+                  display: 'flex',
+                  flexDirection: 'row',
+                  margin: 'auto'
                 }}
               >
                 <div
                   style={{
-                    width: "50%",
-                    display: "flex",
-                    flexDirection: "row"
+                    width: '50%',
+                    display: 'flex',
+                    flexDirection: 'row'
                   }}
                 >
                   <Paper className={classes.root} elevation={1}>
@@ -296,15 +296,15 @@ class Plant extends Component {
                 </div>
                 <div
                   style={{
-                    width: "50%",
-                    display: "flex",
-                    flexDirection: "row-reverse"
+                    width: '50%',
+                    display: 'flex',
+                    flexDirection: 'row-reverse'
                   }}
                 >
                   <Paper
                     className={classes.root}
                     style={{
-                      width: "400px"
+                      width: '400px'
                     }}
                     elevation={1}
                   >
@@ -331,17 +331,17 @@ class Plant extends Component {
         ) : null}
         <div
           style={{
-            width: "90%",
-            display: "flex",
-            flexDirection: "row",
-            margin: "auto"
+            width: '90%',
+            display: 'flex',
+            flexDirection: 'row',
+            margin: 'auto'
           }}
         >
           <div
             style={{
-              width: "50%",
-              display: "flex",
-              flexDirection: "row"
+              width: '50%',
+              display: 'flex',
+              flexDirection: 'row'
             }}
           >
             <Paper className={classes.root} elevation={1}>
@@ -366,15 +366,15 @@ class Plant extends Component {
           </div>
           <div
             style={{
-              width: "50%",
-              display: "flex",
-              flexDirection: "row-reverse"
+              width: '50%',
+              display: 'flex',
+              flexDirection: 'row-reverse'
             }}
           >
             <Paper
               className={classes.root}
               style={{
-                width: "400px"
+                width: '400px'
               }}
               elevation={1}
             >

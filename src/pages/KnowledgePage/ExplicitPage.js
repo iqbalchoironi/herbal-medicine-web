@@ -1,48 +1,48 @@
-import React, { Component, Fragment } from "react";
-import Axios from "axios";
+import React, { Component, Fragment } from 'react';
+import Axios from 'axios';
 
-import Typography from "@material-ui/core/Typography";
-import Spinner from "../../Spinner";
+import Typography from '@material-ui/core/Typography';
+import Spinner from '../../components/Spinner/Spinner';
 
-import Person from "@material-ui/icons/Person";
-import CollectionsBookmark from "@material-ui/icons/CollectionsBookmark";
-import DateRange from "@material-ui/icons/DateRange";
-import Pagination from "material-ui-flat-pagination";
+import Person from '@material-ui/icons/Person';
+import CollectionsBookmark from '@material-ui/icons/CollectionsBookmark';
+import DateRange from '@material-ui/icons/DateRange';
+import Pagination from 'material-ui-flat-pagination';
 
-import Divider from "@material-ui/core/Divider";
+import Divider from '@material-ui/core/Divider';
 
-import Button from "@material-ui/core/Button";
-import SnackBar from "../../SnackBar";
-import ErorPage from "../ErrorPage/ErorPage";
+import Button from '@material-ui/core/Button';
+import SnackBar from '../../components/snackbar/SnackBar';
+import ErorPage from '../ErrorPage/ErorPage';
 
-import Paper from "@material-ui/core/Paper";
-import SearchIcon from "@material-ui/icons/Search";
-import InputBase from "@material-ui/core/InputBase";
-import IconButton from "@material-ui/core/IconButton";
-import { withStyles } from "@material-ui/core/styles";
+import Paper from '@material-ui/core/Paper';
+import SearchIcon from '@material-ui/icons/Search';
+import InputBase from '@material-ui/core/InputBase';
+import IconButton from '@material-ui/core/IconButton';
+import { withStyles } from '@material-ui/core/styles';
 
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormControl from "@material-ui/core/FormControl";
-import FormLabel from "@material-ui/core/FormLabel";
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
 
-import Icon from "@material-ui/core/Icon";
+import Icon from '@material-ui/core/Icon';
 
-import { emphasize } from "@material-ui/core/styles";
-import Breadcrumbs from "@material-ui/core/Breadcrumbs";
-import Chip from "@material-ui/core/Chip";
-import Avatar from "@material-ui/core/Avatar";
-import HomeIcon from "@material-ui/icons/Home";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
+import { emphasize } from '@material-ui/core/styles';
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+import Chip from '@material-ui/core/Chip';
+import Avatar from '@material-ui/core/Avatar';
+import HomeIcon from '@material-ui/icons/Home';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
 
 const styles = {
   root: {
-    padding: "2px 4px",
-    display: "flex",
-    alignItems: "center"
+    padding: '2px 4px',
+    display: 'flex',
+    alignItems: 'center'
   },
   input: {
     marginLeft: 8,
@@ -65,10 +65,10 @@ const StyledBreadcrumb = withStyles(theme => ({
     height: 24,
     color: theme.palette.grey[800],
     fontWeight: theme.typography.fontWeightRegular,
-    "&:hover, &:focus": {
+    '&:hover, &:focus': {
       backgroundColor: theme.palette.grey[300]
     },
-    "&:active": {
+    '&:active': {
       boxShadow: theme.shadows[1],
       backgroundColor: emphasize(theme.palette.grey[300], 0.12)
     }
@@ -79,16 +79,16 @@ function ListExplicit(props) {
   return (
     <div
       style={{
-        marginTop: "0",
-        marginBottom: "26px",
-        maxWidth: "85%"
+        marginTop: '0',
+        marginBottom: '26px',
+        maxWidth: '85%'
       }}
     >
       <h1
         style={{
-          color: "#0071bc",
-          fontWeight: "500",
-          fontSize: "1.5em"
+          color: '#0071bc',
+          fontWeight: '500',
+          fontSize: '1.5em'
         }}
       >
         {/* <Link style={{ 
@@ -127,11 +127,11 @@ class ExplicitPage extends Component {
       snackbar: {
         open: false,
         success: false,
-        message: ""
+        message: ''
       },
-      inputSearch: "",
-      name: "",
-      type: ""
+      inputSearch: '',
+      name: '',
+      type: ''
     };
     // this.onScroll = this.onScroll.bind(this);
     this.afterUpdate = this.afterUpdate.bind(this);
@@ -160,12 +160,12 @@ class ExplicitPage extends Component {
   }
 
   async componentDidMount() {
-    window.addEventListener("scroll", this.ok, false);
+    window.addEventListener('scroll', this.ok, false);
     this.getData();
   }
 
   handleKeyDown(event) {
-    if (event.key === "Enter") {
+    if (event.key === 'Enter') {
       this.getDataSearch(event);
     }
   }
@@ -178,7 +178,7 @@ class ExplicitPage extends Component {
 
   async getData() {
     try {
-      const url = "/jamu/api/explicit/pages/" + this.state.currentPage;
+      const url = '/jamu/api/explicit/pages/' + this.state.currentPage;
       const res = await Axios.get(url);
       const { data } = await res;
       this.afterUpdate(data.success, data.message);
@@ -198,7 +198,7 @@ class ExplicitPage extends Component {
   }
 
   logout = event => {
-    window.location.href = "/form/explicit";
+    window.location.href = '/form/explicit';
   };
 
   async getDataSearch() {
@@ -206,10 +206,10 @@ class ExplicitPage extends Component {
     this.setState({
       loadData: true
     });
-    const url = "/jamu/api/explicit/search/sort";
+    const url = '/jamu/api/explicit/search/sort';
     let axiosConfig = {
       headers: {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json'
       }
     };
     const res = await Axios.get(
@@ -232,7 +232,7 @@ class ExplicitPage extends Component {
 
   async changeFilter(event) {
     const target = event.target;
-    const value = target.type === "checkbox" ? target.checked : target.value;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
     console.log(value);
     console.log(name);
@@ -244,10 +244,10 @@ class ExplicitPage extends Component {
     this.setState({
       loadData: true
     });
-    const url = "/jamu/api/explicit/search/sort";
+    const url = '/jamu/api/explicit/search/sort';
     let axiosConfig = {
       headers: {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json'
       }
     };
     const res = await Axios.get(
@@ -264,7 +264,7 @@ class ExplicitPage extends Component {
     const { data } = await res;
     let newData = data.data;
     console.log(newData);
-    if (this.state.inputSearch === "") {
+    if (this.state.inputSearch === '') {
       this.setState({
         explicit: newData,
         loadData: false
@@ -279,7 +279,7 @@ class ExplicitPage extends Component {
 
   handleInputChange(event) {
     const target = event.target;
-    const value = target.type === "checkbox" ? target.checked : target.value;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
     console.log(value);
     console.log(name);
@@ -303,7 +303,7 @@ class ExplicitPage extends Component {
       snackbar: {
         open: false,
         success: false,
-        message: ""
+        message: ''
       }
     });
   }
@@ -313,34 +313,34 @@ class ExplicitPage extends Component {
     return (
       <div
         style={{
-          display: "flex",
-          flexDirection: "column",
-          margin: "auto",
-          marginTop: "30px",
-          width: "100%"
+          display: 'flex',
+          flexDirection: 'column',
+          margin: 'auto',
+          marginTop: '30px',
+          width: '100%'
         }}
       >
         {this.state.top ? (
           <AppBar
             variant="dense"
             style={{
-              backgroundColor: "#89b143"
+              backgroundColor: '#89b143'
             }}
           >
             <Toolbar>
               <div
                 style={{
-                  width: "90%",
-                  display: "flex",
-                  flexDirection: "row",
-                  margin: "auto"
+                  width: '90%',
+                  display: 'flex',
+                  flexDirection: 'row',
+                  margin: 'auto'
                 }}
               >
                 <div
                   style={{
-                    width: "50%",
-                    display: "flex",
-                    flexDirection: "row"
+                    width: '50%',
+                    display: 'flex',
+                    flexDirection: 'row'
                   }}
                 >
                   <Paper className={classes.root} elevation={1}>
@@ -369,15 +369,15 @@ class ExplicitPage extends Component {
                 </div>
                 <div
                   style={{
-                    width: "50%",
-                    display: "flex",
-                    flexDirection: "row-reverse"
+                    width: '50%',
+                    display: 'flex',
+                    flexDirection: 'row-reverse'
                   }}
                 >
                   <Paper
                     className={classes.root}
                     style={{
-                      width: "400px"
+                      width: '400px'
                     }}
                     elevation={1}
                   >
@@ -404,17 +404,17 @@ class ExplicitPage extends Component {
         ) : null}
         <div
           style={{
-            width: "95%",
-            display: "flex",
-            flexDirection: "row",
-            margin: "auto"
+            width: '95%',
+            display: 'flex',
+            flexDirection: 'row',
+            margin: 'auto'
           }}
         >
           <div
             style={{
-              width: "50%",
-              display: "flex",
-              flexDirection: "row"
+              width: '50%',
+              display: 'flex',
+              flexDirection: 'row'
             }}
           >
             <Paper className={classes.root} elevation={1}>
@@ -439,15 +439,15 @@ class ExplicitPage extends Component {
           </div>
           <div
             style={{
-              width: "50%",
-              display: "flex",
-              flexDirection: "row-reverse"
+              width: '50%',
+              display: 'flex',
+              flexDirection: 'row-reverse'
             }}
           >
             <Paper
               className={classes.root}
               style={{
-                width: "400px"
+                width: '400px'
               }}
               elevation={1}
             >
@@ -477,31 +477,31 @@ class ExplicitPage extends Component {
           <Fragment>
             <div
               style={{
-                display: "flex",
-                flexDirection: "row",
-                margin: "auto",
+                display: 'flex',
+                flexDirection: 'row',
+                margin: 'auto',
                 //border:"hsl(0,0%,80%) 1px solid",
-                width: "95%",
-                marginTop: "10px",
-                marginBottom: "10px"
+                width: '95%',
+                marginTop: '10px',
+                marginBottom: '10px'
               }}
             >
               <div
                 style={{
-                  width: "20%"
+                  width: '20%'
                   //position: "fixed"
                   //border:"hsl(0,0%,80%) 1px solid"
                 }}
               >
                 <div
                   style={{
-                    width: "20%"
+                    width: '20%'
                     //position: "fixed"
                   }}
                 >
                   <h3
                     style={{
-                      margin: "0"
+                      margin: '0'
                     }}
                   >
                     FILTER:
@@ -557,20 +557,20 @@ class ExplicitPage extends Component {
               </div>
               <div
                 style={{
-                  width: "80%",
+                  width: '80%',
                   //border:"hsl(0,0%,80%) 1px solid",
-                  padding: "25px",
-                  minHeight: "500px",
-                  backgroundColor: "#f1f1f1"
+                  padding: '25px',
+                  minHeight: '500px',
+                  backgroundColor: '#f1f1f1'
                 }}
               >
-                {this.state.inputSearch !== "" &&
+                {this.state.inputSearch !== '' &&
                 this.state.onSearch.length !== 0
                   ? this.state.onSearch.map(item => (
                       <ListExplicit
                         key={item._id}
                         id={item._id}
-                        name={item.firstName + " " + item.lastName}
+                        name={item.firstName + ' ' + item.lastName}
                         title={item.title}
                         abstract={item.abstract}
                       />
@@ -579,7 +579,7 @@ class ExplicitPage extends Component {
                       <ListExplicit
                         key={item._id}
                         id={item._id}
-                        name={item.firstName + " " + item.lastName}
+                        name={item.firstName + ' ' + item.lastName}
                         title={item.title}
                         abstract={item.abstract}
                       />
@@ -588,8 +588,8 @@ class ExplicitPage extends Component {
             </div>
             <Pagination
               style={{
-                margin: "auto",
-                marginBottom: "10px"
+                margin: 'auto',
+                marginBottom: '10px'
               }}
               size="large"
               limit={10}
