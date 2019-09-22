@@ -1,22 +1,12 @@
-import React, { Component } from 'react';
-import Axios from 'axios';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import { withStyles } from '@material-ui/core/styles';
-import ButtonProgress from './ButtonProgress';
-import logo from './logo-hijau.png';
-import { Paper } from '@material-ui/core';
+import React, { Component } from "react";
+import Axios from "axios";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import TextField from "@material-ui/core/TextField";
+import Container from "@material-ui/core/Container";
+import { withStyles } from "@material-ui/core/styles";
+import ButtonProgress from "../../ButtonProgress";
+import logo from "../../logo-hijau.png";
+import { Paper } from "@material-ui/core";
 
 const emailRegex = RegExp(
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
@@ -39,24 +29,24 @@ const formValid = ({ formErrors, ...rest }) => {
 };
 
 const styles = theme => ({
-  '@global': {
+  "@global": {
     body: {
-      backgroundColor: '#89b143'
+      backgroundColor: "#89b143"
     }
   },
   paper: {
     marginTop: theme.spacing(18),
-    padding: '10px',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center'
+    padding: "10px",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center"
   },
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1)
   },
   submit: {
@@ -73,13 +63,13 @@ class Login extends Component {
       email: null,
       password: null,
       formErrors: {
-        email: '',
-        password: ''
+        email: "",
+        password: ""
       },
       snackbar: {
         open: false,
         success: false,
-        message: ''
+        message: ""
       }
     };
 
@@ -95,14 +85,14 @@ class Login extends Component {
     let formErrors = { ...this.state.formErrors };
 
     switch (name) {
-      case 'email':
+      case "email":
         formErrors.email = emailRegex.test(value)
-          ? ''
-          : 'invalid email address';
+          ? ""
+          : "invalid email address";
         break;
-      case 'password':
+      case "password":
         formErrors.password =
-          value.length < 6 ? 'minimum 6 characaters required' : '';
+          value.length < 6 ? "minimum 6 characaters required" : "";
         break;
       default:
         break;
@@ -118,11 +108,11 @@ class Login extends Component {
     if (formValid(this.state)) {
       let axiosConfig = {
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json"
         }
       };
       Axios.post(
-        '/jamu/api/user/signin',
+        "/jamu/api/user/signin",
         {
           email: this.state.email,
           password: this.state.password
@@ -133,8 +123,8 @@ class Login extends Component {
           const user = data.data;
           this.afterUpdate(user.success, user.message);
           if (user.succes !== false) {
-            localStorage.setItem('user', JSON.stringify(user));
-            window.location.href = '/';
+            localStorage.setItem("user", JSON.stringify(user));
+            window.location.href = "/";
           }
           this.setState({
             loading: false
@@ -148,7 +138,7 @@ class Login extends Component {
           });
         });
     } else {
-      this.afterUpdate(false, 'fill the form with true value');
+      this.afterUpdate(false, "fill the form with true value");
       this.setState({
         onEror: true,
         loading: false
@@ -172,7 +162,7 @@ class Login extends Component {
       snackbar: {
         open: false,
         success: false,
-        message: ''
+        message: ""
       }
     });
   }
@@ -193,7 +183,7 @@ class Login extends Component {
         <Paper className={classes.paper}>
           <img
             style={{
-              marginBottom: '20px'
+              marginBottom: "20px"
             }}
             src={logo}
             alt="Logo"
@@ -215,9 +205,9 @@ class Login extends Component {
           {formErrors.email.length > 0 && (
             <span
               style={{
-                color: 'red',
+                color: "red",
                 margin: 0,
-                fontSize: '12px'
+                fontSize: "12px"
               }}
             >
               {formErrors.email}
@@ -239,9 +229,9 @@ class Login extends Component {
           {formErrors.password.length > 0 && (
             <span
               style={{
-                color: 'red',
+                color: "red",
                 margin: 0,
-                fontSize: '12px'
+                fontSize: "12px"
               }}
             >
               {formErrors.password}

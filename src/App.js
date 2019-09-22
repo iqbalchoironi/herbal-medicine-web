@@ -15,7 +15,7 @@ import FormTacit from './FormTacit';
 import MapHerb from './MapEthnic';
 import HerbMeds from './HerbMedPage';
 import EthnicDetail from './EthnicDetail';
-import Login from './Login2';
+import Login from './pages/LoginPage/Login';
 import Register from './Register';
 import SearchPage from './SearchPage';
 
