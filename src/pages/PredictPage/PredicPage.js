@@ -2,25 +2,18 @@ import React, { Component } from 'react';
 import Axios from 'axios';
 import PropTypes from 'prop-types';
 
+import Step1 from './Step1';
+import Step2 from './Step2';
+import Step3 from './Step3';
+
 import { withStyles } from '@material-ui/core/styles';
-import Stepper from '@material-ui/core/Stepper';
-import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
+import { Stepper, Step, StepLabel } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormLabel from '@material-ui/core/FormLabel';
-import Select from '@material-ui/core/Select';
 
 import SnackBar from '../../components/snackbar/SnackBar';
 import ErorPage from '../ErrorPage/ErorPage';
-
-import { FormControl, InputLabel } from '@material-ui/core';
-
-import Picklist from '../../components/pick-list';
 import Spinner from '../../components/Spinner/Spinner';
 
 import { emphasize } from '@material-ui/core/styles';
@@ -193,7 +186,13 @@ class Predict extends Component {
 
   handleReset = () => {
     this.setState({
-      activeStep: 0
+      activeStep: 0,
+      optimization: '',
+      type: '',
+      model: '',
+      target: [],
+      itembasis: this.state.itembase,
+      itemtarget: []
     });
   };
 
@@ -484,6 +483,7 @@ class Predict extends Component {
                           activeStep={this.state.activeStep}
                           handleChange={this.handleChange}
                           model={this.state.model}
+                          optimization={this.state.optimization}
                           options={this.optionsArray}
                           basis={this.state.itembasis}
                           target={this.state.itemtarget}
@@ -563,215 +563,6 @@ class Predict extends Component {
       </div>
     );
   }
-}
-
-function Step1(props) {
-  if (props.activeStep !== 0) {
-    return null;
-  }
-  return (
-    <Paper
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: '50%',
-        minHeight: '400px',
-        backgroundColor: '#f8f8f8'
-      }}
-    >
-      <FormControl component="fieldset">
-        <FormLabel component="legend">Select approach :</FormLabel>
-        <RadioGroup
-          aria-label="Approach"
-          name="type"
-          onChange={props.handleChange}
-        >
-          <FormControlLabel
-            value="crude"
-            control={<Radio />}
-            label="Crude Drug"
-          />
-          <FormControlLabel
-            value="compound"
-            control={<Radio />}
-            label="Compound"
-          />
-        </RadioGroup>
-      </FormControl>
-    </Paper>
-  );
-}
-
-function Step2(props) {
-  if (props.activeStep !== 1) {
-    return null;
-  }
-  return (
-    <Paper
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        width: '70%',
-        minHeight: '400px',
-        backgroundColor: '#f8f8f8'
-      }}
-    >
-      <form style={{ width: '90%' }}>
-        <FormControl margin="normal" fullWidth>
-          <InputLabel htmlFor="model">Model </InputLabel>
-          <Select
-            native
-            name="model"
-            value={props.model}
-            onChange={props.handleChange}
-            inputProps={{
-              id: 'age-native-simple'
-            }}
-          >
-            <option value="" />
-            <option value={'svm'}>suport vector mechine</option>
-            <option value={'rf'}>random forest</option>
-            <option value={'dl'}>deep learning</option>
-          </Select>
-        </FormControl>
-
-        <FormControl component="fieldset" margin="normal" fullWidth>
-          <FormLabel component="legend">Using optimization :</FormLabel>
-          <RadioGroup
-            aria-label="Using optimization"
-            name="optimization"
-            onChange={props.handleChange}
-          >
-            <FormControlLabel value="1" control={<Radio />} label="yes" />
-            <FormControlLabel value="0" control={<Radio />} label="no" />
-          </RadioGroup>
-        </FormControl>
-
-        <FormControl margin="normal" fullWidth>
-          <label>Select {props.type} :</label>
-          <Picklist
-            basis={props.basis}
-            target={props.target}
-            coba1={props.coba1}
-            coba={props.coba}
-            filterList={props.filterList}
-          />
-        </FormControl>
-      </form>
-    </Paper>
-  );
-}
-
-function Step3(props) {
-  if (props.activeStep !== 2) {
-    return null;
-  }
-  return (
-    <React.Fragment>
-      {props.loadPredict ? (
-        <Paper
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            flexDirection: 'column',
-            width: '50%',
-            minHeight: '400px',
-            backgroundColor: '#f8f8f8'
-          }}
-        >
-          <Typography>loading...</Typography>
-        </Paper>
-      ) : (
-        <Paper
-          style={{
-            display: 'flex',
-            //justifyContent: "center",
-            alignItems: 'center',
-            flexDirection: 'column',
-            width: '50%',
-            minHeight: '400px'
-          }}
-        >
-          <h3>Summary</h3>
-          <Paper
-            style={{
-              padding: '20px',
-              backgroundColor: '#f8f8f8'
-            }}
-          >
-            <table>
-              <tr>
-                <td>Type of Prediction</td>
-                <td>:</td>
-                <td>
-                  <span>{props.type}</span>
-                </td>
-              </tr>
-              <tr>
-                <td>Type of Method</td>
-                <td>:</td>
-                <td>
-                  <span>{props.model}</span>
-                </td>
-              </tr>
-              <tr>
-                <td
-                  style={{
-                    verticalAlign: 'top'
-                  }}
-                >{`Selected ${props.type}`}</td>
-                <td
-                  style={{
-                    verticalAlign: 'top'
-                  }}
-                >
-                  :
-                </td>
-                <td
-                  style={{
-                    verticalAlign: 'top'
-                  }}
-                >
-                  <ul
-                    style={{
-                      margin: 0,
-                      marginLeft: 5,
-                      padding: 0,
-                      paddingLeft: 12
-                    }}
-                  >
-                    {props.target.map(dt => (
-                      <li>{dt.sname}</li>
-                    ))}
-                  </ul>
-                </td>
-              </tr>
-            </table>
-          </Paper>
-          {/* <div
-            style={{
-              width: "80%"
-            }}
-          >
-            <h3> Sumarry :</h3>
-          </div>
-
-          <label>Type of Prediction :</label>
-          <span>{props.type}</span>
-          <label>Type of Method :</label>
-          <span>{props.model}</span>
-          <label>{`Selected ${props.type} :`}</label>
-          <ul>
-            {props.target.map(dt => (
-              <li>{dt.sname}</li>
-            ))}
-          </ul> */}
-        </Paper>
-      )}
-    </React.Fragment>
-  );
 }
 
 export default withStyles(styles)(Predict);
