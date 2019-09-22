@@ -24,7 +24,7 @@ import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 
 import SnackBar from './SnackBar';
-import ErorPage from './ErorPage';
+import ErorPage from './pages/ErrorPage/ErorPage';
 
 import { emphasize, makeStyles } from '@material-ui/core/styles';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';

@@ -2,37 +2,37 @@ import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import ButtonAppBar from './Navigation';
 
-import Landing from './Landing';
-import ExplicitPage from './ExplicitPage';
-import DetailExplicit from './DetailExplicit';
-import TacitPage from './TacitPage';
-import DetailTacit from './DetailTacit';
-import ComparePage from './ComparePage';
-import Predict from './PredicPage';
-import Plant from './PlantPage';
-import FormExplicit from './FormExplicit';
-import FormTacit from './FormTacit';
-import MapHerb from './MapEthnic';
-import HerbMeds from './HerbMedPage';
-import EthnicDetail from './EthnicDetail';
+import Landing from './pages/LandingPage/Landing';
+import ExplicitPage from './pages/KnowledgePage/ExplicitPage';
+import DetailExplicit from './pages/KnowledgeDetail/DetailExplicit';
+// import TacitPage from "./TacitPage";
+// import DetailTacit from "./DetailTacit";
+import ComparePage from './pages/ComparePage/ComparePage';
+import Predict from './pages/PredictPage/PredicPage';
+import Plant from './pages/PlantPage/PlantPage';
+// import FormExplicit from "./FormExplicit";
+// import FormTacit from "./FormTacit";
+import MapHerb from './pages/MapethnicPage/MapEthnic';
+import HerbMeds from './pages/HerbmedPage/HerbMedPage';
+import EthnicDetail from './pages/EthnicDetail/EthnicDetail';
 import Login from './pages/LoginPage/Login';
 import Register from './Register';
-import SearchPage from './SearchPage';
+import SearchPage from './pages/SearchPage/SearchPage';
 
-import CompoundPage from './CompoundPage';
+import CompoundPage from './pages/CompoundPage/CompoundPage';
 
-import DetailHerbMed from './DetailHerbMed';
-import DetailCompound from './DetailCompound';
+import DetailHerbMed from './pages/HerbmedDetail/DetailHerbMed';
+import DetailCompound from './pages/CompoundDetail/DetailCompound';
 
-import NotFound from './404';
+import NotFound from './pages/NotfoundPage/404';
 
 import TopButton from './TopButton';
 import axios from 'axios';
 
 import './App.css';
-import DetailPlant from './DetailPlant';
+import DetailPlant from './pages/PlantDetail/DetailPlant';
 import { ProtectedRoute } from './protected.route';
-import Footer from './Footer';
+import Footer from './components/footer/Footer';
 
 // axios.defaults.baseURL = "https://api.jamumedicine.com";
 axios.defaults.baseURL = 'http://localhost:3003';
@@ -85,11 +85,11 @@ class App extends Component {
                 path="/explicit/:id"
                 component={DetailExplicit}
               />
-              <ProtectedRoute
+              {/* <ProtectedRoute
                 exact
                 path="/form/explicit"
                 component={FormExplicit}
-              />
+              /> */}
 
               <ProtectedRoute exact path="/compare" component={ComparePage} />
               <ProtectedRoute exact path="/predict" component={Predict} />
@@ -109,9 +109,9 @@ class App extends Component {
                 component={DetailCompound}
               />
 
-              <ProtectedRoute exact path="/tacit" component={TacitPage} />
+              {/* <ProtectedRoute exact path="/tacit" component={TacitPage} />
               <ProtectedRoute exact path="/tacit/:id" component={DetailTacit} />
-              <ProtectedRoute exact path="/form/tacit" component={FormTacit} />
+              <ProtectedRoute exact path="/form/tacit" component={FormTacit} /> */}
 
               <ProtectedRoute exact path="/map/ethnic" component={MapHerb} />
               <ProtectedRoute

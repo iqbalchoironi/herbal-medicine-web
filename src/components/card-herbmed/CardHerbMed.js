@@ -1,56 +1,54 @@
-import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
-
-import CardActions from '@material-ui/core/CardActions';
-import Button from '@material-ui/core/Button';
-import Icon from '@material-ui/core/Icon';
+import React from "react";
+import { withStyles } from "@material-ui/core/styles";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import CardActions from "@material-ui/core/CardActions";
+import Button from "@material-ui/core/Button";
+import Icon from "@material-ui/core/Icon";
 
 const styles = muiBaseTheme => ({
   card: {
     width: 280,
     minHeight: 320,
-    margin: 'auto',
-    transition: '0.3s',
-    boxShadow: '0 8px 40px -12px rgba(0,0,0,0.3)',
-    '&:hover': {
-      boxShadow: '0 16px 70px -12.125px rgba(0,0,0,0.3)'
+    margin: "auto",
+    transition: "0.3s",
+    boxShadow: "0 8px 40px -12px rgba(0,0,0,0.3)",
+    "&:hover": {
+      boxShadow: "0 16px 70px -12.125px rgba(0,0,0,0.3)"
     }
   },
   media: {
-    paddingTop: '56.25%'
+    paddingTop: "56.25%"
   },
   content: {
-    textAlign: 'left',
+    textAlign: "left",
     padding: muiBaseTheme.spacing.unit * 3
   },
   divider: {
     margin: `${muiBaseTheme.spacing.unit * 3}px 0`
   },
   heading: {
-    fontWeight: 'bold',
-    height: '35px'
+    fontWeight: "bold",
+    height: "35px"
   },
   subheading: {
     // lineHeight: 1.8,
-    height: '50px'
+    height: "50px"
   },
   avatar: {
-    display: 'inline-block',
-    border: '2px solid white',
-    '&:not(:first-of-type)': {
+    display: "inline-block",
+    border: "2px solid white",
+    "&:not(:first-of-type)": {
       marginLeft: -muiBaseTheme.spacing.unit
     }
   },
   efficacy: {
-    height: '60px'
+    height: "60px"
   }
 });
 
 const List = ({ item, modalCrude, id }) => {
-  if (item.sname !== '') {
+  if (item.sname !== "") {
     return <li onClick={modalCrude.bind(this, item.idcrude)}>{item.sname}</li>;
   }
 
@@ -90,8 +88,8 @@ function CardHerbMed(props) {
           <h1 className="header-card">{props.name}</h1>
           <h6
             style={{
-              margin: '0',
-              color: 'grey'
+              margin: "0",
+              color: "grey"
             }}
           >
             Company :
@@ -99,20 +97,20 @@ function CardHerbMed(props) {
           <label className="company-card">{props.company}</label>
           <h6
             style={{
-              margin: '0',
-              color: 'grey',
-              marginTop: '9px'
+              margin: "0",
+              color: "grey",
+              marginTop: "9px"
             }}
           >
             Efficacy :
           </h6>
           <p
             style={{
-              color: 'grey',
+              color: "grey",
               margin: 0,
-              marginLeft: '10px',
-              marginTop: '4px',
-              marginBottom: '10px'
+              marginLeft: "10px",
+              marginTop: "4px",
+              marginBottom: "10px"
             }}
             className="block-with-text"
           >
@@ -120,8 +118,8 @@ function CardHerbMed(props) {
           </p>
           <h6
             style={{
-              margin: '0',
-              color: 'grey'
+              margin: "0",
+              color: "grey"
             }}
           >
             Crude drugs :

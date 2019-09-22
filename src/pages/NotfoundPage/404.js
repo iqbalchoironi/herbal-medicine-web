@@ -1,16 +1,16 @@
-import React from 'react';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
+import React from "react";
+import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
 
 function NotFound(props) {
   return (
     <div
       style={{
-        display: 'flex',
-        flexDirection: 'column',
-        height: '500px',
-        justifyContent: 'center',
-        alignItems: 'center'
+        display: "flex",
+        flexDirection: "column",
+        height: "500px",
+        justifyContent: "center",
+        alignItems: "center"
       }}
     >
       <Typography component="h2" variant="display4" gutterBottom>
@@ -19,7 +19,7 @@ function NotFound(props) {
       <Typography component="h2" variant="display1" gutterBottom>
         back to
         <Button
-          style={{ marginLeft: '10px' }}
+          style={{ marginLeft: "10px" }}
           variant="contained"
           size="large"
           color="primary"

@@ -10,7 +10,7 @@ import { Editor, EditorState, convertFromRaw } from 'draft-js';
 import Spinner from './Spinner';
 
 import SnackBar from './SnackBar';
-import ErorPage from './ErorPage';
+import ErorPage from './pages/ErrorPage/ErorPage';
 
 class DetailTacit extends Component {
   constructor(props) {

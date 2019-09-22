@@ -1,35 +1,34 @@
-import React, { Component } from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import Axios from 'axios';
+import React, { Component } from "react";
+import Axios from "axios";
 
-import Spinner from './Spinner';
-import CardCompound from './CardCompound';
+import CardHerbMed from "../../components/card-herbmed/CardHerbMed";
+import Spinner from "../../Spinner";
 
-import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
+import Paper from "@material-ui/core/Paper";
+import SearchIcon from "@material-ui/icons/Search";
+import InputBase from "@material-ui/core/InputBase";
+import IconButton from "@material-ui/core/IconButton";
+import { withStyles } from "@material-ui/core/styles";
 
-import Paper from '@material-ui/core/Paper';
-import SearchIcon from '@material-ui/icons/Search';
-import InputBase from '@material-ui/core/InputBase';
-import IconButton from '@material-ui/core/IconButton';
+import SnackBar from "../../SnackBar";
+import ErorPage from "../ErrorPage/ErorPage";
 
-import SnackBar from './SnackBar';
-import ErorPage from './ErorPage';
+import ModalCrude from "../../ModalCrude";
 
-import { emphasize, makeStyles } from '@material-ui/core/styles';
-import Breadcrumbs from '@material-ui/core/Breadcrumbs';
-import Chip from '@material-ui/core/Chip';
-import Avatar from '@material-ui/core/Avatar';
-import HomeIcon from '@material-ui/icons/Home';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
+import { emphasize } from "@material-ui/core/styles";
+import Breadcrumbs from "@material-ui/core/Breadcrumbs";
+import Chip from "@material-ui/core/Chip";
+import Avatar from "@material-ui/core/Avatar";
+import HomeIcon from "@material-ui/icons/Home";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
 
 const styles = {
   root: {
-    padding: '2px 4px',
-    display: 'flex',
-    alignItems: 'center'
+    padding: "2px 4px",
+    display: "flex",
+    alignItems: "center"
   },
   input: {
     marginLeft: 8,
@@ -46,30 +45,36 @@ const StyledBreadcrumb = withStyles(theme => ({
     height: 24,
     color: theme.palette.grey[800],
     fontWeight: theme.typography.fontWeightRegular,
-    '&:hover, &:focus': {
+    "&:hover, &:focus": {
       backgroundColor: theme.palette.grey[300]
     },
-    '&:active': {
+    "&:active": {
       boxShadow: theme.shadows[1],
       backgroundColor: emphasize(theme.palette.grey[300], 0.12)
     }
   }
 }))(Chip);
 
-class Compound extends Component {
+class HerbMeds extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      onEror: false,
       loading: true,
       loadData: false,
-      inputSearch: '',
-      compounds: [],
+      inputSearch: "",
       onSearch: false,
+      herbmeds: [],
       currentPage: 1,
       snackbar: {
         open: false,
         success: false,
-        message: ''
+        message: ""
+      },
+      onSelect: null,
+      modal: {
+        open: false,
+        id: ""
       }
     };
     this.onScroll = this.onScroll.bind(this);
@@ -78,6 +83,7 @@ class Compound extends Component {
     this.afterUpdate = this.afterUpdate.bind(this);
     this.closeBtn = this.closeBtn.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
+    this.modalCrude = this.modalCrude.bind(this);
     this.ok = this.ok.bind(this);
   }
 
@@ -98,13 +104,13 @@ class Compound extends Component {
   }
 
   async componentDidMount() {
-    window.addEventListener('scroll', this.onScroll, false);
-    window.addEventListener('scroll', this.ok, false);
+    window.addEventListener("scroll", this.onScroll, false);
+    window.addEventListener("scroll", this.ok, false);
     this.getData();
   }
 
   handleKeyDown(event) {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       this.getDataSearch(event);
     }
   }
@@ -126,35 +132,14 @@ class Compound extends Component {
 
   async getData() {
     try {
-      const url = '/jamu/api/compound/pages/' + this.state.currentPage;
-      //const url = '/jamu/api/generate/new/compound/index';
+      const url = "/jamu/api/herbsmed/pages/" + this.state.currentPage;
       const res = await Axios.get(url);
       const { data } = await res;
-
-      // let dataNew = await Promise.all(
-      //   data.data.map(async dt => {
-      //     let url =
-      //       'https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/' +
-      //       dt.cname +
-      //       '/cids/TXT';
-      //     try {
-      //       let res = await Axios.get(url);
-      //       console.log(res);
-      //       let data = res.data.split('\n');
-      //       dt.idPubChem = data[0];
-      //       return dt;
-      //     } catch (err) {
-      //       console.log(err);
-      //       dt.idPubChem = '';
-      //       return dt;
-      //     }
-      //   })
-      // );
-
-      let newData = this.state.compounds.concat(data.data);
+      let newData = this.state.herbmeds.concat(data.data);
+      console.log(res);
       this.afterUpdate(data.success, data.message);
       this.setState({
-        compounds: newData,
+        herbmeds: newData,
         loading: false
       });
     } catch (err) {
@@ -167,52 +152,42 @@ class Compound extends Component {
     }
   }
 
-  async getDataSearch(event) {
-    try {
-      console.log(this.state.inputSearch);
-      this.setState({
-        loading: true,
-        onSearch: true
-      });
-      const url = '/jamu/api/compound/search';
-      let axiosConfig = {
-        headers: {
-          'Content-Type': 'application/json'
+  async getDataSearch() {
+    console.log(this.state.inputSearch);
+    this.setState({
+      loading: true,
+      onSearch: true
+    });
+    const url = "/jamu/api/herbsmed/search";
+    let axiosConfig = {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    };
+    const res = await Axios.get(
+      url,
+      {
+        params: {
+          search: this.state.inputSearch
         }
-      };
-      const res = await Axios.get(
-        url,
-        {
-          params: {
-            search: this.state.inputSearch
-          }
-        },
-        axiosConfig
-      );
-      const { data } = await res;
-      let newData = data.data;
-      console.log(newData);
-      this.afterUpdate(data.success, data.message);
-      this.setState({
-        compounds: newData,
-        loading: false
-      });
-    } catch (err) {
-      console.log(err.message);
-      this.afterUpdate(false, err.message);
-      this.setState({
-        onEror: true,
-        loading: false
-      });
-    }
-    event.preventDefault();
+      },
+      axiosConfig
+    );
+    const { data } = await res;
+    let newData = data.data;
+    console.log(newData);
+    this.setState({
+      herbmeds: newData,
+      loading: false
+    });
   }
 
   handleInputChange(event) {
     const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;
-
+    console.log(value);
+    console.log(name);
     this.setState({
       [name]: value
     });
@@ -224,6 +199,9 @@ class Compound extends Component {
         open: true,
         success: success,
         message: message
+      },
+      modal: {
+        open: false
       }
     });
   }
@@ -233,43 +211,54 @@ class Compound extends Component {
       snackbar: {
         open: false,
         success: false,
-        message: ''
+        message: ""
+      },
+      modal: {
+        open: false
+      }
+    });
+  }
+
+  async modalCrude(id) {
+    this.setState({
+      modal: {
+        open: true,
+        id: id
       }
     });
   }
 
   render() {
     const { classes } = this.props;
-
     return (
       <div
         style={{
-          display: 'flex',
-          flexDirection: 'column',
-          paddingTop: '30px'
+          display: "flex",
+          flexDirection: "column",
+          paddingTop: "30px"
         }}
       >
         {this.state.top ? (
           <AppBar
             variant="dense"
             style={{
-              backgroundColor: '#89b143'
+              backgroundColor: "#89b143"
             }}
           >
             <Toolbar>
               <div
                 style={{
-                  width: '90%',
-                  display: 'flex',
-                  flexDirection: 'row',
-                  margin: 'auto'
+                  width: "90%",
+                  display: "flex",
+                  flexDirection: "row",
+                  margin: "auto"
                 }}
               >
                 <div
                   style={{
-                    width: '50%',
-                    display: 'flex',
-                    flexDirection: 'row'
+                    width: "50%",
+                    display: "flex",
+                    flexDirection: "row"
                   }}
                 >
                   <Paper className={classes.root} elevation={1}>
@@ -290,7 +279,7 @@ class Compound extends Component {
                         label="Explore"
                       />
                       <StyledBreadcrumb
-                        label="Compound"
+                        label="Herbal Medicine"
                         deleteIcon={<ExpandMoreIcon />}
                       />
                     </Breadcrumbs>
@@ -298,15 +287,15 @@ class Compound extends Component {
                 </div>
                 <div
                   style={{
-                    width: '50%',
-                    display: 'flex',
-                    flexDirection: 'row-reverse'
+                    width: "50%",
+                    display: "flex",
+                    flexDirection: "row-reverse"
                   }}
                 >
                   <Paper
                     className={classes.root}
                     style={{
-                      width: '400px'
+                      width: "400px"
                     }}
                     elevation={1}
                   >
@@ -316,7 +305,7 @@ class Compound extends Component {
                       value={this.state.inputSearch}
                       onChange={this.handleInputChange}
                       onKeyDown={this.handleKeyDown}
-                      placeholder="Search base on compound name"
+                      placeholder="Search base on efficacy or name"
                     />
                     <IconButton
                       className={classes.iconButton}
@@ -333,17 +322,17 @@ class Compound extends Component {
         ) : null}
         <div
           style={{
-            width: '90%',
-            display: 'flex',
-            flexDirection: 'row',
-            margin: 'auto'
+            width: "90%",
+            display: "flex",
+            flexDirection: "row",
+            margin: "auto"
           }}
         >
           <div
             style={{
-              width: '50%',
-              display: 'flex',
-              flexDirection: 'row'
+              width: "50%",
+              display: "flex",
+              flexDirection: "row"
             }}
           >
             <Paper className={classes.root} elevation={1}>
@@ -358,9 +347,9 @@ class Compound extends Component {
                     </Avatar>
                   }
                 />
-                <StyledBreadcrumb component="a" href="#" label="Explore" />
+                <StyledBreadcrumb component="a" href="" label="Explore" />
                 <StyledBreadcrumb
-                  label="Compound"
+                  label="Herbal Medicine"
                   deleteIcon={<ExpandMoreIcon />}
                 />
               </Breadcrumbs>
@@ -368,15 +357,15 @@ class Compound extends Component {
           </div>
           <div
             style={{
-              width: '50%',
-              display: 'flex',
-              flexDirection: 'row-reverse'
+              width: "50%",
+              display: "flex",
+              flexDirection: "row-reverse"
             }}
           >
             <Paper
               className={classes.root}
               style={{
-                width: '400px'
+                width: "400px"
               }}
               elevation={1}
             >
@@ -386,7 +375,7 @@ class Compound extends Component {
                 value={this.state.inputSearch}
                 onChange={this.handleInputChange}
                 onKeyDown={this.handleKeyDown}
-                placeholder="Search base on compound name"
+                placeholder="Search base on efficacy or name"
               />
               <IconButton
                 className={classes.iconButton}
@@ -404,18 +393,22 @@ class Compound extends Component {
           <Spinner />
         ) : (
           <div className="for-card">
-            {this.state.compounds.map(item => (
-              <CardCompound
-                key={item._id}
-                id={item._id}
-                part={item.refPlant}
-                name={item.cname}
-                image={`https://pubchem.ncbi.nlm.nih.gov/image/imgsrv.fcgi?cid=${item.pubchem_ID}`}
-                reff={item.refPlant}
+            {this.state.herbmeds.map(item => (
+              <CardHerbMed
+                key={item.idherbsmed}
+                id={item.idherbsmed}
+                name={item.name}
+                efficacy={item.efficacy}
+                reff={item.refCrude}
+                modalCrude={this.modalCrude}
+                company={item.refCompany && item.refCompany.cname}
               />
             ))}
           </div>
         )}
+        {this.state.modal.open === true ? (
+          <ModalCrude modal={this.state.modal} close={this.closeBtn} />
+        ) : null}
         {this.state.snackbar.open === true ? (
           <SnackBar data={this.state.snackbar} close={this.closeBtn} />
         ) : null}
@@ -424,4 +417,4 @@ class Compound extends Component {
   }
 }
 
-export default withStyles(styles)(Compound);
+export default withStyles(styles)(HerbMeds);

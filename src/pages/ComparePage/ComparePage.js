@@ -1,33 +1,32 @@
-import React from 'react';
-import Axios from 'axios';
-import PropTypes from 'prop-types';
-import Select from 'react-select';
-//import Select from "react-virtualized-select";
+import React from "react";
+import Axios from "axios";
+import PropTypes from "prop-types";
+import Select from "react-select";
 
-import { withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-import { emphasize } from '@material-ui/core/styles/colorManipulator';
+import { withStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import Paper from "@material-ui/core/Paper";
+import { emphasize } from "@material-ui/core/styles/colorManipulator";
 
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpansionPanel from "@material-ui/core/ExpansionPanel";
+import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
+import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
-import Spinner from './Spinner';
-import LinearProgress from './LinearProgress';
+import Spinner from "../../Spinner";
+import LinearProgress from "../../LinearProgress";
 
-import { Button } from '@material-ui/core';
+import { Button } from "@material-ui/core";
 
-import SnackBar from './SnackBar';
-import ErorPage from './ErorPage';
+import SnackBar from "../../SnackBar";
+import ErorPage from "../ErrorPage/ErorPage";
 
-import createFilterOptions from 'react-select-fast-filter-options';
+import createFilterOptions from "react-select-fast-filter-options";
 
-import Breadcrumbs from '@material-ui/core/Breadcrumbs';
-import Chip from '@material-ui/core/Chip';
-import Avatar from '@material-ui/core/Avatar';
-import HomeIcon from '@material-ui/icons/Home';
+import Breadcrumbs from "@material-ui/core/Breadcrumbs";
+import Chip from "@material-ui/core/Chip";
+import Avatar from "@material-ui/core/Avatar";
+import HomeIcon from "@material-ui/icons/Home";
 
 const StyledBreadcrumb = withStyles(theme => ({
   root: {
@@ -35,10 +34,10 @@ const StyledBreadcrumb = withStyles(theme => ({
     height: 24,
     color: theme.palette.grey[800],
     fontWeight: theme.typography.fontWeightRegular,
-    '&:hover, &:focus': {
+    "&:hover, &:focus": {
       backgroundColor: theme.palette.grey[300]
     },
-    '&:active': {
+    "&:active": {
       boxShadow: theme.shadows[1],
       backgroundColor: emphasize(theme.palette.grey[300], 0.12)
     }
@@ -49,28 +48,28 @@ const styles = theme => ({
   root: {
     flexGrow: 1,
     minHeight: 600,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center'
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center"
   },
   input: {
-    display: 'flex',
+    display: "flex",
     padding: 0
   },
   valueContainer: {
-    display: 'flex',
-    flexWrap: 'wrap',
+    display: "flex",
+    flexWrap: "wrap",
     flex: 1,
-    alignItems: 'center',
-    overflow: 'hidden'
+    alignItems: "center",
+    overflow: "hidden"
   },
   chip: {
     margin: `${theme.spacing.unit / 2}px ${theme.spacing.unit / 4}px`
   },
   chipFocused: {
     backgroundColor: emphasize(
-      theme.palette.type === 'light'
+      theme.palette.type === "light"
         ? theme.palette.grey[300]
         : theme.palette.grey[700],
       0.08
@@ -83,12 +82,12 @@ const styles = theme => ({
     fontSize: 16
   },
   placeholder: {
-    position: 'absolute',
+    position: "absolute",
     left: 2,
     fontSize: 16
   },
   paper: {
-    position: 'absolute',
+    position: "absolute",
     zIndex: 1,
     marginTop: theme.spacing.unit,
     left: 0,
@@ -122,7 +121,7 @@ class ComparePage extends React.Component {
       snackbar: {
         open: false,
         success: false,
-        message: ''
+        message: ""
       }
     };
     // change code above this line
@@ -144,7 +143,7 @@ class ComparePage extends React.Component {
 
   async getData() {
     try {
-      const url = '/jamu/api/herbsmed/getlist';
+      const url = "/jamu/api/herbsmed/getlist";
       const res = await Axios.get(url);
       const { data } = await res;
       let herbsmed = data.data.map(dt => {
@@ -174,7 +173,7 @@ class ComparePage extends React.Component {
   async getDataHerbmed1() {
     try {
       let res = await Axios.get(
-        '/jamu/api/herbsmed/get/' + this.state.forLabelherbmed1.value
+        "/jamu/api/herbsmed/get/" + this.state.forLabelherbmed1.value
       );
       const { data } = await res;
       this.setState({
@@ -184,7 +183,7 @@ class ComparePage extends React.Component {
       let refCrude1 = this.state.herbmed1.refCrude;
       let tempRefCrude1 = [];
       for (let itm of refCrude1) {
-        await Axios.get('/jamu/api/crudedrug/get/' + itm.idcrude).then(res =>
+        await Axios.get("/jamu/api/crudedrug/get/" + itm.idcrude).then(res =>
           tempRefCrude1.push(res.data.data)
         );
       }
@@ -208,7 +207,7 @@ class ComparePage extends React.Component {
   async getDataHerbmed2() {
     try {
       let res = await Axios.get(
-        '/jamu/api/herbsmed/get/' + this.state.forLabelherbmed2.value
+        "/jamu/api/herbsmed/get/" + this.state.forLabelherbmed2.value
       );
       const { data } = await res;
       this.setState({
@@ -218,7 +217,7 @@ class ComparePage extends React.Component {
       let refCrude2 = this.state.herbmed2.refCrude;
       let tempRefCrude2 = [];
       for (let itm of refCrude2) {
-        await Axios.get('/jamu/api/crudedrug/get/' + itm.idcrude).then(res =>
+        await Axios.get("/jamu/api/crudedrug/get/" + itm.idcrude).then(res =>
           tempRefCrude2.push(res.data.data)
         );
       }
@@ -341,7 +340,7 @@ class ComparePage extends React.Component {
       snackbar: {
         open: false,
         success: false,
-        message: ''
+        message: ""
       }
     });
   }
@@ -362,32 +361,32 @@ class ComparePage extends React.Component {
         ) : (
           <div
             style={{
-              width: '100%'
+              width: "100%"
             }}
           >
             <Paper
               style={{
-                width: '90%',
-                margin: 'auto',
-                marginTop: '15px',
-                marginBottom: '30px',
-                padding: '10px',
-                display: 'flex'
+                width: "90%",
+                margin: "auto",
+                marginTop: "15px",
+                marginBottom: "30px",
+                padding: "10px",
+                display: "flex"
               }}
               elevation={1}
             >
               <div
                 style={{
-                  width: '50%'
+                  width: "50%"
                 }}
               >
                 <Typography>Compare Herbal Medicine</Typography>
               </div>
               <div
                 style={{
-                  width: '50%',
-                  display: 'flex',
-                  flexDirection: 'row-reverse'
+                  width: "50%",
+                  display: "flex",
+                  flexDirection: "row-reverse"
                 }}
               >
                 <Breadcrumbs aria-label="breadcrumb">
@@ -411,20 +410,20 @@ class ComparePage extends React.Component {
             </Paper>
             <Paper
               style={{
-                width: '70%',
-                margin: 'auto',
-                marginTop: '30px',
-                marginBottom: '30px',
-                padding: '10px',
-                minHeight: '350px',
-                backgroundColor: '#f8f8f8'
+                width: "70%",
+                margin: "auto",
+                marginTop: "30px",
+                marginBottom: "30px",
+                padding: "10px",
+                minHeight: "350px",
+                backgroundColor: "#f8f8f8"
               }}
             >
               <h6
                 style={{
-                  margin: '0',
-                  color: 'grey',
-                  marginBottom: '10px'
+                  margin: "0",
+                  color: "grey",
+                  marginBottom: "10px"
                 }}
               >
                 Name of herbal medicine 1 :
@@ -434,14 +433,14 @@ class ComparePage extends React.Component {
                 filterOptions={filterOptions}
                 options={this.state.refHerbMed}
                 value={this.state.forLabelherbmed1}
-                onChange={this.handleChange('forLabelherbmed1')}
+                onChange={this.handleChange("forLabelherbmed1")}
               />
               <div className={classes.divider} />
               <h6
                 style={{
-                  margin: '0',
-                  color: 'grey',
-                  marginBottom: '10px'
+                  margin: "0",
+                  color: "grey",
+                  marginBottom: "10px"
                 }}
               >
                 Name of herbal medicine 2 :
@@ -451,15 +450,15 @@ class ComparePage extends React.Component {
                 filterOptions={filterOptions}
                 options={this.state.refHerbMed}
                 value={this.state.forLabelherbmed2}
-                onChange={this.handleChange('forLabelherbmed2')}
+                onChange={this.handleChange("forLabelherbmed2")}
               />
               <div
                 style={{
-                  width: '100%',
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'flex-end',
-                  marginTop: '10px'
+                  width: "100%",
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "flex-end",
+                  marginTop: "10px"
                 }}
               >
                 <Button
@@ -477,12 +476,12 @@ class ComparePage extends React.Component {
               {this.state.loadCompare ? (
                 <div
                   style={{
-                    height: '400px',
-                    border: 'hsl(0,0%,80%) 1px solid',
-                    marginTop: '15px',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center'
+                    height: "400px",
+                    border: "hsl(0,0%,80%) 1px solid",
+                    marginTop: "15px",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center"
                   }}
                 >
                   <LinearProgress />
@@ -490,26 +489,26 @@ class ComparePage extends React.Component {
               ) : this.state.compare ? (
                 <div>
                   <Typography variant="h4" component="h3">
-                    {'Comparison Results :'}
+                    {"Comparison Results :"}
                   </Typography>
                   <Paper
                     style={{
-                      padding: '10px',
-                      marginTop: '15px'
+                      padding: "10px",
+                      marginTop: "15px"
                     }}
                   >
                     <div
                       style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'space-around'
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-around"
                       }}
                     >
                       <Paper
                         style={{
-                          width: '45%',
-                          padding: '10px',
-                          marginTop: '10px'
+                          width: "45%",
+                          padding: "10px",
+                          marginTop: "10px"
                         }}
                       >
                         <Typography variant="h5" component="h3">
@@ -521,9 +520,9 @@ class ComparePage extends React.Component {
                       </Paper>
                       <Paper
                         style={{
-                          width: '45%',
-                          padding: '10px',
-                          marginTop: '10px'
+                          width: "45%",
+                          padding: "10px",
+                          marginTop: "10px"
                         }}
                       >
                         <Typography variant="h5" component="h3">
@@ -537,22 +536,22 @@ class ComparePage extends React.Component {
 
                     <div
                       style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'space-around',
-                        marginTop: '15px'
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-around",
+                        marginTop: "15px"
                       }}
                     >
                       <div
                         style={{
-                          width: '46%'
+                          width: "46%"
                         }}
                       >
                         <label
                           style={{
-                            fontSize: '24px',
-                            display: 'block',
-                            marginBottom: '20px'
+                            fontSize: "24px",
+                            display: "block",
+                            marginBottom: "20px"
                           }}
                         >
                           Only formulas 1:
@@ -569,8 +568,8 @@ class ComparePage extends React.Component {
                               </ExpansionPanelSummary>
                               <ExpansionPanelDetails
                                 style={{
-                                  display: 'flex',
-                                  flexDirection: 'column'
+                                  display: "flex",
+                                  flexDirection: "column"
                                 }}
                               >
                                 <Typography variant="title" gutterBottom>
@@ -605,14 +604,14 @@ class ComparePage extends React.Component {
 
                       <div
                         style={{
-                          width: '46%'
+                          width: "46%"
                         }}
                       >
                         <label
                           style={{
-                            fontSize: '24px',
-                            display: 'block',
-                            marginBottom: '20px'
+                            fontSize: "24px",
+                            display: "block",
+                            marginBottom: "20px"
                           }}
                         >
                           Only formulas 2:
@@ -629,8 +628,8 @@ class ComparePage extends React.Component {
                               </ExpansionPanelSummary>
                               <ExpansionPanelDetails
                                 style={{
-                                  display: 'flex',
-                                  flexDirection: 'column'
+                                  display: "flex",
+                                  flexDirection: "column"
                                 }}
                               >
                                 <Typography variant="title" gutterBottom>
@@ -666,16 +665,16 @@ class ComparePage extends React.Component {
 
                     <div
                       style={{
-                        width: '55%',
-                        margin: 'auto',
-                        marginTop: '15px'
+                        width: "55%",
+                        margin: "auto",
+                        marginTop: "15px"
                       }}
                     >
                       <label
                         style={{
-                          fontSize: '24px',
-                          display: 'block',
-                          marginBottom: '20px'
+                          fontSize: "24px",
+                          display: "block",
+                          marginBottom: "20px"
                         }}
                       >
                         Both formulas :
@@ -692,8 +691,8 @@ class ComparePage extends React.Component {
                             </ExpansionPanelSummary>
                             <ExpansionPanelDetails
                               style={{
-                                display: 'flex',
-                                flexDirection: 'column'
+                                display: "flex",
+                                flexDirection: "column"
                               }}
                             >
                               <Typography variant="title" gutterBottom>
@@ -730,22 +729,22 @@ class ComparePage extends React.Component {
               ) : (
                 <div
                   style={{
-                    height: '400px',
-                    border: 'hsl(0,0%,80%) 1px solid',
-                    marginTop: '15px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    backgroundColor: 'white'
+                    height: "400px",
+                    border: "hsl(0,0%,80%) 1px solid",
+                    marginTop: "15px",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    backgroundColor: "white"
                   }}
                 >
                   <img
                     style={{
-                      width: '250px',
-                      height: '250px'
+                      width: "250px",
+                      height: "250px"
                     }}
-                    src={'/asset/comparision.jpeg'}
+                    src={"/asset/comparision.jpeg"}
                     alt="Logo"
                   />
                   <Typography component="h2" variant="display1" gutterBottom>

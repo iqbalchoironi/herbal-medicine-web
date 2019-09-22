@@ -15,13 +15,13 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
 import Select from '@material-ui/core/Select';
 
-import SnackBar from './SnackBar';
-import ErorPage from './ErorPage';
+import SnackBar from '../../SnackBar';
+import ErorPage from '../ErrorPage/ErorPage';
 
 import { FormControl, InputLabel } from '@material-ui/core';
 
-import Picklist from './components/pick-list';
-import Spinner from './Spinner';
+import Picklist from '../../components/pick-list';
+import Spinner from '../../Spinner';
 
 import { emphasize } from '@material-ui/core/styles';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';

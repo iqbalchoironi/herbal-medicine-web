@@ -1,36 +1,36 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Axios from 'axios';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
+import Axios from "axios";
 
-import Paper from '@material-ui/core/Paper';
-import SearchIcon from '@material-ui/icons/Search';
-import InputBase from '@material-ui/core/InputBase';
-import IconButton from '@material-ui/core/IconButton';
+import Paper from "@material-ui/core/Paper";
+import SearchIcon from "@material-ui/icons/Search";
+import InputBase from "@material-ui/core/InputBase";
+import IconButton from "@material-ui/core/IconButton";
 
-import CardHerbMed from './CardHerbMed';
-import Card from './card';
-import Icon from '@material-ui/core/Icon';
+import CardHerbMed from "../../components/card-herbmed/CardHerbMed";
+import Card from "../../components/card-plant/card";
+import Icon from "@material-ui/core/Icon";
 
-import Button from '@material-ui/core/Button';
+import Button from "@material-ui/core/Button";
 
-import { Link } from 'react-router-dom';
-import Typography from '@material-ui/core/Typography';
-import Person from '@material-ui/icons/Person';
-import CollectionsBookmark from '@material-ui/icons/CollectionsBookmark';
-import DateRange from '@material-ui/icons/DateRange';
-import Divider from '@material-ui/core/Divider';
+import { Link } from "react-router-dom";
+import Typography from "@material-ui/core/Typography";
+import Person from "@material-ui/icons/Person";
+import CollectionsBookmark from "@material-ui/icons/CollectionsBookmark";
+import DateRange from "@material-ui/icons/DateRange";
+import Divider from "@material-ui/core/Divider";
 
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
 
-import ModalCrude from './ModalCrude';
+import ModalCrude from "../../ModalCrude";
 
 const styles = {
   root: {
-    padding: '2px 4px',
-    display: 'flex',
-    alignItems: 'center',
+    padding: "2px 4px",
+    display: "flex",
+    alignItems: "center",
     width: 400
   },
   input: {
@@ -54,16 +54,16 @@ function ListExplicit(props) {
   return (
     <div
       style={{
-        marginTop: '0',
-        marginBottom: '26px',
-        maxWidth: '85%'
+        marginTop: "0",
+        marginBottom: "26px",
+        maxWidth: "85%"
       }}
     >
       <h1
         style={{
-          color: '#0071bc',
-          fontWeight: '500',
-          fontSize: '1.5em'
+          color: "#0071bc",
+          fontWeight: "500",
+          fontSize: "1.5em"
         }}
       >
         {props.title}
@@ -87,13 +87,13 @@ function ListTacit(props) {
   return (
     <div
       style={{
-        marginTop: '25px'
+        marginTop: "25px"
       }}
     >
       <Typography
         variant="subtitle1"
         style={{
-          color: '#1976d8'
+          color: "#1976d8"
         }}
       >
         <Link to={`/tacit/${props.id}`}>{props.title}</Link>
@@ -116,7 +116,7 @@ class SearchPage extends Component {
       value: 0,
       loading: true,
       onSearch: false,
-      inputSearch: '',
+      inputSearch: "",
       plan: [],
       herbsmed: [],
       tacit: [],
@@ -124,12 +124,12 @@ class SearchPage extends Component {
       snackbar: {
         open: false,
         success: false,
-        message: ''
+        message: ""
       },
       onSelect: null,
       modal: {
         open: false,
-        id: ''
+        id: ""
       }
     };
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -149,14 +149,14 @@ class SearchPage extends Component {
   }
 
   handleKeyDown(event) {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       window.location.href = `/search/${this.state.inputSearch}`;
     }
   }
 
   handleInputChange(event) {
     const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;
 
     this.setState({
@@ -171,10 +171,10 @@ class SearchPage extends Component {
       onSearch: true
     });
 
-    const urlSearchPlant = '/jamu/api/plant/search';
+    const urlSearchPlant = "/jamu/api/plant/search";
     let axiosConfig = {
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json"
       }
     };
     const resPlant = await Axios.get(
@@ -189,7 +189,7 @@ class SearchPage extends Component {
     const dataPlant = await resPlant.data.data;
     console.log(dataPlant);
 
-    const urlSearchHerbsMed = '/jamu/api/herbsmed/search';
+    const urlSearchHerbsMed = "/jamu/api/herbsmed/search";
     const resHerbsMed = await Axios.get(
       urlSearchHerbsMed,
       {
@@ -202,7 +202,7 @@ class SearchPage extends Component {
     const dataHerbsMed = await resHerbsMed.data.data;
     console.log(dataHerbsMed);
 
-    const UrlTacit = '/jamu/api/tacit/search/sort/';
+    const UrlTacit = "/jamu/api/tacit/search/sort/";
     const resTacit = await Axios.get(
       UrlTacit,
       {
@@ -215,7 +215,7 @@ class SearchPage extends Component {
     const dataTacit = await resTacit.data.data;
     console.log(dataTacit);
 
-    const urlExplicit = '/jamu/api/explicit/search/sort/';
+    const urlExplicit = "/jamu/api/explicit/search/sort/";
     const resExplicit = await Axios.get(
       urlExplicit,
       {
@@ -254,7 +254,7 @@ class SearchPage extends Component {
       snackbar: {
         open: false,
         success: false,
-        message: ''
+        message: ""
       },
       modal: {
         open: false
@@ -267,20 +267,20 @@ class SearchPage extends Component {
     return (
       <div
         style={{
-          display: 'flex',
-          flexDirection: 'column'
+          display: "flex",
+          flexDirection: "column"
         }}
       >
         <div
           style={{
-            marginTop: '3px',
-            width: '100%',
-            height: '150px',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
+            marginTop: "3px",
+            width: "100%",
+            height: "150px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
             backgroundImage: `url(/asset/bg-kecil.png)`,
-            backgroundSize: 'cover'
+            backgroundSize: "cover"
           }}
         >
           <Paper className={classes.root} elevation={1}>
@@ -303,7 +303,7 @@ class SearchPage extends Component {
         </div>
         <div
           style={{
-            padding: '30px'
+            padding: "30px"
           }}
         >
           <Tabs
@@ -333,14 +333,14 @@ class SearchPage extends Component {
           {this.state.value === 0 && (
             <div
               style={{
-                minHeight: '270px',
-                width: '90%',
-                marginTop: '9px',
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(16rem, 1fr))',
-                gridGap: '2rem',
-                margin: 'auto',
-                padding: '10px'
+                minHeight: "270px",
+                width: "90%",
+                marginTop: "9px",
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, minmax(16rem, 1fr))",
+                gridGap: "2rem",
+                margin: "auto",
+                padding: "10px"
               }}
             >
               {this.state.herbsmed.map(item => (
@@ -359,13 +359,13 @@ class SearchPage extends Component {
             <TabContainer>
               <div
                 style={{
-                  minHeight: '270px',
-                  width: '90%',
-                  marginTop: '9px',
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fill, minmax(16rem, 1fr))',
-                  gridGap: '2rem',
-                  padding: '10px'
+                  minHeight: "270px",
+                  width: "90%",
+                  marginTop: "9px",
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fill, minmax(16rem, 1fr))",
+                  gridGap: "2rem",
+                  padding: "10px"
                 }}
               >
                 {this.state.plan.map(item => (
@@ -385,17 +385,17 @@ class SearchPage extends Component {
             <TabContainer>
               <div
                 style={{
-                  minHeight: '270px',
-                  width: '90%',
-                  margin: 'auto',
-                  marginTop: '9px'
+                  minHeight: "270px",
+                  width: "90%",
+                  margin: "auto",
+                  marginTop: "9px"
                 }}
               >
                 {this.state.explicit.map(item => (
                   <ListExplicit
                     key={item._id}
                     id={item._id}
-                    name={item.firstName + ' ' + item.lastName}
+                    name={item.firstName + " " + item.lastName}
                     title={item.title}
                     abstract={item.abstract}
                   />
@@ -407,17 +407,17 @@ class SearchPage extends Component {
             <TabContainer>
               <div
                 style={{
-                  minHeight: '270px',
-                  width: '90%',
-                  margin: 'auto',
-                  marginTop: '9px'
+                  minHeight: "270px",
+                  width: "90%",
+                  margin: "auto",
+                  marginTop: "9px"
                 }}
               >
                 {this.state.tacit.map(item => (
                   <ListTacit
                     key={item._id}
                     id={item._id}
-                    name={item.firstName + ' ' + item.lastName}
+                    name={item.firstName + " " + item.lastName}
                     title={item.title}
                     abstract={item.abstract}
                   />

@@ -1,22 +1,21 @@
-import React from 'react';
-import { height } from '@material-ui/system';
+import React from "react";
 
 function Footer(props) {
   return (
     <footer>
       <div
         style={{
-          width: '100%',
+          width: "100%",
 
-          backgroundColor: 'grey',
+          backgroundColor: "grey",
           //height: '300px',
           //backgroundImage: `url(/asset/footer.png)`,
           //backgroundSize: 'cover',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          color: 'rgba(255, 255, 255, 0.75)'
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          color: "rgba(255, 255, 255, 0.75)"
         }}
       >
         {/* <div
@@ -126,15 +125,15 @@ function Footer(props) {
         </div> */}
         <div
           style={{
-            margin: 'auto',
-            width: '100%'
+            margin: "auto",
+            width: "100%"
           }}
         >
           {/* <hr /> */}
           <p
             style={{
-              fontSize: '12px',
-              textAlign: 'center'
+              fontSize: "12px",
+              textAlign: "center"
             }}
           >
             © 2019 KMSJamu <br />

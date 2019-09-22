@@ -10,11 +10,11 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
 import Button from '@material-ui/core/Button';
 
-import Spinner from './Spinner';
+import Spinner from '../../Spinner';
 import { Paper } from '@material-ui/core';
 
 import Breadcrumbs from '@material-ui/lab/Breadcrumbs';
-import SearchInput from './SearchInput';
+import SearchInput from '../../SearchInput';
 
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -22,8 +22,8 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Location from '@material-ui/icons/LocationOn';
 
-import SnackBar from './SnackBar';
-import ErorPage from './ErorPage';
+import SnackBar from '../../SnackBar';
+import ErorPage from '../ErrorPage/ErorPage';
 
 function ListItemLink(props) {
   return <ListItem button component="a" {...props} />;
