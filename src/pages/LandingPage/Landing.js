@@ -36,10 +36,23 @@ class Landing extends Component {
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   handleKeyDown(event) {
     if (event.key === 'Enter') {
+      if (this.state.inputSearch === '') {
+        window.location.href = '/';
+      } else {
+        window.location.href = `/search/${this.state.inputSearch}`;
+      }
+    }
+  }
+
+  handleClick() {
+    if (this.state.inputSearch === '') {
+      window.location.href = '/';
+    } else {
       window.location.href = `/search/${this.state.inputSearch}`;
     }
   }
@@ -154,7 +167,7 @@ class Landing extends Component {
               placeholder="Search here..."
             />
             <IconButton
-              href={`/search/${this.state.inputSearch}`}
+              onClick={this.handleClick}
               className={classes.iconButton}
               aria-label="Search"
             >

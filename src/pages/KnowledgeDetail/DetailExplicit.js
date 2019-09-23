@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Axios from 'axios';
 import FileDownload from 'js-file-download';
+import moment from 'moment';
 
 import Paper from '@material-ui/core/Paper';
 import SaveAlt from '@material-ui/icons/SaveAlt';
@@ -50,13 +51,10 @@ class DetailExplicit extends Component {
     }
   }
 
-  getFile(e) {
-    let doc = e.target.dataset.value;
-    Axios.get(`/jamu/api/explicit/file/` + e.target.dataset.value).then(
-      response => {
-        FileDownload(response.data, doc);
-      }
-    );
+  getFile(file) {
+    Axios.get(`/jamu/api/explicit/file/` + file).then(response => {
+      FileDownload(response.data, file);
+    });
   }
 
   async afterUpdate(success, message) {
@@ -93,7 +91,8 @@ class DetailExplicit extends Component {
               margin: 'auto',
               marginTop: '30px',
               marginBottom: '10px',
-              padding: '30px'
+              padding: '30px',
+              backgroundColor: 'rgba(0, 0, 0, 0.05)'
             }}
           >
             <h2
@@ -105,24 +104,29 @@ class DetailExplicit extends Component {
             >
               {this.state.show.title}
             </h2>
-            <div
+            <Paper
               style={{
                 marginTop: '10px',
-                marginBottom: '20px'
+                marginBottom: '20px',
+                width: '50%',
+                padding: '10px',
+                backgroundColor: 'rgba(0, 0, 0, 0.05)'
               }}
             >
-              <Typography variant="caption" gutterBottom>
-                <Person />{' '}
+              <Typography display="block" variant="caption" gutterBottom>
+                <Person />
                 {this.state.show.firstName + ' ' + this.state.show.lastName}
               </Typography>
-              <Typography variant="caption" gutterBottom>
-                <CollectionsBookmark /> Conference paper <DateRange />{' '}
-                12-12-2001
+              <Typography display="block" variant="caption" gutterBottom>
+                <CollectionsBookmark /> {this.state.show.publisher}
               </Typography>
-            </div>
+              <Typography display="block" variant="caption" gutterBottom>
+                <DateRange />
+                {moment(this.state.show.datePublish).format('DD/MM/YYYY')}
+              </Typography>
+            </Paper>
             <Button
-              data-value={this.state.show.file}
-              onClick={this.getFile}
+              onClick={() => this.getFile(this.state.show.file)}
               variant="contained"
               color="primary"
             >

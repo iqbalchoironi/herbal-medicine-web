@@ -161,42 +161,45 @@ class Plant extends Component {
     }
   }
 
-  async getDataSearch(event) {
-    try {
-      this.setState({
-        loading: true,
-        onSearch: true
-      });
-      const url = '/jamu/api/plant/search';
-      let axiosConfig = {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      };
-      const res = await Axios.get(
-        url,
-        {
-          params: {
-            search: this.state.inputSearch
+  async getDataSearch() {
+    if (this.state.inputSearch === '') {
+      window.location.href = '/plant';
+    } else {
+      try {
+        this.setState({
+          loading: true,
+          onSearch: true
+        });
+        const url = '/jamu/api/plant/search';
+        let axiosConfig = {
+          headers: {
+            'Content-Type': 'application/json'
           }
-        },
-        axiosConfig
-      );
-      const { data } = await res;
-      let newData = data.data;
-      this.afterUpdate(data.success, data.message);
-      this.setState({
-        plans: newData,
-        loading: false
-      });
-    } catch (err) {
-      this.afterUpdate(false, err.message);
-      this.setState({
-        onEror: true,
-        loading: false
-      });
+        };
+        const res = await Axios.get(
+          url,
+          {
+            params: {
+              search: this.state.inputSearch
+            }
+          },
+          axiosConfig
+        );
+        const { data } = await res;
+        let newData = data.data;
+        this.afterUpdate(data.success, data.message);
+        this.setState({
+          plans: newData,
+          loading: false
+        });
+      } catch (err) {
+        this.afterUpdate(false, err.message);
+        this.setState({
+          onEror: true,
+          loading: false
+        });
+      }
     }
-    event.preventDefault();
   }
 
   handleInputChange(event) {

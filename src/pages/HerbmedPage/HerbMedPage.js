@@ -151,31 +151,35 @@ class HerbMeds extends Component {
   }
 
   async getDataSearch() {
-    this.setState({
-      loading: true,
-      onSearch: true
-    });
-    const url = '/jamu/api/herbsmed/search';
-    let axiosConfig = {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    };
-    const res = await Axios.get(
-      url,
-      {
-        params: {
-          search: this.state.inputSearch
+    if (this.state.inputSearch === '') {
+      window.location.href = '/herbmeds';
+    } else {
+      this.setState({
+        loading: true,
+        onSearch: true
+      });
+      const url = '/jamu/api/herbsmed/search';
+      let axiosConfig = {
+        headers: {
+          'Content-Type': 'application/json'
         }
-      },
-      axiosConfig
-    );
-    const { data } = await res;
-    let newData = data.data;
-    this.setState({
-      herbmeds: newData,
-      loading: false
-    });
+      };
+      const res = await Axios.get(
+        url,
+        {
+          params: {
+            search: this.state.inputSearch
+          }
+        },
+        axiosConfig
+      );
+      const { data } = await res;
+      let newData = data.data;
+      this.setState({
+        herbmeds: newData,
+        loading: false
+      });
+    }
   }
 
   handleInputChange(event) {

@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import Navigation from './components/navigation/Navigation';
 
 import Landing from './pages/LandingPage/Landing';
-import ExplicitPage from './pages/KnowledgePage/ExplicitPage';
+import KnowledgePage from './pages/KnowledgePage/KnowledgePage';
 import DetailExplicit from './pages/KnowledgeDetail/DetailExplicit';
 // import TacitPage from "./TacitPage";
 // import DetailTacit from "./DetailTacit";
@@ -79,7 +79,11 @@ class App extends Component {
                 component={SearchPage}
               />
 
-              <ProtectedRoute exact path="/explicit" component={ExplicitPage} />
+              <ProtectedRoute
+                exact
+                path="/knowledge"
+                component={KnowledgePage}
+              />
               <ProtectedRoute
                 exact
                 path="/explicit/:id"

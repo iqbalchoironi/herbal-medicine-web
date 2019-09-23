@@ -88,13 +88,13 @@ class Navigation extends Component {
                   <Link to="/">Home</Link>
                 </li>
 
-                <div class="dropdown">
-                  <li>Knowledge</li>
-                  <div class="dropdown-content">
-                    {/* <Link to="/tacit">Tacit</Link> */}
-                    <Link to="/explicit">Explicit</Link>
-                  </div>
-                </div>
+                <li>
+                  <Link to="/map/ethnic">Map Ethnic</Link>
+                </li>
+
+                <li>
+                  <Link to="/knowledge">Knowledge</Link>
+                </li>
 
                 <div class="dropdown">
                   <li>Analysis</li>
@@ -112,10 +112,6 @@ class Navigation extends Component {
                     <Link to="/compound">Compounds</Link>
                   </div>
                 </div>
-
-                <li>
-                  <Link to="/map/ethnic">Map Ethnic</Link>
-                </li>
               </ul>
             </div>
 
