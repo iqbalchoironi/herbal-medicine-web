@@ -70,7 +70,6 @@ class FormExplicit extends Component {
     const res = await Axios.get(url);
     const { data } = await res;
     let coba = [];
-    console.log(data.data);
     data.data.forEach(plant => {
       coba.push(plant.sname);
     });
@@ -122,7 +121,6 @@ class FormExplicit extends Component {
     this.setState({
       [name]: value
     });
-    console.log(this.state);
     event.preventDefault();
   };
 
@@ -154,12 +152,9 @@ class FormExplicit extends Component {
     Axios.post(url, formData, axiosConfig)
       .then(data => {
         const res = data.data;
-        console.log(res);
         window.location.href = '/explicit';
       })
-      .catch(err => {
-        console.log(err);
-      });
+      .catch(err => {});
     event.preventDefault();
   };
 

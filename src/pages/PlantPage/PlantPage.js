@@ -153,7 +153,6 @@ class Plant extends Component {
         loading: false
       });
     } catch (err) {
-      console.log(err.message);
       this.afterUpdate(false, err.message);
       this.setState({
         onEror: true,
@@ -164,7 +163,6 @@ class Plant extends Component {
 
   async getDataSearch(event) {
     try {
-      console.log(this.state.inputSearch);
       this.setState({
         loading: true,
         onSearch: true
@@ -186,14 +184,12 @@ class Plant extends Component {
       );
       const { data } = await res;
       let newData = data.data;
-      console.log(newData);
       this.afterUpdate(data.success, data.message);
       this.setState({
         plans: newData,
         loading: false
       });
     } catch (err) {
-      console.log(err.message);
       this.afterUpdate(false, err.message);
       this.setState({
         onEror: true,

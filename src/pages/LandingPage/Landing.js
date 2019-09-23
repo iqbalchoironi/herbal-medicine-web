@@ -52,7 +52,6 @@ class Landing extends Component {
     this.setState({
       [name]: value
     });
-    console.log(this.state.inputSearch);
   }
 
   render() {

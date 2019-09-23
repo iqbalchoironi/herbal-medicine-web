@@ -171,7 +171,6 @@ class ExplicitPage extends Component {
   }
 
   async handleClick(offset, page) {
-    console.log(page);
     await this.setState({ currentPage: page, offset });
     this.getData();
   }
@@ -188,7 +187,6 @@ class ExplicitPage extends Component {
         loading: false
       });
     } catch (err) {
-      console.log(err.message);
       this.afterUpdate(false, err.message);
       this.setState({
         onEror: true,
@@ -202,7 +200,6 @@ class ExplicitPage extends Component {
   };
 
   async getDataSearch() {
-    console.log(this.state.inputSearch);
     this.setState({
       loadData: true
     });
@@ -223,7 +220,6 @@ class ExplicitPage extends Component {
     );
     const { data } = await res;
     let newData = data.data;
-    console.log(newData);
     this.setState({
       onSearch: newData,
       loadData: false
@@ -234,13 +230,10 @@ class ExplicitPage extends Component {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
-    console.log(value);
-    console.log(name);
     await this.setState({
       [name]: value
     });
 
-    console.log(this.state.inputSearch);
     this.setState({
       loadData: true
     });
@@ -263,7 +256,6 @@ class ExplicitPage extends Component {
     );
     const { data } = await res;
     let newData = data.data;
-    console.log(newData);
     if (this.state.inputSearch === '') {
       this.setState({
         explicit: newData,
@@ -281,8 +273,6 @@ class ExplicitPage extends Component {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
-    console.log(value);
-    console.log(name);
     this.setState({
       [name]: value
     });

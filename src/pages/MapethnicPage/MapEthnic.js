@@ -77,7 +77,6 @@ export class MapHerb extends Component {
         loading: false
       });
     } catch (err) {
-      console.log(err.message);
       this.afterUpdate(false, err.message);
       this.setState({
         onEror: true,
@@ -97,7 +96,6 @@ export class MapHerb extends Component {
         loading: false
       });
     } catch (err) {
-      console.log(err.message);
       this.afterUpdate(false, err.message);
       this.setState({
         onEror: true,

@@ -38,7 +38,6 @@ class Navigation extends Component {
   };
 
   handleMenu = event => {
-    console.log(event.currentTarget);
     this.setState({ anchorEl: event.currentTarget });
   };
 
@@ -53,7 +52,6 @@ class Navigation extends Component {
 
     let user = localStorage.getItem('user');
     user = JSON.parse(user);
-    console.log(user);
 
     return (
       <div className={classes.root}>

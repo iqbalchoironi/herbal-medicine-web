@@ -136,14 +136,12 @@ class HerbMeds extends Component {
       const res = await Axios.get(url);
       const { data } = await res;
       let newData = this.state.herbmeds.concat(data.data);
-      console.log(res);
       this.afterUpdate(data.success, data.message);
       this.setState({
         herbmeds: newData,
         loading: false
       });
     } catch (err) {
-      console.log(err.message);
       this.afterUpdate(false, err.message);
       this.setState({
         onEror: true,
@@ -153,7 +151,6 @@ class HerbMeds extends Component {
   }
 
   async getDataSearch() {
-    console.log(this.state.inputSearch);
     this.setState({
       loading: true,
       onSearch: true
@@ -175,7 +172,6 @@ class HerbMeds extends Component {
     );
     const { data } = await res;
     let newData = data.data;
-    console.log(newData);
     this.setState({
       herbmeds: newData,
       loading: false
@@ -186,8 +182,6 @@ class HerbMeds extends Component {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
-    console.log(value);
-    console.log(name);
     this.setState({
       [name]: value
     });

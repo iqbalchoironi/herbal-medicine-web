@@ -29,7 +29,6 @@ class Register extends Component {
   };
 
   handleSubmit = event => {
-    console.log(this.state);
     let axiosConfig = {
       headers: {
         'Content-Type': 'application/json'

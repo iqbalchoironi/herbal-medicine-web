@@ -96,7 +96,6 @@ class DetailPlant extends Component {
       const { data } = await res;
       // const urlDesc = 'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&titles='+ data.data.sname;
       // const resDesc = await Axios.get(urlDesc,{ headers: {'Access-Control-Allow-Origin': "*"} });
-      // console.log(resDesc)
       let HerbMed = [];
       let efficacy = [];
       let name_en = [];
@@ -140,8 +139,6 @@ class DetailPlant extends Component {
         })
       );
 
-      console.log(efficacy);
-
       let RefHerbsMed = await Promise.all(
         HerbMed.map(async dt => {
           let urlCrude = '/jamu/api/herbsmed/get/' + dt;
@@ -150,8 +147,6 @@ class DetailPlant extends Component {
           return data.data;
         })
       );
-
-      console.log(RefHerbsMed);
 
       let detailPlant = data.data;
       detailPlant.refCrude = RefCrude;
@@ -167,7 +162,6 @@ class DetailPlant extends Component {
         loading: false
       });
     } catch (err) {
-      console.log(err.message);
       this.afterUpdate(false, err.message);
       this.setState({
         onEror: true,

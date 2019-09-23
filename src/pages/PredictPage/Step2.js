@@ -64,8 +64,8 @@ function Step2(props) {
           <Picklist
             basis={props.basis}
             target={props.target}
-            coba1={props.coba1}
-            coba={props.coba}
+            toBasis={props.toBasis}
+            toTarget={props.toTarget}
             filterList={props.filterList}
           />
         </FormControl>

@@ -136,12 +136,10 @@ class Compound extends Component {
       //       '/cids/TXT';
       //     try {
       //       let res = await Axios.get(url);
-      //       console.log(res);
       //       let data = res.data.split('\n');
       //       dt.idPubChem = data[0];
       //       return dt;
       //     } catch (err) {
-      //       console.log(err);
       //       dt.idPubChem = '';
       //       return dt;
       //     }
@@ -155,7 +153,6 @@ class Compound extends Component {
         loading: false
       });
     } catch (err) {
-      console.log(err.message);
       this.afterUpdate(false, err.message);
       this.setState({
         onEror: true,
@@ -166,7 +163,6 @@ class Compound extends Component {
 
   async getDataSearch(event) {
     try {
-      console.log(this.state.inputSearch);
       this.setState({
         loading: true,
         onSearch: true
@@ -188,14 +184,12 @@ class Compound extends Component {
       );
       const { data } = await res;
       let newData = data.data;
-      console.log(newData);
       this.afterUpdate(data.success, data.message);
       this.setState({
         compounds: newData,
         loading: false
       });
     } catch (err) {
-      console.log(err.message);
       this.afterUpdate(false, err.message);
       this.setState({
         onEror: true,

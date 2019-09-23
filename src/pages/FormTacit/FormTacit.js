@@ -63,7 +63,6 @@ class FormTacit extends Component {
     this.setState({
       [event.target.name]: event.target.value
     });
-    console.log(this.state);
   };
   addReff = () => {
     this.setState({
@@ -73,7 +72,6 @@ class FormTacit extends Component {
     });
   };
   onSubmit = event => {
-    console.log(this.state);
     //   let user = localStorage.getItem("user")
     //   user = JSON.parse(user)
     //   let axiosConfig = {
@@ -89,7 +87,6 @@ class FormTacit extends Component {
     // },axiosConfig)
     // .then(data => {
     // const res = data.data;
-    //   console.log(res)
     //     window.location.href = '/';
 
     // })

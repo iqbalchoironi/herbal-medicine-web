@@ -62,7 +62,6 @@ class EthnicDetail extends Component {
         ethnic: data.data
       });
     } catch (err) {
-      console.log(err.message);
       this.afterUpdate(false, err.message);
       this.setState({
         onEror: true,
@@ -77,7 +76,6 @@ class EthnicDetail extends Component {
   //   //   loading: true
   //   // });
   //   // await this.getDataPlantEthnic();
-  //   console.log(nextProps);
   // }
 
   async getDataPlantEthnic() {
@@ -99,7 +97,6 @@ class EthnicDetail extends Component {
             result[name].push(item);
           }
         });
-        console.log(result);
         this.afterUpdate(
           true,
           'load detail ethnic with plant use for herbal medicine success'
@@ -112,7 +109,6 @@ class EthnicDetail extends Component {
         });
       });
     } catch (err) {
-      console.log(err.message);
       this.afterUpdate(false, err.message);
       this.setState({
         onEror: true,

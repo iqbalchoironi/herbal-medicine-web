@@ -108,7 +108,6 @@ class DetailHerbMed extends Component {
       );
 
       let Plant = RefCrude.map(dt => dt.refPlant[0]);
-      console.log(Plant);
       Plant = await Promise.all(
         Array.from(
           new Set(
@@ -131,14 +130,12 @@ class DetailHerbMed extends Component {
       let detailHerbMed = data.data;
       detailHerbMed.refCrude = RefCrude;
       detailHerbMed.refPlant = Plant;
-      console.log(detailHerbMed);
       this.afterUpdate(data.success, data.message);
       this.setState({
         detailHerbMed: detailHerbMed,
         loading: false
       });
     } catch (err) {
-      console.log(err.message);
       this.afterUpdate(false, err.message);
       this.setState({
         onEror: true,

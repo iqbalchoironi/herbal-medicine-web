@@ -63,7 +63,6 @@ class Predict extends Component {
 
   constructor(props) {
     super(props);
-    // change code below this line
     this.state = {
       loading: true,
       onPredic: false,
@@ -85,9 +84,8 @@ class Predict extends Component {
       resultPredic: {},
       predictLoad: false
     };
-    // change code above this line
-    this.coba = this.coba.bind(this);
-    this.coba1 = this.coba1.bind(this);
+    this.toTarget = this.toTarget.bind(this);
+    this.toBasis = this.toBasis.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.afterUpdate = this.afterUpdate.bind(this);
@@ -105,7 +103,6 @@ class Predict extends Component {
       const res = await Axios.get(url);
       const { data } = await res;
       let coba = [];
-      console.log(data.data);
       data.data.forEach(plant => {
         coba.push(plant.sname);
       });
@@ -127,7 +124,6 @@ class Predict extends Component {
         loading: false
       });
     } catch (err) {
-      console.log(err.message);
       this.afterUpdate(false, err.message);
       this.setState({
         onEror: true,
@@ -196,7 +192,7 @@ class Predict extends Component {
     });
   };
 
-  coba(e) {
+  toTarget(e) {
     this.setState({
       itemtarget: [...this.state.itemtarget, e.target.dataset.value],
       itembasis: this.state.itembasis.filter(
@@ -208,7 +204,7 @@ class Predict extends Component {
     });
   }
 
-  coba1(e) {
+  toBasis(e) {
     this.setState({
       itembasis: [...this.state.itembasis, e.target.dataset.value],
       itembase: [...this.state.itembase, e.target.dataset.value],
@@ -256,7 +252,6 @@ class Predict extends Component {
     this.setState({
       [name]: value
     });
-    console.log(this.state);
     event.preventDefault();
   };
 
@@ -265,9 +260,7 @@ class Predict extends Component {
       onPredic: true,
       predictLoad: true
     });
-    console.log(this.state);
     let id = this.state.target.map(dt => dt.idplant);
-    console.log(id);
     const url = '/jamu/api/user/secret';
     let axiosConfig = {
       headers: {
@@ -487,8 +480,8 @@ class Predict extends Component {
                           options={this.optionsArray}
                           basis={this.state.itembasis}
                           target={this.state.itemtarget}
-                          coba1={this.coba1}
-                          coba={this.coba}
+                          toBasis={this.toBasis}
+                          toTarget={this.toTarget}
                           type={this.state.type}
                           filterList={this.handleSearch}
                         />

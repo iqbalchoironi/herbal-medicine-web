@@ -155,7 +155,6 @@ class ComparePage extends React.Component {
         loading: false
       });
     } catch (err) {
-      console.log(err.message);
       this.afterUpdate(false, err.message);
       this.setState({
         onEror: true,
@@ -195,7 +194,6 @@ class ComparePage extends React.Component {
         herbmed1: item1
       });
     } catch (err) {
-      console.log(err.message);
       this.afterUpdate(false, err.message);
       this.setState({
         onEror: true,
@@ -229,7 +227,6 @@ class ComparePage extends React.Component {
         herbmed2: item2
       });
     } catch (err) {
-      console.log(err.message);
       this.afterUpdate(false, err.message);
       this.setState({
         onEror: true,
@@ -464,7 +461,7 @@ class ComparePage extends React.Component {
                 <Button
                   variant="contained"
                   disabled={
-                    this.state.forLabelherbmed1 === null &&
+                    this.state.forLabelherbmed1 === null ||
                     this.state.forLabelherbmed2 === null
                   }
                   onClick={this.handleSubmit}
@@ -488,9 +485,15 @@ class ComparePage extends React.Component {
                 </div>
               ) : this.state.compare ? (
                 <div>
-                  <Typography variant="h4" component="h3">
-                    {'Comparison Results :'}
-                  </Typography>
+                  <h6
+                    style={{
+                      margin: '0',
+                      color: 'grey',
+                      marginBottom: '10px'
+                    }}
+                  >
+                    Comparison Results :
+                  </h6>
                   <Paper
                     style={{
                       padding: '10px',

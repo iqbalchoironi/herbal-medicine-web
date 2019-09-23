@@ -26,12 +26,12 @@ const PickList = props => {
       <div className="pick-list">
         <ul className="basis-list">
           {props.basis.map(series => (
-            <BasisList item={series} onClick={props.coba} />
+            <BasisList item={series} onClick={props.toTarget} />
           ))}
         </ul>
         <ul className="target-list">
           {props.target.map(series => (
-            <TargetList item={series} onClick={props.coba1} />
+            <TargetList item={series} onClick={props.toBasis} />
           ))}
         </ul>
       </div>

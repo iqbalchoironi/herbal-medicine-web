@@ -42,7 +42,6 @@ class DetailExplicit extends Component {
         loading: false
       });
     } catch (err) {
-      console.log(err.message);
       this.afterUpdate(false, err.message);
       this.setState({
         onEror: true,
@@ -52,7 +51,6 @@ class DetailExplicit extends Component {
   }
 
   getFile(e) {
-    console.log(e.target.dataset.value);
     let doc = e.target.dataset.value;
     Axios.get(`/jamu/api/explicit/file/` + e.target.dataset.value).then(
       response => {

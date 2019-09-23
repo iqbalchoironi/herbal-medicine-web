@@ -162,7 +162,6 @@ class SearchPage extends Component {
     this.setState({
       [name]: value
     });
-    console.log(this.state.inputSearch);
   }
 
   async getDataSearch() {
@@ -187,7 +186,6 @@ class SearchPage extends Component {
       axiosConfig
     );
     const dataPlant = await resPlant.data.data;
-    console.log(dataPlant);
 
     const urlSearchHerbsMed = '/jamu/api/herbsmed/search';
     const resHerbsMed = await Axios.get(
@@ -200,7 +198,6 @@ class SearchPage extends Component {
       axiosConfig
     );
     const dataHerbsMed = await resHerbsMed.data.data;
-    console.log(dataHerbsMed);
 
     const UrlTacit = '/jamu/api/tacit/search/sort/';
     const resTacit = await Axios.get(
@@ -213,7 +210,6 @@ class SearchPage extends Component {
       axiosConfig
     );
     const dataTacit = await resTacit.data.data;
-    console.log(dataTacit);
 
     const urlExplicit = '/jamu/api/explicit/search/sort/';
     const resExplicit = await Axios.get(
@@ -226,7 +222,6 @@ class SearchPage extends Component {
       axiosConfig
     );
     const dataExplicit = await resExplicit.data.data;
-    console.log(dataExplicit);
 
     this.setState({
       plan: dataPlant,

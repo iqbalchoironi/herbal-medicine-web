@@ -1,18 +1,18 @@
-import React, { Component } from "react";
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
+import React, { Component } from 'react';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
-import Typography from "@material-ui/core/Typography";
+import Typography from '@material-ui/core/Typography';
 
-import LinearProgress from "../linear-progress/LinearProgress";
+import LinearProgress from '../linear-progress/LinearProgress';
 
-import Axios from "axios";
+import Axios from 'axios';
 
 const List = props => {
-  if (props.item.sname !== "") {
+  if (props.item.sname !== '') {
     return <li>{props.item.sname} </li>;
   }
 
@@ -26,27 +26,26 @@ class ModalCrude extends Component {
       openModalPlant: false,
       addPlant: null,
       loading: false,
-      _id: "",
-      idcrude: "",
-      sname: "",
-      name_en: "",
-      name_loc1: "",
-      name_loc2: "",
-      gname: "",
-      position: "",
-      effect: "",
-      effect_loc: "",
-      comment: "",
-      ref: "",
+      _id: '',
+      idcrude: '',
+      sname: '',
+      name_en: '',
+      name_loc1: '',
+      name_loc2: '',
+      gname: '',
+      position: '',
+      effect: '',
+      effect_loc: '',
+      comment: '',
+      ref: '',
       refPlant: []
     };
   }
 
   async componentDidMount() {
-    let url = "/jamu/api/crudedrug/get/" + this.props.modal.id;
+    let url = '/jamu/api/crudedrug/get/' + this.props.modal.id;
     let res = await Axios.get(url);
     let data = await res.data.data;
-    console.log(data);
     this.setState({
       _id: data._id,
       idcrude: data.idcrude,
@@ -74,7 +73,7 @@ class ModalCrude extends Component {
         >
           {this.state.loading ? <LinearProgress /> : null}
           <DialogTitle id="form-dialog-title">
-            You update Crude Drug with id {this.state.idcrude} and name is{" "}
+            You update Crude Drug with id {this.state.idcrude} and name is{' '}
             {this.state.sname}
           </DialogTitle>
           <DialogContent>
@@ -118,12 +117,12 @@ class ModalCrude extends Component {
             </Typography>
             <label
               style={{
-                color: "grey",
-                fontWeight: "lighter",
-                fontSize: "13px",
-                display: "block",
-                marginTop: "10px",
-                marginBottom: "5px"
+                color: 'grey',
+                fontWeight: 'lighter',
+                fontSize: '13px',
+                display: 'block',
+                marginTop: '10px',
+                marginBottom: '5px'
               }}
             >
               Reference Plant :
