@@ -38,6 +38,7 @@ function Step1(props) {
             label="Crude Drug"
           />
           <FormControlLabel
+            disabled
             value="compound"
             control={<Radio />}
             label="Compound"

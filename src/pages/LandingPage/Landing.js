@@ -23,7 +23,10 @@ const styles = {
     flex: 1
   },
   iconButton: {
-    padding: 10
+    padding: 10,
+    backgroundColor: 'rgb(137, 177, 67)',
+    color: '#FFF',
+    borderRadius: '0'
   }
 };
 
@@ -103,7 +106,7 @@ class Landing extends Component {
       {
         url: '/asset/explicit.jpeg',
         title: 'Knowledge',
-        directory: '/explicit'
+        directory: '/knowledge'
       },
       {
         url: '/asset/plant_ethnic.jpeg',
@@ -159,6 +162,7 @@ class Landing extends Component {
           <Paper className={classes.root} elevation={1}>
             <FormControl className={classes.margin}></FormControl>
             <InputBase
+              autoFocus
               className={classes.input}
               name="inputSearch"
               value={this.state.inputSearch}

@@ -514,10 +514,59 @@ class ComparePage extends React.Component {
                           marginTop: '10px'
                         }}
                       >
-                        <Typography variant="h5" component="h3">
+                        <Typography variant="h6" gutterBottom>
                           {this.state.herbmed1.name}
                         </Typography>
-                        <Typography component="p">
+                        <h6
+                          style={{
+                            margin: '0',
+                            color: 'grey'
+                          }}
+                        >
+                          Company :
+                        </h6>
+                        <Typography
+                          style={{ marginLeft: '10px' }}
+                          variant="caption"
+                          display="block"
+                          gutterBottom
+                        >
+                          {this.state.herbmed1.refCompany
+                            ? this.state.herbmed1.refCompany.cname
+                            : null}
+                        </Typography>
+                        <h6
+                          style={{
+                            margin: '0',
+                            color: 'grey'
+                          }}
+                        >
+                          Address company :
+                        </h6>
+                        <Typography
+                          style={{ marginLeft: '10px' }}
+                          variant="caption"
+                          display="block"
+                          gutterBottom
+                        >
+                          {this.state.herbmed1.refCompany
+                            ? this.state.herbmed1.refCompany.address
+                            : null}
+                        </Typography>
+                        <h6
+                          style={{
+                            margin: '0',
+                            color: 'grey'
+                          }}
+                        >
+                          Efficacy :
+                        </h6>
+                        <Typography
+                          style={{ marginLeft: '10px' }}
+                          variant="caption"
+                          display="block"
+                          gutterBottom
+                        >
                           {this.state.herbmed1.efficacy}
                         </Typography>
                       </Paper>
@@ -528,11 +577,60 @@ class ComparePage extends React.Component {
                           marginTop: '10px'
                         }}
                       >
-                        <Typography variant="h5" component="h3">
-                          {this.state.herbmed2.name}
+                        <Typography variant="h6" gutterBottom>
+                          {this.state.herbmed1.name}
                         </Typography>
-                        <Typography component="p">
-                          {this.state.herbmed2.efficacy}
+                        <h6
+                          style={{
+                            margin: '0',
+                            color: 'grey'
+                          }}
+                        >
+                          Company :
+                        </h6>
+                        <Typography
+                          style={{ marginLeft: '10px' }}
+                          variant="caption"
+                          display="block"
+                          gutterBottom
+                        >
+                          {this.state.herbmed1.refCompany
+                            ? this.state.herbmed1.refCompany.cname
+                            : null}
+                        </Typography>
+                        <h6
+                          style={{
+                            margin: '0',
+                            color: 'grey'
+                          }}
+                        >
+                          Address company :
+                        </h6>
+                        <Typography
+                          style={{ marginLeft: '10px' }}
+                          variant="caption"
+                          display="block"
+                          gutterBottom
+                        >
+                          {this.state.herbmed1.refCompany
+                            ? this.state.herbmed1.refCompany.address
+                            : null}
+                        </Typography>
+                        <h6
+                          style={{
+                            margin: '0',
+                            color: 'grey'
+                          }}
+                        >
+                          Efficacy :
+                        </h6>
+                        <Typography
+                          style={{ marginLeft: '10px' }}
+                          variant="caption"
+                          display="block"
+                          gutterBottom
+                        >
+                          {this.state.herbmed1.efficacy}
                         </Typography>
                       </Paper>
                     </div>
@@ -559,14 +657,15 @@ class ComparePage extends React.Component {
                         >
                           Only formulas 1:
                         </label>
-                        {this.state.refCrude1.map(item => {
+                        {this.state.refCrude1.map(itm => {
                           return (
                             <ExpansionPanel>
                               <ExpansionPanelSummary
                                 expandIcon={<ExpandMoreIcon />}
                               >
-                                <Typography className={classes.heading}>
-                                  {item.sname}
+                                <Typography>
+                                  {' '}
+                                  <i>{itm.sname}</i>
                                 </Typography>
                               </ExpansionPanelSummary>
                               <ExpansionPanelDetails
@@ -575,29 +674,61 @@ class ComparePage extends React.Component {
                                   flexDirection: 'column'
                                 }}
                               >
-                                <Typography variant="title" gutterBottom>
-                                  {item.name_en}
+                                <Typography
+                                  variant="caption"
+                                  display="block"
+                                  gutterBottom
+                                >
+                                  Saintifict Name : <i>{itm.sname}</i>
                                 </Typography>
-                                <Typography variant="caption" gutterBottom>
-                                  name_loc1 : {item.name_loc1}
+                                <Typography
+                                  variant="caption"
+                                  display="block"
+                                  gutterBottom
+                                >
+                                  Name (in english) : {itm.name_en}
                                 </Typography>
-                                <Typography variant="caption" gutterBottom>
-                                  name_loc2 : {item.name_loc2}
+                                <Typography
+                                  variant="caption"
+                                  display="block"
+                                  gutterBottom
+                                >
+                                  Local name I : {itm.name_loc1}
                                 </Typography>
-                                <Typography variant="caption" gutterBottom>
-                                  gname : {item.gname}
+                                <Typography
+                                  variant="caption"
+                                  display="block"
+                                  gutterBottom
+                                >
+                                  Local name II : <i>{itm.name_loc2}</i>
                                 </Typography>
-                                <Typography variant="caption" gutterBottom>
-                                  position : {item.position}
+                                <Typography
+                                  variant="caption"
+                                  display="block"
+                                  gutterBottom
+                                >
+                                  Global Name : <i>{itm.gname}</i>
                                 </Typography>
-                                <Typography variant="caption" gutterBottom>
-                                  effect : {item.position}
+                                <Typography
+                                  variant="caption"
+                                  display="block"
+                                  gutterBottom
+                                >
+                                  Effect : {itm.effect}
                                 </Typography>
-                                <Typography variant="caption" gutterBottom>
-                                  effect_loc : {item.effect}
+                                <Typography
+                                  variant="caption"
+                                  display="block"
+                                  gutterBottom
+                                >
+                                  Location Effect : {itm.effect_loc}
                                 </Typography>
-                                <Typography variant="caption" gutterBottom>
-                                  reff : {item.reff}
+                                <Typography
+                                  variant="caption"
+                                  display="block"
+                                  gutterBottom
+                                >
+                                  Refrence : {itm.ref}
                                 </Typography>
                               </ExpansionPanelDetails>
                             </ExpansionPanel>
@@ -619,14 +750,15 @@ class ComparePage extends React.Component {
                         >
                           Only formulas 2:
                         </label>
-                        {this.state.refCrude2.map(item => {
+                        {this.state.refCrude2.map(itm => {
                           return (
                             <ExpansionPanel>
                               <ExpansionPanelSummary
                                 expandIcon={<ExpandMoreIcon />}
                               >
-                                <Typography className={classes.heading}>
-                                  {item.gname}
+                                <Typography>
+                                  {' '}
+                                  <i>{itm.sname}</i>
                                 </Typography>
                               </ExpansionPanelSummary>
                               <ExpansionPanelDetails
@@ -635,29 +767,61 @@ class ComparePage extends React.Component {
                                   flexDirection: 'column'
                                 }}
                               >
-                                <Typography variant="title" gutterBottom>
-                                  {item.name_en}
+                                <Typography
+                                  variant="caption"
+                                  display="block"
+                                  gutterBottom
+                                >
+                                  Saintifict Name : <i>{itm.sname}</i>
                                 </Typography>
-                                <Typography variant="caption" gutterBottom>
-                                  name_loc1 : {item.name_loc1}
+                                <Typography
+                                  variant="caption"
+                                  display="block"
+                                  gutterBottom
+                                >
+                                  Name (in english) : {itm.name_en}
                                 </Typography>
-                                <Typography variant="caption" gutterBottom>
-                                  name_loc2 : {item.name_loc2}
+                                <Typography
+                                  variant="caption"
+                                  display="block"
+                                  gutterBottom
+                                >
+                                  Local name I : {itm.name_loc1}
                                 </Typography>
-                                <Typography variant="caption" gutterBottom>
-                                  gname : {item.gname}
+                                <Typography
+                                  variant="caption"
+                                  display="block"
+                                  gutterBottom
+                                >
+                                  Local name II : <i>{itm.name_loc2}</i>
                                 </Typography>
-                                <Typography variant="caption" gutterBottom>
-                                  position : {item.position}
+                                <Typography
+                                  variant="caption"
+                                  display="block"
+                                  gutterBottom
+                                >
+                                  Global Name : <i>{itm.gname}</i>
                                 </Typography>
-                                <Typography variant="caption" gutterBottom>
-                                  effect : {item.position}
+                                <Typography
+                                  variant="caption"
+                                  display="block"
+                                  gutterBottom
+                                >
+                                  Effect : {itm.effect}
                                 </Typography>
-                                <Typography variant="caption" gutterBottom>
-                                  effect_loc : {item.effect}
+                                <Typography
+                                  variant="caption"
+                                  display="block"
+                                  gutterBottom
+                                >
+                                  Location Effect : {itm.effect_loc}
                                 </Typography>
-                                <Typography variant="caption" gutterBottom>
-                                  reff : {item.reff}
+                                <Typography
+                                  variant="caption"
+                                  display="block"
+                                  gutterBottom
+                                >
+                                  Refrence : {itm.ref}
                                 </Typography>
                               </ExpansionPanelDetails>
                             </ExpansionPanel>
@@ -682,14 +846,15 @@ class ComparePage extends React.Component {
                       >
                         Both formulas :
                       </label>
-                      {this.state.sama.map(item => {
+                      {this.state.sama.map(itm => {
                         return (
                           <ExpansionPanel>
                             <ExpansionPanelSummary
                               expandIcon={<ExpandMoreIcon />}
                             >
-                              <Typography className={classes.heading}>
-                                {item.sname}
+                              <Typography>
+                                {' '}
+                                <i>{itm.sname}</i>
                               </Typography>
                             </ExpansionPanelSummary>
                             <ExpansionPanelDetails
@@ -698,29 +863,61 @@ class ComparePage extends React.Component {
                                 flexDirection: 'column'
                               }}
                             >
-                              <Typography variant="title" gutterBottom>
-                                {item.name_en}
+                              <Typography
+                                variant="caption"
+                                display="block"
+                                gutterBottom
+                              >
+                                Saintifict Name : <i>{itm.sname}</i>
                               </Typography>
-                              <Typography variant="caption" gutterBottom>
-                                name_loc1 : {item.name_loc1}
+                              <Typography
+                                variant="caption"
+                                display="block"
+                                gutterBottom
+                              >
+                                Name (in english) : {itm.name_en}
                               </Typography>
-                              <Typography variant="caption" gutterBottom>
-                                name_loc2 : {item.name_loc2}
+                              <Typography
+                                variant="caption"
+                                display="block"
+                                gutterBottom
+                              >
+                                Local name I : {itm.name_loc1}
                               </Typography>
-                              <Typography variant="caption" gutterBottom>
-                                gname : {item.gname}
+                              <Typography
+                                variant="caption"
+                                display="block"
+                                gutterBottom
+                              >
+                                Local name II : <i>{itm.name_loc2}</i>
                               </Typography>
-                              <Typography variant="caption" gutterBottom>
-                                position : {item.position}
+                              <Typography
+                                variant="caption"
+                                display="block"
+                                gutterBottom
+                              >
+                                Global Name : <i>{itm.gname}</i>
                               </Typography>
-                              <Typography variant="caption" gutterBottom>
-                                effect : {item.position}
+                              <Typography
+                                variant="caption"
+                                display="block"
+                                gutterBottom
+                              >
+                                Effect : {itm.effect}
                               </Typography>
-                              <Typography variant="caption" gutterBottom>
-                                effect_loc : {item.effect}
+                              <Typography
+                                variant="caption"
+                                display="block"
+                                gutterBottom
+                              >
+                                Location Effect : {itm.effect_loc}
                               </Typography>
-                              <Typography variant="caption" gutterBottom>
-                                reff : {item.reff}
+                              <Typography
+                                variant="caption"
+                                display="block"
+                                gutterBottom
+                              >
+                                Refrence : {itm.ref}
                               </Typography>
                             </ExpansionPanelDetails>
                           </ExpansionPanel>
