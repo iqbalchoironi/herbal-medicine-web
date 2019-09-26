@@ -137,14 +137,14 @@ class Landing extends Component {
           <h3
             style={{
               textAlign: 'center',
-              fontSize: '3em',
+              fontSize: '2.5em',
               fontWeight: '600',
               margin: '100px 0 0 0',
               color: 'white'
             }}
           >
             {' '}
-            Explore Herbal Medicine{' '}
+            Knowledge Management System Jamu{' '}
           </h3>
           <h3
             style={{
@@ -156,7 +156,7 @@ class Landing extends Component {
             }}
           >
             {' '}
-            Quickly find Jamu, Kampo, Plant, Tacit and Explicit here{' '}
+            You can explore all about herbal medicine here{' '}
           </h3>
 
           <Paper className={classes.root} elevation={1}>
@@ -168,7 +168,7 @@ class Landing extends Component {
               value={this.state.inputSearch}
               onKeyDown={this.handleKeyDown}
               onChange={this.handleInputChange}
-              placeholder="Search here..."
+              placeholder="Search all here"
             />
             <IconButton
               onClick={this.handleClick}
@@ -178,6 +178,17 @@ class Landing extends Component {
               <SearchIcon />
             </IconButton>
           </Paper>
+          <h3
+            style={{
+              textAlign: 'center',
+              fontSize: '1em',
+              fontWeight: '400',
+              margin: '10px 0 30px 0',
+              color: 'white'
+            }}
+          >
+            Examples: cough, pegal linu, curcuma.
+          </h3>
         </div>
 
         <div
@@ -228,14 +239,14 @@ class Landing extends Component {
             </h3>
             <div
               style={{
-                fontSize: '1.25em'
+                fontSize: '1.25em',
+                textAlign: 'justify'
               }}
             >
-              {' '}
-              Knowledge Management System Jamu (KMS Jamu) is web application for
-              various kinds of crude drug systems. Plug-in system for adding and
-              cross-searching other traditional crude drug system, for instance
-              TCM and Ayurveda.{' '}
+              Knowledge Management System Jamu (KMS Jamu) is a web application
+              for sharing knowledge about herbs, herbal plants, comparing herbal
+              formulas, predicting the efficacy of several plants and compounds,
+              and other information relating to herbs.
             </div>
             <div
               style={{

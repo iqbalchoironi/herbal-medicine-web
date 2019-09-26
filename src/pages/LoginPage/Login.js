@@ -7,6 +7,7 @@ import { withStyles } from '@material-ui/core/styles';
 import ButtonProgress from './ButtonProgress';
 import logo from '../../logo-hijau.png';
 import { Paper } from '@material-ui/core';
+import SnackBar from '../../components/snackbar/SnackBar';
 
 const emailRegex = RegExp(
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
@@ -121,10 +122,12 @@ class Login extends Component {
       )
         .then(data => {
           const user = data.data;
-          this.afterUpdate(user.success, user.message);
-          if (user.succes !== false) {
+          if (user.success !== false) {
+            this.afterUpdate(user.success, user.message);
             localStorage.setItem('user', JSON.stringify(user));
             window.location.href = '/';
+          } else {
+            this.afterUpdate(false, user.message);
           }
           this.setState({
             loading: false
@@ -249,6 +252,9 @@ class Login extends Component {
             className={classes.submit}
           />
         </Paper>
+        {this.state.snackbar.open === true ? (
+          <SnackBar data={this.state.snackbar} close={this.closeBtn} />
+        ) : null}
         {/* </div> */}
       </Container>
     );
