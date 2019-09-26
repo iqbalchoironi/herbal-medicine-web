@@ -129,6 +129,7 @@ class Landing extends Component {
             display: 'flex',
             flexDirection: 'column',
             //justifyContent: "center",
+            backgroundColor: '#B9D78E',
             alignItems: 'center',
             backgroundImage: `url(/asset/bg-search.png)`,
             backgroundSize: 'cover'
