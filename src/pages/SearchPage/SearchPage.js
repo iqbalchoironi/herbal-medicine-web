@@ -14,7 +14,6 @@ import Icon from '@material-ui/core/Icon';
 
 import Button from '@material-ui/core/Button';
 
-import { Link } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import Person from '@material-ui/icons/Person';
 import CollectionsBookmark from '@material-ui/icons/CollectionsBookmark';
@@ -83,31 +82,31 @@ function ListExplicit(props) {
   );
 }
 
-function ListTacit(props) {
-  return (
-    <div
-      style={{
-        marginTop: '25px'
-      }}
-    >
-      <Typography
-        variant="subtitle1"
-        style={{
-          color: '#1976d8'
-        }}
-      >
-        <Link to={`/tacit/${props.id}`}>{props.title}</Link>
-      </Typography>
-      <Typography variant="caption">
-        <Person /> {props.name}
-      </Typography>
-      {/* <Typography variant="caption">
-        <CollectionsBookmark /> Conference paper <DateRange /> 12-12-2001
-      </Typography>
-      <p className="block-with-text">{props.abstract}</p> */}
-    </div>
-  );
-}
+// function ListTacit(props) {
+//   return (
+//     <div
+//       style={{
+//         marginTop: '25px'
+//       }}
+//     >
+//       <Typography
+//         variant="subtitle1"
+//         style={{
+//           color: '#1976d8'
+//         }}
+//       >
+//         <Link to={`/tacit/${props.id}`}>{props.title}</Link>
+//       </Typography>
+//       <Typography variant="caption">
+//         <Person /> {props.name}
+//       </Typography>
+//       {/* <Typography variant="caption">
+//         <CollectionsBookmark /> Conference paper <DateRange /> 12-12-2001
+//       </Typography>
+//       <p className="block-with-text">{props.abstract}</p> */}
+//     </div>
+//   );
+// }
 
 class SearchPage extends Component {
   constructor(props) {
@@ -317,12 +316,12 @@ class SearchPage extends Component {
             />
             <Tab
               disabled={this.state.explicit.length === 0}
-              label={`Explicit Knowledge (${this.state.explicit.length})`}
+              label={`Knowledge (${this.state.explicit.length})`}
             />
-            <Tab
+            {/* <Tab
               disabled={this.state.tacit.length === 0}
               label={`Tacit Knowledge (${this.state.tacit.length})`}
-            />
+            /> */}
           </Tabs>
           <hr />
           {this.state.value === 0 && (
@@ -399,7 +398,7 @@ class SearchPage extends Component {
               </div>
             </TabContainer>
           )}
-          {this.state.value === 3 && (
+          {/* {this.state.value === 3 && (
             <TabContainer>
               <div
                 style={{
@@ -420,7 +419,7 @@ class SearchPage extends Component {
                 ))}
               </div>
             </TabContainer>
-          )}
+          )} */}
           {this.state.modal.open === true ? (
             <ModalCrude modal={this.state.modal} close={this.closeBtn} />
           ) : null}

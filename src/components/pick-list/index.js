@@ -15,14 +15,26 @@ const TargetList = ({ item, onClick }) => (
 const PickList = props => {
   return (
     <div>
-      <input
-        onChange={props.filterList}
-        style={{
-          margin: '10px 10px 5px 40px',
-          width: '240px',
-          borderRadius: '5px'
-        }}
-      ></input>
+      <div className="pick-list">
+        <input
+          onChange={props.filterList}
+          style={{
+            margin: '10px 10px 5px auto',
+            width: '240px',
+            borderRadius: '5px',
+            display: 'block'
+          }}
+        ></input>
+        <div
+          onChange={props.filterList}
+          style={{
+            margin: '10px auto 5px 10px',
+            width: '240px',
+            borderRadius: '5px',
+            display: 'block'
+          }}
+        ></div>
+      </div>
       <div className="pick-list">
         <ul className="basis-list">
           {props.basis.map(series => (

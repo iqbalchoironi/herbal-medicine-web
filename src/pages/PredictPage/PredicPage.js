@@ -75,7 +75,7 @@ class Predict extends Component {
       type: '',
       model: '',
       target: [],
-      optimization: '',
+      optimization: '1',
       snackbar: {
         open: false,
         success: false,
@@ -350,7 +350,7 @@ class Predict extends Component {
                   width: '50%'
                 }}
               >
-                <Typography>Predict Efficacy Herbal Medicine</Typography>
+                <Typography>Prediction of Therapeutic Usage</Typography>
               </div>
               <div
                 style={{
@@ -372,7 +372,7 @@ class Predict extends Component {
                   />
                   <StyledBreadcrumb component="a" href="#" label="Analisys" />
                   <StyledBreadcrumb
-                    label="Prediction of herbal medicine efficacy"
+                    label="Prediction of Therapeutic Usage"
                     deleteIcon={<ExpandMoreIcon />}
                   />
                 </Breadcrumbs>

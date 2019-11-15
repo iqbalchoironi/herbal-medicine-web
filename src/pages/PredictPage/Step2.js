@@ -40,9 +40,9 @@ function Step2(props) {
             }}
           >
             <option value="" />
-            <option value={'svm'}>suport vector mechine</option>
-            <option value={'rf'}>random forest</option>
-            <option value={'dl'}>deep learning</option>
+            <option value={'svm'}>Support Vector Machine</option>
+            <option value={'rf'}>Random Forest</option>
+            <option value={'dl'}>Deep Learning</option>
           </Select>
         </FormControl>
 
