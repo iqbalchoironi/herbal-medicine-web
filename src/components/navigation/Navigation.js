@@ -115,7 +115,7 @@ class Navigation extends Component {
               </ul>
             </div>
 
-            <div
+            {/* <div
               style={{
                 width: '20%',
                 display: 'flex',
@@ -166,7 +166,7 @@ class Navigation extends Component {
                   Login
                 </Button>
               )}
-            </div>
+            </div> */}
           </Toolbar>
         </AppBar>
       </div>
